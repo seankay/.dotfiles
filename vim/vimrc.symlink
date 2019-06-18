@@ -24,10 +24,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'w0rp/ale'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 call plug#end()
 
-set shellcmdflag=-ic " make !command interactive, allowing for aliases to be loaded
+" commented out because it caused git mergetool to crash
+" set shellcmdflag=-ic " make !command interactive, allowing for aliases to be loaded
 set encoding=utf-8
 set showcmd                     " display incomplete commands
 set re=1 "use old regex engine for syntax highlighing. new one is slow
@@ -181,18 +181,13 @@ let g:ale_fixers = {
       \   'python': ['flake8'],
       \}
 
-let g:ale_go_golint_executable = 'golint'
-let g:ale_go_golint_options = ''
-let g:ale_go_gopls_executable = 'gopls'
-let g:ale_go_gopls_options = '--mode stdio'
 let g:ale_linters = {
       \'go': ['golint', 'gopls'],
+      \'javascript': ['eslint'],
       \}
 " Error and warning signs.
 let g:ale_sign_error = '⤫'
 let g:ale_sign_warning = '⚠'
-let g:ale_go_bingo_executable = 'gopls'
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Terraform
@@ -203,7 +198,7 @@ let g:terraform_fmt_on_save=1 "format on save
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-go
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:go_gocode_propose_source=0
+let g:go_gocode_propose_source=1
 let g:go_highlight_functions = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_function_parameters = 1
@@ -221,8 +216,3 @@ map <Leader>e :GoIfErr<CR>
 
 " Required for operations modifying multiple buffers like rename.
 set hidden
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" deoplete
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:deoplete#enable_at_startup = 1
