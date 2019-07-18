@@ -24,6 +24,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'w0rp/ale'
+Plug 'Vimjas/vim-python-pep8-indent'
 call plug#end()
 
 " commented out because it caused git mergetool to crash
