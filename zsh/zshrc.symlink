@@ -3,7 +3,6 @@ export PATH=/usr/local/bin:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbi
 export PATH="$PATH:/usr/local/opt/python/libexec/bin"
 export PATH="$PATH:/usr/local/go/bin"
 export PATH="$PATH:/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin"
-export PATH="$PATH:/Users/seankay/Library/Python/3.6/bin"
 
 # Go Paths, dirs, and executables
 export GOPATH="${HOME}/.go"
@@ -133,6 +132,9 @@ PROMPT='%~$(git_super_status): '
 terminate_psql_connections() {
   psql xep -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='$1'"
 }
+
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
 
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 function rbenvsudo(){
