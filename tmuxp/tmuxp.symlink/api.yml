@@ -1,11 +1,11 @@
 session_name: api
 windows:
   - window_name: editor
-    shell_command_before: cd ~/code/api
+    shell_command_before: cd ~/code/orx_app/api
     panes:
       - shell_command:
         - vim .
   - window_name: console
-    shell_command_before: cd ~/code/api
+    shell_command_before: cd ~/code/orx_app/api
     panes:
       -
