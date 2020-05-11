@@ -28,6 +28,7 @@ Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'tsandall/vim-rego'
 Plug 'leafgarland/typescript-vim'
 Plug 'Quramy/tsuquyomi'
+Plug 'jparise/vim-graphql'
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
