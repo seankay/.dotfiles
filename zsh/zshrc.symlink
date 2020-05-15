@@ -117,11 +117,17 @@ alias gprune="git checkout master;git branch --merged master | grep -v 'master$'
 alias ctags="`brew --prefix`/bin/ctags"
 alias retag='ctags -R --exclude=.svn --exclude=.git --exclude=log --exclude=node_modules --exclude=test *'
 alias tmux="TERM=screen-256color-bce tmux"
-alias tmuxinit="TERM=screen-256color-bce tmuxp load `ls ~/.tmuxp | sed 's/.yaml//'`"
 alias vim='nvim'
 alias vimdiff='nvim -d'
 alias tp="trash-put"
 alias tl="trash-list"
+
+tmuxinit() {
+  d=$(pwd)
+  cd ~/.tmuxp
+  TERM=screen-256color-bce tmuxp load `ls ~/.tmuxp | sed 's/.yaml//'`
+  cd $d
+}
 
 #pretty json
 alias json="python -mjson.tool"

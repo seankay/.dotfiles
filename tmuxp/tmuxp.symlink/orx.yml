@@ -1,0 +1,12 @@
+session_name: orx_app
+windows:
+  - window_name: server
+    shell_command_before: cd ~/code/orx_app
+    panes:
+      - shell_command:
+        - AWS_PROFILE=shared-dev docker-compose up
+
+  - window_name: edito
+    shell_command_before: cd ~/code/orx_app
+    panes:
+      -
