@@ -99,7 +99,6 @@ export WORDCHARS='*?[]~&;!$%^<>'
 export ACK_COLOR_MATCH='red'
 
 # Aliases
-alias rm='echo "This is not the command you are looking for."; false'
 alias ls='ls -G'
 alias c='cd ~/code'
 alias d="cd ~/.dotfiles"
@@ -121,6 +120,7 @@ alias vim='nvim'
 alias vimdiff='nvim -d'
 alias tp="trash-put"
 alias tl="trash-list"
+alias rm='tp'
 
 tmuxinit() {
   d=$(pwd)
