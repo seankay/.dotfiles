@@ -121,15 +121,6 @@ docker_purge() {
     docker rmi -f $(docker images -qa)
 }
 
-# Antigen
-source /usr/local/share/antigen/antigen.zsh
-
-# antigen def
-antigen bundle zsh-users/zsh-completions
-# antigen def
-
-antigen apply
-
 # Tmux
 switch() {
   # If not in tmux load with tmuxp
