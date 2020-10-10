@@ -261,9 +261,15 @@ alias tmux="TERM=screen-256color-bce tmux"
 alias vim='nvim'
 alias vimdiff='nvim -d'
 alias tp="trash-put"
-alias tl="trash-list"
+alias tl="echo q | trash-restore | sort -k4"
 alias rm='tp'
 alias json="python -mjson.tool"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/seankay/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/seankay/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/seankay/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/seankay/google-cloud-sdk/completion.zsh.inc'; fi
