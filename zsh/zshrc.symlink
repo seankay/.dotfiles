@@ -241,6 +241,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias k="kubectl"
 alias ls='ls -G'
 alias c='cd ~/code'
 alias d="cd ~/.dotfiles"
