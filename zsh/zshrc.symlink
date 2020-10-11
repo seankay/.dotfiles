@@ -6,6 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 export PAGER="nvim -c 'set ft=man' -"
+export GIT_PAGER="less"
 
 # If you come from bash you might have to change your $PATH.
 export PATH=/usr/local/bin:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/mysql/bin:/usr/lib/php/pear:~/bin
