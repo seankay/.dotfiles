@@ -28,8 +28,7 @@ Plug 'tsandall/vim-rego'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'Quramy/tsuquyomi'
-Plug 'jparise/vim-graphql'
-Plug 'hashivim/vim-hashicorp-tools'
+Plug 'hashivim/vim-terraform'
 Plug 'jvirtanen/vim-hcl'
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 if has('nvim')
@@ -112,15 +111,6 @@ inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" TABULARIZE
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nmap <Leader>a= :Tabularize /=<CR>
-vmap <Leader>a= :Tabularize /=<CR>
-nmap <Leader>a: :Tabularize /:\zs<CR>
-vmap <Leader>a: :Tabularize /:\zs<CR>
-nmap <leader>a> :Tabularize /=><cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Typos
