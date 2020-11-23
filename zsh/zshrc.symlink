@@ -32,7 +32,7 @@ export DOCKER_CLIENT_TIMEOUT=120
 export COMPOSE_HTTP_TIMEOUT=120
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/seankay/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # FZF through history
 bindkey '^P' fh #ctrl+p to envoke func
@@ -271,7 +271,7 @@ alias json="python -mjson.tool"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/seankay/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/seankay/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/seankay/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/seankay/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
