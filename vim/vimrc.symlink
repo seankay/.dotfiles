@@ -11,10 +11,12 @@ Plug 'tpope/vim-repeat' " repeat . macros
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive' " Git wrapper
+Plug 'tpope/vim-dispatch' " async commands
 Plug 'rking/ag.vim'
 Plug 'Raimondi/delimitMate' " auto complete parens, quotes, etc.
 Plug 'hallison/vim-markdown'
 Plug 'pangloss/vim-javascript'
+Plug 'thoughtbot/vim-rspec'
 Plug 'bling/vim-airline'
 Plug 'elixir-editors/vim-elixir'
 Plug 'fatih/vim-go'
@@ -161,12 +163,20 @@ autocmd FileAppendPre   * :call TrimWhiteSpace()
 autocmd FilterWritePre  * :call TrimWhiteSpace()
 autocmd BufWritePre     * :call TrimWhiteSpace()
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Rspec syntax highlight outside of rails
+" Rspec
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"syntax highlight outside of rails
 autocmd BufRead *_spec.rb syn keyword rubyRspec describe context it specify it_should_behave_like before after setup subject its shared_examples_for shared_context let
 highlight def link rubyRspec Function
+" hotkeys
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
+
+" Use dispatch for async run
+let g:rspec_command = "Dispatch rspec {spec}"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " FZF
@@ -188,6 +198,7 @@ let g:ale_fixers = {
 
 let g:ale_linters = {
       \'go': ['golint', 'gopls'],
+      \'ruby': ['rubocop'],
       \}
 
 " Error and warning signs.
