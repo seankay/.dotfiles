@@ -184,6 +184,7 @@ autocmd BufWritePre     * :call TrimWhiteSpace()
 " Dispatch
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:dispatch_no_maps = 1 "disable default key mappings
+let g:dispatch_quickfix_height = 20 " window height
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Rspec
