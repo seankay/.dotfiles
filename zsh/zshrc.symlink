@@ -25,9 +25,6 @@ if ! hash goimports &>/dev/null; then
   go get golang.org/x/tools/cmd/goimports
 fi
 
-# remove auto cd i.e. try to exec `bin_name` and it cd's into a folder called `bin_name`
-unsetopt auto_cd
-
 # Docker Timeout Fix
 export DOCKER_CLIENT_TIMEOUT=120
 export COMPOSE_HTTP_TIMEOUT=120
