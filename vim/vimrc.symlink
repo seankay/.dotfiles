@@ -236,21 +236,24 @@ let g:terraform_fmt_on_save=1 "format on save
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-go
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:go_gocode_propose_source=1
 let g:go_highlight_functions = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_function_parameters = 1
 let g:go_highlight_function_calls = 1
 let g:go_highlight_types = 1
+
+let g:go_gocode_propose_source=1
+let g:go_auto_type_info = 1 " auto show info of type under cursor in status bar
+
 let g:go_def_mode='gopls' "use gopls for definitions
 let g:go_info_mode = 'gopls' " use gopls for GoInfo
 
 " implement interface
-map <c-i> :GoImports<CR>
-map <Leader>gi :GoImpl<CR>
-map <Leader>i :GoInfo<CR>
-map <Leader>r :GoRename<CR>
-map <Leader>e :GoIfErr<CR>
+autocmd Filetype go nmap <c-i> :GoImports<CR>
+autocmd Filetype go nmap <Leader>gi :GoImpl<CR>
+autocmd Filetype go nmap <Leader>i :GoInfo<CR>
+autocmd Filetype go nmap <Leader>r :GoRename<CR>
+autocmd Filetype go nmap <Leader>e :GoIfErr<CR>
 
 " Required for operations modifying multiple buffers like rename.
 set hidden
