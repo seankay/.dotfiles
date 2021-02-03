@@ -242,8 +242,6 @@ let g:go_highlight_function_parameters = 1
 let g:go_highlight_function_calls = 1
 let g:go_highlight_types = 1
 
-let g:go_auto_sameids = 1 " highlight same identifier
-
 let g:go_gocode_propose_source=1
 let g:go_auto_type_info = 1 " auto show info of type under cursor in status bar
 
