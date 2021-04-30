@@ -34,6 +34,7 @@ Plug 'hashivim/vim-terraform'
 Plug 'jvirtanen/vim-hcl'
 Plug 'vim-ruby/vim-ruby'
 Plug 'drewtempelmeyer/palenight.vim'
+Plug 'jparise/vim-graphql'
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -248,13 +249,18 @@ let g:go_auto_type_info = 1 " auto show info of type under cursor in status bar
 let g:go_def_mode='gopls' "use gopls for definitions
 let g:go_info_mode = 'gopls' " use gopls for GoInfo
 
-" implement interface
+" go import
 autocmd Filetype go nmap <c-i> :GoImports<CR>
+" implement interface
 autocmd Filetype go nmap <Leader>gi :GoImpl<CR>
+" go info
 autocmd Filetype go nmap <Leader>i :GoInfo<CR>
+" go def type
+autocmd Filetype go nmap <Leader>dt :GoDefType<CR>
+" go rename
 autocmd Filetype go nmap <Leader>r :GoRename<CR>
+" go if err snippet
 autocmd Filetype go nmap <Leader>e :GoIfErr<CR>
-
 " Required for operations modifying multiple buffers like rename.
 set hidden
 

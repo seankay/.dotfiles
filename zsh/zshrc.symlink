@@ -54,7 +54,7 @@ function gpush() {
 }
 
 function replace() {
-  find . -name $1 -print0 | xargs -0 sed -i "" "s/$2/g"
+  find . -name $1 -print0 | xargs -0 sed -i "" "s/${2}/${3}/g"
 }
 
 # Outputs the name of the current branch
