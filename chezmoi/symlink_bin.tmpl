@@ -1,0 +1,8 @@
+{{- $binSource := joinPath .chezmoi.sourceDir ".." "bin" -}}
+{{- if hasKey .chezmoi "data" -}}
+  {{- $data := index .chezmoi "data" -}}
+  {{- if hasKey $data "bin_source" -}}
+    {{- $binSource = index $data "bin_source" -}}
+  {{- end -}}
+{{- end -}}
+{{ $binSource }}

@@ -1,0 +1,328 @@
+#!/usr/bin/env bash
+# Orchestrates dotfile application, package installs, and shell/tmux setup.
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPTS_DIR="${ROOT_DIR}/scripts"
+BOOTSTRAP_SCRIPT="${SCRIPTS_DIR}/bootstrap-prereqs.sh"
+
+DRY_RUN=false
+SUDO_KEEPALIVE_PID=""
+
+RESET="\033[0m"
+INFO_COLOR="\033[94m"
+GREEN="\033[32m"
+CYAN="\033[36m"
+YELLOW="\033[33m"
+RED="\033[31m"
+
+usage() {
+  cat <<EOF
+Usage: $0 [--dry-run]
+
+--dry-run   Run supporting tools in their dry-run/check modes.
+EOF
+}
+
+log_info() {
+  printf "${INFO_COLOR}> %s${RESET}\n" "$*"
+}
+
+log_debug() {
+  printf "${CYAN}> %s${RESET}\n" "$*"
+}
+
+log_warn() {
+  printf "${YELLOW}! %s${RESET}\n" "$*"
+}
+
+log_error() {
+  printf "${RED}✖ %s${RESET}\n" "$*"
+}
+
+log_success() {
+  printf "${GREEN}✔ %s${RESET}\n" "$*"
+}
+
+run() {
+  if "${DRY_RUN}"; then
+    log_debug "(dry-run) $*"
+    return 0
+  fi
+
+  log_debug "$*"
+  if "$@"; then
+    return 0
+  fi
+
+  local status=$?
+  log_error "Command failed (exit ${status}): $*"
+  exit "${status}"
+}
+
+cleanup() {
+  if [[ -n "${SUDO_KEEPALIVE_PID:-}" ]]; then
+    kill "${SUDO_KEEPALIVE_PID}" 2>/dev/null || true
+  fi
+}
+trap cleanup EXIT
+
+require_cmd() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    if "${DRY_RUN}"; then
+      log_warn "Missing required command: $1 (continuing because --dry-run)."
+      return 0
+    fi
+    log_error "Missing required command: $1"
+    log_info "Run ${BOOTSTRAP_SCRIPT} to install prerequisites."
+    exit 1
+  fi
+}
+
+ensure_sudo_session() {
+  if "${DRY_RUN}"; then
+    log_info "Skipping sudo session setup in dry-run mode."
+    return
+  fi
+
+  if ! command -v sudo >/dev/null 2>&1; then
+    return
+  fi
+
+  if sudo -n true 2>/dev/null; then
+    log_info "Sudo credentials already cached."
+  else
+    log_info "Caching sudo credentials (you may be prompted for your password)."
+    sudo -v
+  fi
+
+  if [[ -z "${SUDO_KEEPALIVE_PID}" ]]; then
+    while true; do
+      sleep 60
+      sudo -n -v >/dev/null 2>&1 || exit
+    done &
+    SUDO_KEEPALIVE_PID=$!
+  fi
+}
+
+ensure_prereqs() {
+  local args=()
+  if "${DRY_RUN}"; then
+    args+=(--dry-run)
+  fi
+  log_info "Ensuring prerequisites via ${BOOTSTRAP_SCRIPT}"
+  if ((${#args[@]})); then
+    run "${BOOTSTRAP_SCRIPT}" "${args[@]}"
+  else
+    run "${BOOTSTRAP_SCRIPT}"
+  fi
+}
+
+refresh_prereq_path() {
+  local updated=false
+
+  if command -v brew >/dev/null 2>&1; then
+    if eval "$(brew shellenv 2>/dev/null)"; then
+      log_debug "Loaded Homebrew shellenv from brew on PATH."
+      updated=true
+    fi
+  fi
+
+  if [[ "${updated}" != true ]]; then
+    local brew_paths=("/opt/homebrew/bin/brew" "/usr/local/bin/brew")
+    for brew_path in "${brew_paths[@]}"; do
+      if [[ -x "${brew_path}" ]]; then
+        if eval "$("${brew_path}" shellenv 2>/dev/null)"; then
+          log_debug "Loaded Homebrew shellenv from ${brew_path}."
+          updated=true
+          break
+        fi
+      fi
+    done
+  fi
+
+  if [[ "${updated}" != true ]]; then
+    local candidate_dirs=("/opt/homebrew/bin" "/usr/local/bin")
+    for dir in "${candidate_dirs[@]}"; do
+      if [[ -d "${dir}" ]] && [[ ":${PATH}:" != *":${dir}:"* ]]; then
+        PATH="${dir}:${PATH}"
+        updated=true
+      fi
+    done
+    if [[ "${updated}" == true ]]; then
+      log_debug "Added default Homebrew bin directories to PATH."
+    fi
+  fi
+
+  if [[ "${updated}" == true ]]; then
+    export PATH
+  fi
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --dry-run)
+      DRY_RUN=true
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      log_error "Unknown option: $1"
+      usage
+      exit 1
+      ;;
+  esac
+  shift
+done
+
+ensure_sudo_session
+ensure_prereqs
+refresh_prereq_path
+
+case "$(uname -s)" in
+  Darwin)
+    PLATFORM_SCRIPT="${SCRIPTS_DIR}/setup-macos.sh"
+    ;;
+  Linux)
+    PLATFORM_SCRIPT="${SCRIPTS_DIR}/setup-linux.sh"
+    ;;
+  *)
+    log_error "Unsupported OS: $(uname -s)"
+    exit 2
+    ;;
+esac
+
+require_cmd chezmoi
+
+log_info "Applying dotfiles via chezmoi"
+chezmoi_args=(chezmoi "--source=${ROOT_DIR}/chezmoi" apply)
+if "${DRY_RUN}"; then
+  chezmoi_args+=("--dry-run" "--verbose")
+fi
+run "${chezmoi_args[@]}"
+
+log_info "Running platform bootstrap: ${PLATFORM_SCRIPT}"
+if "${DRY_RUN}"; then
+  run "${PLATFORM_SCRIPT}" --dry-run
+else
+  run "${PLATFORM_SCRIPT}"
+fi
+
+ensure_local_bin() {
+  local dir="${HOME}/.local/bin"
+  if [[ -d "${dir}" ]]; then
+    log_info "Directory ${dir} already exists."
+    return
+  fi
+  if "${DRY_RUN}"; then
+    log_info "Would create ${dir}"
+  else
+    run mkdir -p "${dir}"
+  fi
+}
+
+ensure_default_shell() {
+  if ! command -v zsh >/dev/null 2>&1; then
+    log_warn "zsh not found on PATH after package installation. Skipping shell change."
+    return
+  fi
+
+  local desired_shell
+  desired_shell="$(command -v zsh)"
+
+  if [[ "${SHELL}" == "${desired_shell}" ]]; then
+    log_info "Default shell already set to ${desired_shell}."
+    return
+  fi
+
+  if ! grep -Fxq "${desired_shell}" /etc/shells 2>/dev/null; then
+    if "${DRY_RUN}"; then
+      log_info "Would add ${desired_shell} to /etc/shells"
+    else
+      log_info "Adding ${desired_shell} to /etc/shells (sudo may prompt)."
+      run sudo sh -c "echo '${desired_shell}' >> /etc/shells"
+    fi
+  fi
+
+  log_warn "Skipping shell change; macOS chsh prompts for a password even with cached sudo. Run 'chsh -s ${desired_shell}' manually if needed."
+}
+
+ensure_local_bin
+ensure_default_shell
+
+log_info "Ensuring tmux plugin manager is available"
+if "${DRY_RUN}"; then
+  run "${SCRIPTS_DIR}/install-tmux-plugins.sh" --dry-run
+else
+  run "${SCRIPTS_DIR}/install-tmux-plugins.sh"
+fi
+
+ensure_gh_notify() {
+  if ! command -v gh >/dev/null 2>&1; then
+    log_warn "GitHub CLI (gh) not found; skipping gh-notify installation."
+    return
+  fi
+
+  if gh extension list | awk '{print $1}' | grep -qx 'meiji163/gh-notify'; then
+    log_info "gh-notify extension already installed."
+    return
+  fi
+
+  if "${DRY_RUN}"; then
+    log_info "Would install gh-notify extension."
+    return
+  fi
+
+  log_info "Installing gh-notify extension."
+  if ! gh extension install meiji163/gh-notify >/dev/null 2>&1; then
+    log_error "Failed to install gh-notify extension."
+  fi
+}
+
+ensure_oh_my_zsh() {
+  local dir="${HOME}/.oh-my-zsh"
+
+  if [[ -d "${dir}/.git" ]]; then
+    log_info "oh-my-zsh already present at ${dir}."
+    if "${DRY_RUN}"; then
+      log_info "Would update oh-my-zsh with 'git pull --ff-only'."
+    else
+      if ! run git -C "${dir}" pull --ff-only --quiet; then
+        log_warn "Unable to update oh-my-zsh automatically."
+      fi
+    fi
+    return
+  fi
+
+  if "${DRY_RUN}"; then
+    log_info "Would install oh-my-zsh into ${dir}."
+    return
+  fi
+
+  log_info "Installing oh-my-zsh into ${dir}."
+  run git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git "${dir}"
+}
+
+ensure_gh_notify
+ensure_oh_my_zsh
+
+ensure_pre_commit() {
+  if ! command -v pre-commit >/dev/null 2>&1; then
+    log_warn "pre-commit not found; skipping hook installation."
+    return
+  fi
+
+  if "${DRY_RUN}"; then
+    log_info "Would install pre-commit hooks (gitleaks)."
+    return
+  fi
+
+  log_info "Installing pre-commit hooks (gitleaks)."
+  run pre-commit install --hook-type pre-commit
+}
+
+ensure_pre_commit
+
+log_success "Bootstrap complete."

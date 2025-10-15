@@ -1,0 +1,49 @@
+name: Dotfiles CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  macos-validation:
+    name: macOS validation
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install chezmoi
+        run: brew install chezmoi
+
+      - name: Run chezmoi doctor
+        run: chezmoi doctor --verbose
+
+      - name: Bootstrap dry-run
+        run: proposal/scripts/bootstrap --dry-run
+
+      - name: Brew bundle check
+        run: brew bundle check --file proposal/packages/Brewfile
+
+  arch-manifest-check:
+    name: Arch manifest lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate arch package list syntax
+        run: |
+          set -euo pipefail
+          awk 'NF && $1 !~ /^#/' proposal/packages/arch-packages.txt >/dev/null
+
+  scan:
+    name: gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2

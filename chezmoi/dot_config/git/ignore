@@ -1,0 +1,57 @@
+# Compiled source
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases
+*.log
+*.sqlite
+
+# OS generated files
+*.DS_Store
+*.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# Vim
+*~
+*.swp
+*.swo
+.vimrc
+
+# Environment files
+.env
+.envrc
+.direnv
+
+# Ctags
+tags
+
+# Clojure
+.lein-repl-history
+.nrepl-port
+
+# JavaScript
+node_modules
+bower_packages
+
+# AI tooling
+Agents.md
+.cursor

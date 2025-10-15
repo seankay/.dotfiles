@@ -1,0 +1,79 @@
+[user]
+  name = Sean Kay
+  email = f.sean.kay@gmail.com
+  signingKey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILt4hoSPgK1vr7hKuM8J+4pka3a50vpltMJ0nqjrIfqd
+
+[color]
+  ui = true
+  diff = auto
+  status = auto
+  branch = auto
+
+[core]
+  editor = nvim
+  excludesFile = {{ .chezmoi.homeDir }}/.config/git/ignore
+
+[apply]
+  whitespace = nowarn
+
+[diff]
+  tool = nvim
+
+[difftool]
+  prompt = false
+
+[difftool "nvim"]
+  cmd = nvim --diff $LOCAL $REMOTE
+  prompt = false
+
+[help]
+  autocorrect = 1
+
+[merge]
+  tool = nvim
+
+[mergetool]
+  prompt = false
+  keepBackup = false
+
+[mergetool "nvim"]
+  cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+
+[pull]
+  ff = only
+
+[branch]
+  autosetuprebase = always
+
+[push]
+  default = simple
+  autoSetupRemote = true
+
+[hub]
+  protocol = https
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+{{- if eq .chezmoi.os "darwin" }}
+  program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+{{- else }}
+  program = /opt/1Password/op-ssh-sign
+{{- end }}
+
+[commit]
+  gpgsign = true
+
+[credential]
+{{- if eq .chezmoi.os "darwin" }}
+  helper = osxkeychain
+{{- end }}
+
+[alias]
+  co = checkout
+  count = !git shortlog -sn
+  head = !git r -1
+  h = !git head
+  l = !git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  gpr = !git pull --rebase

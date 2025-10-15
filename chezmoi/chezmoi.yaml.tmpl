@@ -1,0 +1,5 @@
+data:
+  packages:
+    brewfile: "{{ .chezmoi.sourceDir }}/../packages/Brewfile"
+    arch: "{{ .chezmoi.sourceDir }}/../packages/arch-packages.txt"
+  bin_source: '{{ joinPath .chezmoi.sourceDir ".." "bin" }}'

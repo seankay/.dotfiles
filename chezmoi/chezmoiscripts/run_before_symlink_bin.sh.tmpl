@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+target="$HOME/bin"
+
+bin_source='{{ joinPath .chezmoi.sourceDir ".." "bin" }}'
+
+{{- if hasKey .chezmoi "data" }}
+  {{- $data := index .chezmoi "data" }}
+  {{- if hasKey $data "bin_source" }}
+    bin_source='{{ index $data "bin_source" }}'
+  {{- end }}
+{{- end }}
+
+if [[ -L "$target" ]] && [[ "$(readlink "$target")" != "$bin_source" ]]; then
+  rm "$target"
+fi
