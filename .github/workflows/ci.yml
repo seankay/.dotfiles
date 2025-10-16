@@ -26,10 +26,7 @@ jobs:
         run: chezmoi doctor --verbose
 
       - name: Bootstrap dry-run
-        run: scripts/bootstrap --dry-run
-
-      - name: Brew bundle check
-        run: brew bundle check --file packages/Brewfile
+        run: ./bootstrap --dry-run
 
   arch-manifest-check:
     name: Arch manifest lint
