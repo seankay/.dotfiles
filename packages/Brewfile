@@ -51,6 +51,7 @@ cask "spotify"
 cask "tableplus"
 cask "tailscale-app"
 cask "zoom"
+cask "localsend"
 
 # Example Mac App Store entry:
 # mas "Xcode", id: 497799835
