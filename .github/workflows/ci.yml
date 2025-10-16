@@ -22,11 +22,8 @@ jobs:
       - name: Create chezmoi source dir
         run: mkdir -p ~/.local/share/chezmoi
 
-      - name: echo PATH
-        run: echo $PATH
-
       - name: Run chezmoi doctor
-        run: /usr/bin/chezmoi doctor --verbose
+        run: chezmoi doctor --verbose
 
       - name: Bootstrap dry-run
         run: scripts/bootstrap --dry-run
