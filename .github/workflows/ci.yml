@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install chezmoi
-        run: sh -c "$(curl -fsLS get.chezmoi.io)"
+        run: snap install chezmoi --classic
 
       - name: Create chezmoi source dir
         run: mkdir -p ~/.local/share/chezmoi
