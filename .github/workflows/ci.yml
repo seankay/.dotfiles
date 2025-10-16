@@ -10,14 +10,17 @@ permissions:
   contents: read
 
 jobs:
-  macos-validation:
-    name: macOS validation
-    runs-on: macos-latest
+  chezmoi-validation:
+    name: Chezmoi validation
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - name: Install chezmoi
-        run: brew install chezmoi
+        run: sh -c "$(curl -fsLS get.chezmoi.io)"
+
+      - name: Create chezmoi source dir
+        run: mkdir -p ~/.local/share/chezmoi
 
       - name: Run chezmoi doctor
         run: chezmoi doctor --verbose
