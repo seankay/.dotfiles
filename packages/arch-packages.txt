@@ -34,6 +34,7 @@ pacman:tree
 pacman:wl-clipboard
 pacman:yarn
 pacman:zsh
+pacman:rclone
 
 aur:1password
 aur:1password-cli
