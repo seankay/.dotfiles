@@ -23,10 +23,10 @@ jobs:
         run: chezmoi doctor --verbose
 
       - name: Bootstrap dry-run
-        run: proposal/scripts/bootstrap --dry-run
+        run: scripts/bootstrap --dry-run
 
       - name: Brew bundle check
-        run: brew bundle check --file proposal/packages/Brewfile
+        run: brew bundle check --file packages/Brewfile
 
   arch-manifest-check:
     name: Arch manifest lint
@@ -37,7 +37,7 @@ jobs:
       - name: Validate arch package list syntax
         run: |
           set -euo pipefail
-          awk 'NF && $1 !~ /^#/' proposal/packages/arch-packages.txt >/dev/null
+          awk 'NF && $1 !~ /^#/' packages/arch-packages.txt >/dev/null
 
   scan:
     name: gitleaks
