@@ -100,7 +100,6 @@ Update `data.bin_source` in `chezmoi.yaml.tmpl` if your repository layout differ
 
 - `./bootstrap --dry-run` surfaces package commands without executing them.
 - `pre-commit run --all-files` executes the gitleaks scan locally, mirroring the enforced commit hook.
-- GitHub Actions workflow `Dotfiles CI` runs `chezmoi doctor`, the bootstrap dry-run, `brew bundle check`, and validates the Arch package manifest.
 
 ## Maintenance Workflow
 
