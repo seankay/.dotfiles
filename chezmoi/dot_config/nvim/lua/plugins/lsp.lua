@@ -14,7 +14,6 @@ return {
 				"terraformls",
 				"lua_ls",
 				"copilot",
-				"nil_ls",
 			},
 		},
 		dependencies = {
