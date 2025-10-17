@@ -225,7 +225,3 @@ esac
 
 eval "$(mise activate zsh)"
 
-# --- Final touches -----------------------------------------------------------
-if [[ -z "$TMUX" && "$TERM" = "xterm-kitty" && -n "$(command -v tmux)" ]]; then
-  tmux attach 2>/dev/null || exec tmux new-session
-fi
