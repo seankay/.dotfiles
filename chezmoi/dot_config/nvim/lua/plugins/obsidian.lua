@@ -3,6 +3,7 @@ local obsidian = function()
 	local file_exists = function(filename)
 		local command = string.format('test -d "' .. filename .. '" 2>/dev/null', filename)
 		local status = os.execute(command)
+		vim.notify(string.format("Checking for vault at: %s", filename), vim.log.levels.DEBUG, { title = "Obsidian" })
 
 		if status == 0 then
 			vim.notify("Vault found", vim.log.levels.INFO, { title = "Obsidian" })
@@ -16,7 +17,8 @@ local obsidian = function()
 		return status == 0
 	end
 
-	local default_path = "/Users/seankay/Library/Mobile Documents/iCloud~md~obsidian/Documents/main"
+	local home = os.getenv("HOME")
+	local default_path = home .. "/main-vault"
 	local obsidian_path = os.getenv("OBSIDIAN_VAULT_PATH") or default_path
 
 	return {
