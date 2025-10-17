@@ -35,6 +35,7 @@ pacman:wl-clipboard
 pacman:yarn
 pacman:zsh
 pacman:obsidian
+pacman:thunderbird
 
 aur:1password
 aur:1password-cli
