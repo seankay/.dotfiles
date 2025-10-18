@@ -23,7 +23,7 @@ require("config.options")
 -- =====================================================================
 require("lazy").setup({
 	-- automatically check for plugin updates
-	checker = { enabled = false },
+	checker = { enabled = true },
 	install = { colorscheme = { "catppuccin-mocha" } },
 	spec = {
 		-- import your plugins
