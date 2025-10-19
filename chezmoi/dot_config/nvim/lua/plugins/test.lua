@@ -31,8 +31,5 @@ return {
 				icons = status_icons,
 			}
 		end,
-		config = function(_, opts)
-			require("neotest").setup(opts)
-		end,
 	},
 }
