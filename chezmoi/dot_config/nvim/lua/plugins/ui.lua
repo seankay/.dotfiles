@@ -52,20 +52,6 @@ return {
 				disabled_filetypes = { statusline = {}, winbar = {} },
 			})
 
-			local lint_progress = function()
-				local linters = require("lint").get_running()
-				if #linters == 0 then
-					return "󰦕"
-				end
-				return "󱉶 " .. table.concat(linters, ", ")
-			end
-
-			local linters = {
-				function()
-					return lint_progress()
-				end,
-			}
-
 			opts.sections = {
 				lualine_a = {
 					{
@@ -236,7 +222,6 @@ return {
 						color = { fg = colors.red, bg = "none", gui = "bold" },
 						padding = { left = 1, right = 0 },
 					},
-					linters,
 				},
 			}
 		end,
