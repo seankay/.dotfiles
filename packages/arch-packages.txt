@@ -35,7 +35,6 @@ pacman:wl-clipboard
 pacman:yarn
 pacman:zsh
 pacman:obsidian
-pacman:thunderbird
 
 aur:1password
 aur:1password-cli
@@ -50,3 +49,4 @@ aur:visual-studio-code-bin
 aur:kwin-effects-forceblur
 aur:plasma6-applets-plasmusic-toolbar
 aur:localsend
+aur:betterbird-bin
