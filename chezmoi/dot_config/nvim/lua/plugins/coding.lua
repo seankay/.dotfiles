@@ -2,7 +2,7 @@ return {
 	-- Pairing / surrounding / comments / repeat / endwise
 	{ "windwp/nvim-autopairs", opts = {} }, -- replaces delimitMate
 	{
-		"echasnovski/mini.surround",
+		"nvim-mini/mini.surround",
 		version = "*",
 		opts = {
 			-- Remap core actions to vim-surround keys
