@@ -1,4 +1,7 @@
 return {
+	{ "tpope/vim-repeat" },
+	{ "tpope/vim-endwise" },
+	{ "nvim-mini/mini.comment", version = "*", opts = {} },
 	{ "nvim-mini/mini.pairs", version = "*", opts = {} },
 	{
 		"nvim-mini/mini.surround",
@@ -85,7 +88,4 @@ return {
 		},
 		opts_extend = { "sources.default" },
 	},
-	{ "numToStr/Comment.nvim", opts = {} }, -- replaces vim-commentary
-	{ "tpope/vim-repeat" },
-	{ "tpope/vim-endwise" },
 }
