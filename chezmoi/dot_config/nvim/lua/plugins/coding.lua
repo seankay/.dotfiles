@@ -1,6 +1,5 @@
 return {
-	-- Pairing / surrounding / comments / repeat / endwise
-	{ "windwp/nvim-autopairs", opts = {} }, -- replaces delimitMate
+	{ "nvim-mini/mini.pairs", version = "*", opts = {} },
 	{
 		"nvim-mini/mini.surround",
 		version = "*",
