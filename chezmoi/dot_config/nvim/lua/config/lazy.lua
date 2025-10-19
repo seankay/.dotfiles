@@ -55,6 +55,19 @@ vim.api.nvim_create_user_command("WQ", "wq", {})
 -- =====================================================================
 vim.o.conceallevel = 2
 
+local old_start = vim.lsp.start
+-- ignore fugitive buffers for lsp
+---@diagnostic disable-next-line: duplicate-set-field
+vim.lsp.start = function(...)
+	local _, opt = unpack({ ... })
+	if opt and opt.bufnr then
+		if vim.b[opt.bufnr].fugitive_type then
+			return
+		end
+	end
+	old_start(...)
+end
+
 -- =====================================================================
 -- LOAD LAST:
 --  * make cursor white
