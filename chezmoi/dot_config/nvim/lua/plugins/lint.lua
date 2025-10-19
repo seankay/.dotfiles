@@ -14,6 +14,8 @@ return {
 				"rubocop",
 				-- Python
 				"black",
+				-- Go
+				"golangci-lint",
 			},
 		},
 	},
@@ -27,6 +29,7 @@ return {
 				typescript = { "eslint_d" },
 				javascriptreact = { "eslint_d" }, -- fixed spelling
 				typescriptreact = { "eslint_d" },
+				go = { "golangcilint" },
 			},
 		},
 		config = function(_, opts)
@@ -52,13 +55,13 @@ return {
 		opts = {
 			format_on_save = {
 				timeout_ms = 1500,
-				lsp_format = "fallback", -- use LSP if available, else Conform
+				lsp_format = "fallback",
 			},
 			formatters_by_ft = {
 				lua = { "stylua" },
 				ruby = { "rubocop" },
 				python = { "black" },
-				javascript = { "prettierd" }, -- removed empty string
+				javascript = { "prettierd" },
 				typescript = { "prettierd" },
 				javascriptreact = { "prettierd" },
 				typescriptreact = { "prettierd" },
@@ -68,6 +71,7 @@ return {
 				html = { "prettierd" },
 				css = { "prettierd" },
 				scss = { "prettierd" },
+				go = { "gofmt", "goimports" },
 			},
 		},
 		config = function(_, opts)
