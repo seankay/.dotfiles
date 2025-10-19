@@ -79,6 +79,14 @@ else
   bindkey '^[[A' up-line-or-search
 fi
 
+if [[ -n ${terminfo[kcud1]} ]]; then
+  bindkey "${terminfo[kcud1]}" down-line-or-search
+elif [[ -n ${key[Down]} ]]; then
+  bindkey "${key[Down]}" down-line-or-search
+else
+  bindkey '^[[B' down-line-or-search
+fi
+
 bindkey '^X^E' edit-command-line
 bindkey '^[b' backward-word
 bindkey '^[f' forward-word
@@ -225,4 +233,3 @@ case "$(uname -s)" in
 esac
 
 eval "$(mise activate zsh)"
-
