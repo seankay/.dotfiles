@@ -27,6 +27,8 @@ return {
 				"typescript",
 				"vim",
 				"vimdoc",
+				"elixir",
+				"erlang",
 			},
 		},
 	},
