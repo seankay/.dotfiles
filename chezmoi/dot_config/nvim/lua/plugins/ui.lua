@@ -238,7 +238,6 @@ return {
 			-- needed to allow for neovim transparency without warning
 			require("notify").setup(vim.tbl_extend("keep", {
 				background_colour = "#000000",
-				top_down = false, -- show notification at the bottom
 			}, opts))
 
 			return {

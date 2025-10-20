@@ -6,10 +6,16 @@ return {
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-neotest/nvim-nio",
-			"antoinemadec/FixCursorHold.nvim",
 			"nvim-treesitter/nvim-treesitter",
 			"olimorris/neotest-rspec",
 			"haydenmeade/neotest-jest",
+			{
+				"fredrikaverpil/neotest-golang",
+				version = "*",
+				build = function()
+					vim.system({ "go", "install", "gotest.tools/gotestsum@latest" }):wait() -- Optional, but recommended
+				end,
+			},
 		},
 		opts = function()
 			local status_icons = { running = "", passed = "", failed = "", skipped = "" }
@@ -17,6 +23,7 @@ return {
 			return {
 				log_level = vim.log.levels.INFO,
 				adapters = {
+					require("neotest-golang")({ runner = "gotestsum" }),
 					require("neotest-rspec")({ "bundle", "exec", "rspec" }),
 					require("neotest-jest")({
 						jestCommand = "npm test --",
