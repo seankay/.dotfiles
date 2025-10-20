@@ -31,6 +31,9 @@ return {
 				"erlang",
 			},
 		},
+		config = function(_, opts)
+			require("nvim-treesitter.configs").setup(opts)
+		end,
 	},
 	{ "fatih/vim-go", ft = "go" },
 	-- Rails (kept)
