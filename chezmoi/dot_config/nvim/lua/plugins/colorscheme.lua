@@ -5,6 +5,7 @@ return {
 		name = "catppuccin",
 		priority = 1000,
 		opts = {
+			auto_integrations = true,
 			default_integrations = true,
 			flavour = "auto", -- latte, frappe, macchiato, mocha
 			background = { -- :h background
