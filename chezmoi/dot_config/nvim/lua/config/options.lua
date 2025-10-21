@@ -86,5 +86,5 @@ vim.opt.belloff = "all"
 vim.wo.number = true
 vim.wo.relativenumber = true
 
--- disable folding
-vim.opt.foldenable = false
+-- enable folding
+vim.opt.foldenable = true
