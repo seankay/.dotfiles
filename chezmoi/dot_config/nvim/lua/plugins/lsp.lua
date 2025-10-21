@@ -1,6 +1,17 @@
 return {
 	-- Mason core
-	{ "mason-org/mason.nvim", config = true },
+	{
+		"mason-org/mason.nvim",
+		opts = {
+			ui = {
+				icons = {
+					package_installed = "✓",
+					package_pending = "➜",
+					package_uninstalled = "✗",
+				},
+			},
+		},
+	},
 	-- Mason <-> LSP bridge (auto-enables servers)
 	{
 		"mason-org/mason-lspconfig.nvim",
@@ -14,7 +25,7 @@ return {
 				"terraformls",
 				"lua_ls",
 				"copilot",
-				"elixirls",
+				"expert",
 			},
 		},
 		dependencies = {
