@@ -3,14 +3,11 @@ local obsidian = function()
 	local file_exists = function(filename)
 		local command = string.format('test -d "' .. filename .. '" 2>/dev/null', filename)
 		local status = os.execute(command)
-		vim.notify(string.format("Checking for vault at: %s", filename), vim.log.levels.DEBUG, { title = "Obsidian" })
 
-		if status == 0 then
-			vim.notify("Vault found", vim.log.levels.INFO, { title = "Obsidian" })
-		else
+		if status ~= 0 then
 			vim.notify(
 				"Vault not found. Set OBSIDIAN_VAULT_PATH envr var if needed.",
-				vim.log.levels.WARNING,
+				vim.log.levels.ERROR,
 				{ title = "Obsidian" }
 			)
 		end

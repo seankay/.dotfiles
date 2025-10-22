@@ -16,6 +16,7 @@ return {
 			scope = { enabled = true },
 			scroll = { enabled = true },
 			words = { enabled = true },
+			notifier = { enabled = true },
 			explorer = { enabled = true },
 			picker = {
 				enabled = true,
@@ -101,10 +102,9 @@ return {
 		},
 
 		image = { enabled = false },
-		input = { enabled = false },
 		statuscolumn = { enabled = false },
-		notifier = { enabled = false },
 		terminal = { enabled = false },
 		notify = { enabled = false },
+		input = { enabled = false },
 	},
 }

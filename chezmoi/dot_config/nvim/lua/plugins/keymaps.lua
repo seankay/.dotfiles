@@ -437,8 +437,20 @@ return { -- which-key: discoverable keymaps for your current setup
 			},
 
 			-- diagnostics
-			{ "<leader>xn", vim.diagnostic.jump({ count = 1, float = true }), desc = "Next diagnostic" },
-			{ "<leader>xp", vim.diagnostic.jump({ count = -1, float = true }), desc = "Prev diagnostic" },
+			{
+				"<leader>xn",
+				function()
+					vim.diagnostic.jump({ count = 1, float = true })
+				end,
+				desc = "Next diagnostic",
+			},
+			{
+				"<leader>xp",
+				function()
+					vim.diagnostic.jump({ count = -1, float = true })
+				end,
+				desc = "Prev diagnostic",
+			},
 			{
 				"<leader>xx",
 				"<cmd>Trouble diagnostics toggle<cr>",
