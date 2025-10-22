@@ -6,6 +6,7 @@ pacman:chezmoi
 pacman:direnv
 pacman:discord
 pacman:docker
+pacman:docker-compose
 pacman:eza
 pacman:fastfetch
 pacman:fd
@@ -16,12 +17,13 @@ pacman:github-cli
 pacman:gitleaks
 pacman:imagemagick
 pacman:kitty
+pacman:luarocks
 pacman:mise
 pacman:neovim
 pacman:nerd-fonts
+pacman:obsidian
 pacman:pre-commit
 pacman:ripgrep
-pacman:rofi
 pacman:ruby
 pacman:rust
 pacman:solaar
@@ -31,12 +33,10 @@ pacman:timeshift
 pacman:tmux
 pacman:trash-cli
 pacman:tree
+pacman:tree-sitter-cli
 pacman:wl-clipboard
 pacman:yarn
 pacman:zsh
-pacman:obsidian
-pacman:luarocks
-pacman:tree-sitter-cli
 
 aur:1password
 aur:1password-cli
