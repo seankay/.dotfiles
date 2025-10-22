@@ -1,24 +1,5 @@
 return {
 	-- LINTING
-	-- Mason tools (formatters/linters, etc.)
-	{
-		"WhoIsSethDaniel/mason-tool-installer.nvim",
-		opts = {
-			ensure_installed = {
-				-- lua
-				"stylua",
-				-- JS/TS
-				"eslint_d",
-				"prettierd",
-				-- Ruby
-				"rubocop",
-				-- Python
-				"black",
-				-- Go
-				"golangci-lint",
-			},
-		},
-	},
 	{
 		"mfussenegger/nvim-lint",
 		opts = {
@@ -58,20 +39,20 @@ return {
 				lsp_format = "fallback",
 			},
 			formatters_by_ft = {
-				lua = { "stylua" },
-				ruby = { "rubocop" },
-				python = { "black" },
-				javascript = { "prettierd" },
-				typescript = { "prettierd" },
-				javascriptreact = { "prettierd" },
-				typescriptreact = { "prettierd" },
-				json = { "prettierd" },
-				yaml = { "prettierd" },
-				markdown = { "prettierd" },
-				html = { "prettierd" },
 				css = { "prettierd" },
-				scss = { "prettierd" },
 				go = { "gofmt", "goimports" },
+				html = { "prettierd" },
+				javascript = { "prettierd" },
+				javascriptreact = { "prettierd" },
+				json = { "prettierd" },
+				lua = { "stylua" },
+				markdown = { "prettierd" },
+				python = { "black" },
+				ruby = { "rubocop" },
+				scss = { "prettierd" },
+				typescript = { "prettierd" },
+				typescriptreact = { "prettierd" },
+				yaml = { "prettierd" },
 			},
 		},
 		config = function(_, opts)
