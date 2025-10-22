@@ -1,13 +1,11 @@
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
-		build = ":TSUpdate",
 		branch = "main",
 		lazy = false,
-		opts = {
-			highlight = { enable = true },
-			indent = { enable = true },
-			ensure_installed = {
+		build = ":TSUpdate",
+		config = function()
+			local langs = {
 				"bash",
 				"elixir",
 				"erlang",
@@ -28,8 +26,21 @@ return {
 				"typescript",
 				"vim",
 				"vimdoc",
-			},
-		},
+			}
+
+			-- keep desired parsers up to date
+			require("nvim-treesitter").install(langs, { summary = true })
+
+			local group = vim.api.nvim_create_augroup("TreesitterFeatures", {})
+			vim.api.nvim_create_autocmd("FileType", {
+				group = group,
+				pattern = langs,
+				callback = function(ev)
+					vim.treesitter.start(ev.buf) -- syntax highlighting (built into Neovim)
+					vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+				end,
+			})
+		end,
 	},
 	{
 		"ray-x/go.nvim",
@@ -42,7 +53,7 @@ return {
 			-- lsp_keymaps = false,
 			-- other options
 		},
-		config = function(lp, opts)
+		config = function(_, opts)
 			require("go").setup(opts)
 			local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
 			vim.api.nvim_create_autocmd("BufWritePre", {
