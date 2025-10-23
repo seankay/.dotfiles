@@ -34,7 +34,7 @@ return {
 				quickfix = { enabled = false },
 				discovery = { enabled = true },
 				output = { open_on_run = "short" },
-				status = { virtual_text = true, signs = true },
+				status = { virtual_text = false, signs = true },
 				icons = status_icons,
 			}
 		end,
