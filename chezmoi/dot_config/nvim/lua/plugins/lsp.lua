@@ -7,7 +7,6 @@ return {
 		"mason-org/mason-lspconfig.nvim",
 		opts = {
 			ensure_installed = {
-				"expert",
 				"gopls",
 				"graphql",
 				"lua_ls",
