@@ -26,6 +26,7 @@ local obsidian = function()
 			lazy = false,
 			cond = file_exists(obsidian_path),
 			opts = {
+				legacy_commands = false,
 				templates = {
 					folder = "Templates",
 				},
