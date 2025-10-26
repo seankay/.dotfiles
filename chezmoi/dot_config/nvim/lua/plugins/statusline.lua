@@ -112,24 +112,6 @@ return {
 					separator(),
 					{
 						function()
-							return ""
-						end,
-						color = function()
-							local status = require("sidekick.status").get()
-							if status then
-								return status.kind == "Error" and { fg = colors.red }
-									or status.busy and { fg = colors.yellow }
-									or { fg = colors.text }
-							end
-						end,
-						cond = function()
-							local status = require("sidekick.status")
-							return status.get() ~= nil
-						end,
-					},
-					separator(),
-					{
-						function()
 							return require("dap").status()
 						end,
 						icon = { "", color = { fg = colors.red } },
@@ -144,39 +126,50 @@ return {
 				},
 				lualine_x = {
 					{
-						"fileformat",
-						color = { fg = colors.blue, bg = bg, gui = "bold" },
-						symbols = {
-							unix = "",
-							dos = "",
-							mac = "",
-						},
-						padding = { left = 0, right = 0 },
-					},
-					{
-						"encoding",
-						color = { fg = colors.blue, bg = bg, gui = "bold" },
-						padding = { left = 1, right = 0 },
-					},
-					separator(),
-					{
 						function()
-							local size = vim.fn.getfsize(vim.api.nvim_buf_get_name(0))
-							if size < 0 then
-								return "-"
+							local status = require("sidekick.status").get()
+							local nes_enabled = require("sidekick.nes").enabled
+							if not status then
+								return ""
+							elseif status.kind == "Error" then
+								return ""
+							elseif not nes_enabled then
+								return ""
+							elseif status.busy then
+								return ""
 							else
-								if size < 1024 then
-									return size .. "B"
-								elseif size < 1024 * 1024 then
-									return string.format("%.1fK", size / 1024)
-								elseif size < 1024 * 1024 * 1024 then
-									return string.format("%.1fM", size / (1024 * 1024))
-								else
-									return string.format("%.1fG", size / (1024 * 1024 * 1024))
-								end
+								return ""
 							end
 						end,
-						color = { fg = colors.blue, bg = bg, gui = "bold" },
+						color = function()
+							local status = require("sidekick.status").get()
+							local nes_edits = require("sidekick.nes").have()
+							local nes_enabled = require("sidekick.nes").enabled
+
+							if status then
+								if not status.kind == "Error" then
+									return { fg = colors.red }
+								end
+
+								if status.busy then
+									return { fg = colors.yellow }
+								end
+							end
+
+							if not nes_enabled then
+								return { fg = colors.text }
+							end
+
+							if nes_edits then
+								return { fg = colors.yellow }
+							end
+
+							return { fg = colors.blue }
+						end,
+						cond = function()
+							local status = require("sidekick.status")
+							return status.get() ~= nil
+						end,
 						padding = { left = 0, right = 0 },
 					},
 				},
@@ -220,19 +213,19 @@ return {
 					separator(),
 					{
 						"progress",
-						color = { fg = colors.red, bg = bg, gui = "bold" },
+						color = { fg = colors.blue, bg = bg, gui = "bold" },
 						padding = { left = 0, right = 0 },
 					},
 					{
 						"location",
-						color = { fg = colors.red, bg = bg, gui = "bold" },
+						color = { fg = colors.blue, bg = bg, gui = "bold" },
 						padding = { left = 1, right = 1 },
 					},
 					{
 						require("lazy.status").updates,
 						cond = require("lazy.status").has_updates,
-						padding = { left = 1, right = 2 },
-						color = { fg = colors.green },
+						padding = { left = 1, right = 1 },
+						color = { fg = colors.blue },
 					},
 				},
 			}

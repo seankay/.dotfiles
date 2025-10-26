@@ -97,6 +97,13 @@ return { -- which-key: discoverable keymaps for your current setup
 				desc = "Sidekick Clear NES",
 				mode = { "n", "v" },
 			},
+			{
+				"<leader>at",
+				function()
+					require("sidekick.nes").toggle()
+				end,
+				desc = "Sidekick Toggle NES",
+			},
 			-- debugger
 			{
 				"<leader>dB",
