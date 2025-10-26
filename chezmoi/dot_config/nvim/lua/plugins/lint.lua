@@ -40,7 +40,7 @@ return {
 			},
 			formatters_by_ft = {
 				css = { "prettierd" },
-				go = { "gofmt", "goimports" },
+				go = { "gofumpt", "golines", "goimports" },
 				html = { "prettierd" },
 				javascript = { "prettierd" },
 				javascriptreact = { "prettierd" },
