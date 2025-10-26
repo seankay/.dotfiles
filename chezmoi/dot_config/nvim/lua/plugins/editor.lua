@@ -21,18 +21,21 @@ return {
 				enabled = true,
 				exclude = {
 					"**/.git/*",
+					"node_modules",
 				},
 				sources = {
 					files = {
 						hidden = true,
 						exclude = {
 							"**/.git/*",
+							"node_modules",
 						},
 					},
 					explorer = {
 						hidden = true,
 						exclude = {
 							"**/.git/*",
+							"node_modules",
 						},
 
 						win = {
