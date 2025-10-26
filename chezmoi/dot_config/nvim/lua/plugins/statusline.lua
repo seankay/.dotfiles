@@ -5,13 +5,14 @@ return {
 		opts = function(_, opts)
 			local auto = require("lualine.themes.auto")
 			local colors = require("catppuccin.palettes").get_palette()
+			local bg = require("catppuccin.utils.colors").darken(colors.surface0, 0.25, colors.base)
 
 			local function separator()
 				return {
 					function()
 						return "│"
 					end,
-					color = { fg = colors.surface0, bg = "NONE", gui = "bold" },
+					color = { fg = colors.surface0, bg = bg, gui = "bold" },
 					padding = { left = 1, right = 1 },
 				}
 			end
@@ -30,7 +31,7 @@ return {
 			local modes = { "normal", "insert", "visual", "replace", "command", "inactive", "terminal" }
 			for _, mode in ipairs(modes) do
 				if auto[mode] and auto[mode].c then
-					auto[mode].c.bg = "NONE"
+					auto[mode].c.bg = bg
 				end
 			end
 
@@ -54,28 +55,28 @@ return {
 							if mode == "\22" then
 								return { fg = "none", bg = colors.red, gui = "bold" }
 							elseif mode == "V" then
-								return { fg = colors.red, bg = "none", gui = "underline,bold" }
+								return { fg = colors.red, bg = bg, gui = "underline,bold" }
 							else
-								return { fg = colors.red, bg = "none", gui = "bold" }
+								return { fg = colors.red, bg = bg, gui = "bold" }
 							end
 						end,
-						padding = { left = 0, right = 0 },
+						padding = { left = 1, right = 0 },
 					},
 				},
 				lualine_b = {
 					separator(),
 					{
 						custom_branch,
-						color = { fg = colors.green, bg = "none", gui = "bold" },
+						color = { fg = colors.green, bg = bg, gui = "bold" },
 						padding = { left = 0, right = 0 },
 					},
 					{
 						"diff",
 						colored = true,
 						diff_color = {
-							added = { fg = colors.teal, bg = "none", gui = "bold" },
-							modified = { fg = colors.yellow, bg = "none", gui = "bold" },
-							removed = { fg = colors.red, bg = "none", gui = "bold" },
+							added = { fg = colors.teal, bg = bg, gui = "bold" },
+							modified = { fg = colors.yellow, bg = bg, gui = "bold" },
+							removed = { fg = colors.red, bg = bg, gui = "bold" },
 						},
 						symbols = { added = "+", modified = "~", removed = "-" },
 						source = nil,
@@ -85,51 +86,66 @@ return {
 				lualine_c = {
 					separator(),
 					{
-						"filetype",
-						icon_only = true,
-						colored = false,
-						color = { fg = colors.blue, bg = "none", gui = "bold" },
-						padding = { left = 0, right = 1 },
-					},
-					{
-						"filename",
-						file_status = true,
-						path = 0,
-						shorting_target = 20,
-						symbols = {
-							modified = "[+]",
-							readonly = "[-]",
-							unnamed = "[?]",
-							newfile = "[!]",
-						},
-						color = { fg = colors.blue, bg = "none", gui = "bold" },
-						padding = { left = 0, right = 0 },
+						function()
+							local msg = " No Active Lsp"
+							local text_clients = ""
+
+							local clients = vim.lsp.get_clients({ bufnr = 0 })
+							if next(clients) == nil then
+								return msg
+							end
+							for _, client in ipairs(clients) do
+								if client.name ~= "copilot" then
+									text_clients = text_clients .. client.name .. ", "
+								end
+							end
+							if text_clients ~= "" then
+								return text_clients:sub(1, -3)
+							end
+							return msg
+						end,
+						icons_enabled = true,
+						icon = "",
+						color = { fg = colors.blue },
+						padding = { left = 1 },
 					},
 					separator(),
 					{
 						function()
-							local bufnr_list = vim.fn.getbufinfo({ buflisted = 1 })
-							local total = #bufnr_list
-							local current_bufnr = vim.api.nvim_get_current_buf()
-							local current_index = 0
-
-							for i, buf in ipairs(bufnr_list) do
-								if buf.bufnr == current_bufnr then
-									current_index = i
-									break
-								end
-							end
-
-							return string.format(" %d/%d", current_index, total)
+							return ""
 						end,
-						color = { fg = colors.yellow, bg = "none", gui = "bold" },
-						padding = { left = 0, right = 0 },
+						color = function()
+							local status = require("sidekick.status").get()
+							if status then
+								return status.kind == "Error" and { fg = colors.red }
+									or status.busy and { fg = colors.yellow }
+									or { fg = colors.text }
+							end
+						end,
+						cond = function()
+							local status = require("sidekick.status")
+							return status.get() ~= nil
+						end,
+					},
+					separator(),
+					{
+						function()
+							return require("dap").status()
+						end,
+						icon = { "", color = { fg = colors.red } },
+						cond = function()
+							if not package.loaded.dap then
+								return false
+							end
+							local session = require("dap").session()
+							return session ~= nil
+						end,
 					},
 				},
 				lualine_x = {
 					{
 						"fileformat",
-						color = { fg = colors.yellow, bg = "none", gui = "bold" },
+						color = { fg = colors.blue, bg = bg, gui = "bold" },
 						symbols = {
 							unix = "",
 							dos = "",
@@ -139,7 +155,7 @@ return {
 					},
 					{
 						"encoding",
-						color = { fg = colors.yellow, bg = "none", gui = "bold" },
+						color = { fg = colors.blue, bg = bg, gui = "bold" },
 						padding = { left = 1, right = 0 },
 					},
 					separator(),
@@ -160,7 +176,7 @@ return {
 								end
 							end
 						end,
-						color = { fg = colors.blue, bg = "none", gui = "bold" },
+						color = { fg = colors.blue, bg = bg, gui = "bold" },
 						padding = { left = 0, right = 0 },
 					},
 				},
@@ -173,19 +189,19 @@ return {
 						diagnostics_color = {
 							error = function()
 								local count = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
-								return { fg = (count == 0) and colors.green or colors.red, bg = "none", gui = "bold" }
+								return { fg = (count == 0) and colors.green or colors.red, bg = bg, gui = "bold" }
 							end,
 							warn = function()
 								local count = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
-								return { fg = (count == 0) and colors.green or colors.yellow, bg = "none", gui = "bold" }
+								return { fg = (count == 0) and colors.green or colors.yellow, bg = bg, gui = "bold" }
 							end,
 							info = function()
 								local count = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
-								return { fg = (count == 0) and colors.green or colors.blue, bg = "none", gui = "bold" }
+								return { fg = (count == 0) and colors.green or colors.blue, bg = bg, gui = "bold" }
 							end,
 							hint = function()
 								local count = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
-								return { fg = (count == 0) and colors.green or colors.teal, bg = "none", gui = "bold" }
+								return { fg = (count == 0) and colors.green or colors.teal, bg = bg, gui = "bold" }
 							end,
 						},
 						symbols = {
@@ -204,13 +220,19 @@ return {
 					separator(),
 					{
 						"progress",
-						color = { fg = colors.red, bg = "none", gui = "bold" },
+						color = { fg = colors.red, bg = bg, gui = "bold" },
 						padding = { left = 0, right = 0 },
 					},
 					{
 						"location",
-						color = { fg = colors.red, bg = "none", gui = "bold" },
-						padding = { left = 1, right = 0 },
+						color = { fg = colors.red, bg = bg, gui = "bold" },
+						padding = { left = 1, right = 1 },
+					},
+					{
+						require("lazy.status").updates,
+						cond = require("lazy.status").has_updates,
+						padding = { left = 1, right = 2 },
+						color = { fg = colors.green },
 					},
 				},
 			}

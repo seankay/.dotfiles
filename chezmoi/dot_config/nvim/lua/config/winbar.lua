@@ -94,7 +94,7 @@ local function set_winbar(bufnr)
 end
 
 function M.setup()
-	local bg = require("catppuccin.utils.colors").darken(colors.surface0, 0.64, colors.base)
+	local bg = require("catppuccin.utils.colors").darken(colors.surface0, 0.25, colors.base)
 
 	vim.api.nvim_set_hl(0, "Winbar", { bg = bg, fg = colors.overlay0 })
 	vim.api.nvim_set_hl(0, "WinbarSeparator", { bg = bg, fg = colors.overlay1 })
