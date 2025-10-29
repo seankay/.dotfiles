@@ -18,10 +18,6 @@
   "mini.comment": { "branch": "main", "commit": "fb867a9246f9b892cf51a8c84a3f8479cdf1558c" },
   "mini.pairs": { "branch": "main", "commit": "69864a2efb36c030877421634487fd90db1e4298" },
   "mini.surround": { "branch": "main", "commit": "5aab42fcdcf31fa010f012771eda5631c077840a" },
-  "neotest": { "branch": "master", "commit": "366175e1e74ff112787f9adbfb072eeaedd2a88e" },
-  "neotest-golang": { "branch": "main", "commit": "f8743de8294e1d4c30c746c9ce80866c18253aee" },
-  "neotest-jest": { "branch": "main", "commit": "5dc15386a2b04080fd24901eb2450aaf787bd172" },
-  "neotest-rspec": { "branch": "main", "commit": "e7dc67c1167a9e593c804a6be6808ba9a5920d43" },
   "noice.nvim": { "branch": "main", "commit": "5099348591f7d3ba9e547b1e631c694c65bbe0b9" },
   "nui.nvim": { "branch": "main", "commit": "de740991c12411b663994b2860f1a4fd0937c130" },
   "nvim-dap": { "branch": "master", "commit": "6782b097af2417a4c3e33849b0a26ae2188bd7ea" },
@@ -44,6 +40,7 @@
   "vim-rails": { "branch": "master", "commit": "b0a5c76f86ea214ade36ab0b811e730c3f0add67" },
   "vim-rake": { "branch": "master", "commit": "af4ee966f5479fa89e60be067b6183f6addf9e4e" },
   "vim-rhubarb": { "branch": "master", "commit": "5496d7c94581c4c9ad7430357449bb57fc59f501" },
+  "vim-test": { "branch": "master", "commit": "2c264d2a5dddb3a7ec927e4359a2b619a8c13a8c" },
   "vim-tmux-navigator": { "branch": "master", "commit": "c45243dc1f32ac6bcf6068e5300f3b2b237e576a" },
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" }
 }
