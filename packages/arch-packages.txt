@@ -21,7 +21,6 @@ pacman:luarocks
 pacman:mise
 pacman:neovim
 pacman:nerd-fonts
-pacman:otf-monaspace-nerd
 pacman:obsidian
 pacman:pre-commit
 pacman:ripgrep
