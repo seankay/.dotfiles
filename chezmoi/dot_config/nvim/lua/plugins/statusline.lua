@@ -225,7 +225,7 @@ return {
 						require("lazy.status").updates,
 						cond = require("lazy.status").has_updates,
 						padding = { left = 1, right = 1 },
-						color = { fg = colors.blue },
+						color = { fg = colors.blue, bg = bg },
 					},
 				},
 			}
