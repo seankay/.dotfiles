@@ -35,7 +35,6 @@ cask "chatgpt"
 cask "cryptomator"
 cask "discord"
 cask "firefox"
-cask "font-jetbrains-mono-nerd-font"
 cask "google-chrome"
 cask "google-drive"
 cask "istat-menus"
@@ -51,6 +50,7 @@ cask "tailscale-app"
 cask "zoom"
 cask "localsend"
 cask "jordanbaird-ice"
+cask "font-hack"
 
 # Example Mac App Store entry:
 # mas "Xcode", id: 497799835
