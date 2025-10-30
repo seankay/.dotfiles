@@ -3,13 +3,7 @@ return {
 		"mfussenegger/nvim-dap",
 		dependencies = {
 			{ "williamboman/mason.nvim", lazy = false },
-			{
-				"rcarriga/nvim-dap-ui",
-				opts = {},
-				dependencies = {
-					"nvim-neotest/nvim-nio",
-				},
-			},
+			{ "rcarriga/nvim-dap-ui", opts = {} },
 			{
 				"jay-babu/mason-nvim-dap.nvim",
 				opts = {

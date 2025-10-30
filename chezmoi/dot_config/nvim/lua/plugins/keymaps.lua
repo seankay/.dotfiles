@@ -579,28 +579,61 @@ return { -- which-key: discoverable keymaps for your current setup
 			-- Tests (neotest)
 			{
 				"<leader>tt",
-				"<cmd>:TestFile<cr>",
+				function()
+					require("neotest").run.run(vim.fn.expand("%"))
+				end,
 				desc = "Test file",
 			},
 			{
 				"<leader>tr",
-				"<cmd>:TestNearest<cr>",
+				function()
+					require("neotest").run.run()
+				end,
 				desc = "Test nearest",
 			},
 			{
 				"<leader>tl",
-				"<cmd>:TestLast<cr>",
+				function()
+					require("neotest").run.run_last()
+				end,
 				desc = "Test last",
 			},
 			{
 				"<leader>ta",
-				"<cmd>:TestSuite<cr>",
-				desc = "Test suite",
+				function()
+					local neotest = require("neotest")
+					neotest.summary.open()
+					neotest.run.run(vim.fn.getcwd())
+				end,
+				desc = "Test suite (RSpec @ api root)",
 			},
 			{
-				"<leader>tb",
-				"<cmd>:TestVisit<cr>",
-				desc = "Test Visit",
+				"<leader>to",
+				function()
+					require("neotest").output_panel.toggle()
+				end,
+				desc = "Toggle output panel",
+			},
+			{
+				"<leader>tw",
+				function()
+					require("neotest").watch.toggle(vim.fn.expand("%"))
+				end,
+				desc = "Watch file",
+			},
+			{
+				"<leader>tx",
+				function()
+					require("neotest").run.stop()
+				end,
+				desc = "Stop",
+			},
+			{
+				"<leader>ts",
+				function()
+					require("neotest").summary.toggle()
+				end,
+				desc = "Summary",
 			},
 
 			-- Obsidian

@@ -4,9 +4,6 @@ return {
 	{
 		"nvim-pack/nvim-spectre",
 		opts = {},
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
 	},
 	{
 		"folke/snacks.nvim",
