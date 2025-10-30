@@ -610,9 +610,9 @@ return { -- which-key: discoverable keymaps for your current setup
 				function()
 					local neotest = require("neotest")
 					neotest.summary.open()
-					neotest.run.run(vim.fn.getcwd())
+					neotest.run.run({ suite = true })
 				end,
-				desc = "Test suite)",
+				desc = "Test suite",
 			},
 			{
 				"<leader>to",
