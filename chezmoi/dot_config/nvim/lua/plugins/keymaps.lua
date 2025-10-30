@@ -609,8 +609,8 @@ return { -- which-key: discoverable keymaps for your current setup
 				"<leader>ta",
 				function()
 					local neotest = require("neotest")
-					neotest.summary.open()
 					neotest.run.run({ suite = true })
+					neotest.summary.open()
 				end,
 				desc = "Test suite",
 			},
