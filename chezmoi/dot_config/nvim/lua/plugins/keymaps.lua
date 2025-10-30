@@ -605,7 +605,7 @@ return { -- which-key: discoverable keymaps for your current setup
 					neotest.summary.open()
 					neotest.run.run(vim.fn.getcwd())
 				end,
-				desc = "Test suite (RSpec @ api root)",
+				desc = "Test suite)",
 			},
 			{
 				"<leader>to",

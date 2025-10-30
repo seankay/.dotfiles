@@ -1,5 +1,3 @@
-local globals = require("config.globals")
-
 return {
 	{
 		"nvim-neotest/neotest",
@@ -12,9 +10,6 @@ return {
 			{
 				"fredrikaverpil/neotest-golang",
 				version = "*",
-				build = function()
-					vim.system({ "go", "install", "gotest.tools/gotestsum@latest" }):wait() -- Optional, but recommended
-				end,
 			},
 		},
 		opts = function()
@@ -23,7 +18,7 @@ return {
 			return {
 				log_level = vim.log.levels.INFO,
 				adapters = {
-					require("neotest-golang")({ runner = "gotestsum" }),
+					require("neotest-golang")({}),
 					require("neotest-rspec")({ "bundle", "exec", "rspec" }),
 					require("neotest-jest")({
 						jestCommand = "npm test --",
@@ -31,7 +26,12 @@ return {
 						jest_test_discovery = true,
 					}),
 				},
-				quickfix = { enabled = false },
+				quickfix = {
+					open = function()
+						vim.cmd("Trouble quickfix")
+					end,
+					enabled = true,
+				},
 				discovery = { enabled = true },
 				output = { open_on_run = "short" },
 				status = { virtual_text = false, signs = true },
