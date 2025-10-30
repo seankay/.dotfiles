@@ -592,6 +592,13 @@ return { -- which-key: discoverable keymaps for your current setup
 				desc = "Test nearest",
 			},
 			{
+				"<leader>td",
+				function()
+					require("neotest").run.run({ strategy = "dap" })
+				end,
+				desc = "Test nearest (debug)",
+			},
+			{
 				"<leader>tl",
 				function()
 					require("neotest").run.run_last()
