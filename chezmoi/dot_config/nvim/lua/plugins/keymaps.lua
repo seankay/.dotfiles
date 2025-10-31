@@ -310,6 +310,12 @@ return { -- which-key: discoverable keymaps for your current setup
 				desc = "Close unpinned",
 				mode = "n",
 			},
+			{
+				"<leader>bN",
+				"<cmd>new<cr>",
+				desc = "New buffer",
+				mode = "n",
+			},
 
 			-- files / nav
 			{
