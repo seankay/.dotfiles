@@ -53,14 +53,31 @@ return {
 						color = function()
 							local mode = vim.fn.mode()
 							if mode == "\22" then
-								return { fg = "none", bg = colors.red, gui = "bold" }
+								return { fg = "none", bg = colors.blue, gui = "bold" }
 							elseif mode == "V" then
-								return { fg = colors.red, bg = bg, gui = "underline,bold" }
+								return { fg = colors.blue, bg = bg, gui = "underline,bold" }
 							else
-								return { fg = colors.red, bg = bg, gui = "bold" }
+								return { fg = colors.blue, bg = bg, gui = "bold" }
 							end
 						end,
-						padding = { left = 1, right = 0 },
+						padding = { left = 1, right = 1 },
+					},
+					{
+						require("noice").api.status.command.get,
+						color = { fg = colors.blue, bg = bg },
+					},
+					{
+						function()
+							local mode = "[" .. require("noice").api.status.mode.get() .. "]"
+							return mode
+						end,
+						cond = require("noice").api.status.mode.has,
+						color = { fg = colors.yellow, bg = bg },
+					},
+					{
+						require("noice").api.status.search.get,
+						cond = require("noice").api.status.search.has,
+						color = { fg = colors.yellow, bg = bg },
 					},
 				},
 				lualine_b = {
