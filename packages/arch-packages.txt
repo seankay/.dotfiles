@@ -24,7 +24,6 @@ pacman:nerd-fonts
 pacman:obsidian
 pacman:pre-commit
 pacman:ripgrep
-pacman:ruby
 pacman:rust
 pacman:solaar
 pacman:spotify-launcher
@@ -37,6 +36,7 @@ pacman:tree-sitter-cli
 pacman:wl-clipboard
 pacman:yarn
 pacman:zsh
+pacman:discord
 
 aur:1password
 aur:1password-cli
