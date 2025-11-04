@@ -109,5 +109,6 @@ return {
 		terminal = { enabled = false },
 		notify = { enabled = false },
 		input = { enabled = false },
+		gh = { enable = false },
 	},
 }
