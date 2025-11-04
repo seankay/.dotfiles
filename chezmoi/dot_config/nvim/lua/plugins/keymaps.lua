@@ -17,16 +17,32 @@ return { -- which-key: discoverable keymaps for your current setup
 			},
 			spec = {
 				{ "<leader>g", group = "Git" },
-				{ "<leader>t", group = "Tests" },
+				{ "<leader>t", group = "Tests", icon = "󰙨" },
 				{ "<leader>f", group = "Find" },
 				{ "<leader>x", group = "Diagnostics" },
 				{ "<leader>r", group = "Tasks" },
 				{ "<leader>b", group = "Buffer" },
 				{ "<leader>a", group = "AI" },
-				{ "<leader>s", group = "Spectre" },
-				{ "<leader>l", group = "LSP" },
-				{ "<leader>o", group = "Obsidian" },
+				{ "<leader>s", group = "Spectre", icon = "󰛔" },
+				{ "<leader>l", group = "LSP", icon = "󰲽" },
+				{ "<leader>o", group = "Obsidian", icon = "" },
 				{ "<leader>d", group = "Debugger" },
+				{
+					"<leader>e",
+					function()
+						Snacks.picker.explorer()
+					end,
+					icon = "",
+					desc = "Explorer",
+				},
+				{
+					"<leader>/",
+					function()
+						Snacks.picker.grep()
+					end,
+					icon = "󱎸",
+					desc = "Grep",
+				},
 			},
 		},
 		config = function(_, opts)
@@ -323,13 +339,6 @@ return { -- which-key: discoverable keymaps for your current setup
 				"<C-^>",
 				desc = "Last file",
 			},
-			{
-				"<leader>e",
-				function()
-					Snacks.picker.explorer()
-				end,
-				desc = "Explorer",
-			},
 
 			-- LSP
 			{
@@ -390,13 +399,6 @@ return { -- which-key: discoverable keymaps for your current setup
 					Snacks.picker.smart()
 				end,
 				desc = "Smart Find files",
-			},
-			{
-				"<leader>/",
-				function()
-					Snacks.picker.grep()
-				end,
-				desc = "Grep",
 			},
 			{
 				"<leader>fb",
@@ -657,8 +659,18 @@ return { -- which-key: discoverable keymaps for your current setup
 			},
 			{
 				"<leader>of",
-				"<cmd>:Obsidian search<cr>",
+				"<cmd>:Obsidian quick_switch<cr>",
 				desc = "Find File",
+			},
+			{
+				"<leader>og",
+				"<cmd>:Obsidian search<cr>",
+				desc = "Grep",
+			},
+			{
+				"<leader>on",
+				"<cmd>:Obsidian new<cr>",
+				desc = "New File",
 			},
 
 			-- zoom
