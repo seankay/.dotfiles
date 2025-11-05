@@ -1,0 +1,4 @@
+-- Load plugins from /pack/*/opt/
+-- Check packpath with `:set packpath?`
+-- e.g. /usr/share/nvim/runtime/pack/dist/opt/termdebug/plugin/termdebug.vim
+-- e.g. vim.cmd("packadd termdebug")

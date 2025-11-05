@@ -24,6 +24,10 @@ require("lazy").setup({
 	-- automatically check for plugin updates
 	checker = { enabled = true },
 	install = { colorscheme = { "catppuccin-mocha" } },
+	performance = {
+		-- allow loading neovim native packages
+		reset_packpath = false,
+	},
 	spec = {
 		-- import your plugins
 		{ import = "plugins" },
