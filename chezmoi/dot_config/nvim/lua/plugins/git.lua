@@ -1,5 +1,5 @@
 return {
-	-- Git + signs
+	{ "lewis6991/gitsigns.nvim" },
 	{ "tpope/vim-fugitive" },
 	{ "tpope/vim-rhubarb" },
 }

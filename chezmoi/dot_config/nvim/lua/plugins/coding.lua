@@ -81,4 +81,121 @@ return {
 		},
 		opts_extend = { "sources.default" },
 	},
+	-- Mason core
+	{
+		"mason-org/mason.nvim",
+		opts = {
+			ensure_installed = {
+				"gofumpt",
+				"goimports",
+				"golangci-lint",
+				"gomodifytags",
+				"impl",
+			},
+			ui = {
+				icons = {
+					package_installed = "✓",
+					package_pending = "➜",
+					package_uninstalled = "✗",
+				},
+			},
+		},
+	},
+	-- Mason tools (formatters/linters, etc.)
+	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		dependencies = { "mason-org/mason.nvim" },
+		opts = {
+			ensure_installed = {
+				"black",
+				"eslint_d",
+				"golangci-lint",
+				"prettierd",
+				"rubocop",
+				"stylua",
+			},
+		},
+	},
+	{
+		"mfussenegger/nvim-lint",
+		opts = {
+			events = { "BufWritePost", "BufReadPost", "InsertLeave" },
+			linters_by_ft = {
+				ruby = { "rubocop" },
+				javascript = { "eslint_d" },
+				typescript = { "eslint_d" },
+				javascriptreact = { "eslint_d" }, -- fixed spelling
+				typescriptreact = { "eslint_d" },
+				go = { "golangcilint" },
+			},
+		},
+		config = function(_, opts)
+			local lint = require("lint")
+			lint.linters_by_ft = opts.linters_by_ft or {}
+			local group = vim.api.nvim_create_augroup("nvim-lint-autocmds", { clear = true })
+
+			vim.api.nvim_create_autocmd(opts.events or { "BufWritePost" }, {
+				group = group,
+				callback = function()
+					lint.try_lint()
+				end,
+			})
+		end,
+	},
+
+	{
+		"stevearc/conform.nvim",
+		opts = {
+			format_on_save = {
+				timeout_ms = 1500,
+				lsp_format = "fallback",
+			},
+			formatters_by_ft = {
+				css = { "prettierd" },
+				go = { "gofumpt", "golines", "goimports" },
+				html = { "prettierd" },
+				javascript = { "prettierd" },
+				javascriptreact = { "prettierd" },
+				json = { "prettierd" },
+				lua = { "stylua" },
+				markdown = { "prettierd" },
+				python = { "black" },
+				ruby = { "rubocop" },
+				scss = { "prettierd" },
+				typescript = { "prettierd" },
+				typescriptreact = { "prettierd" },
+				yaml = { "prettierd" },
+			},
+		},
+		config = function(_, opts)
+			opts.log_level = vim.log.levels.DEBUG
+			require("conform").setup(opts)
+			-- optional, but recommended so motions use Conform when formatting:
+			vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+		end,
+	},
+
+	{
+		"neovim/nvim-lspconfig",
+	},
+	-- Mason <-> LSP bridge (auto-enables servers)
+	{
+		"mason-org/mason-lspconfig.nvim",
+		opts = {
+			ensure_installed = {
+				"copilot",
+				"gopls",
+				"graphql",
+				"lua_ls",
+				"pyright",
+				"ruby_lsp",
+				"terraformls",
+				"ts_ls",
+			},
+		},
+		dependencies = {
+			"mason-org/mason.nvim",
+			"neovim/nvim-lspconfig",
+		},
+	},
 }

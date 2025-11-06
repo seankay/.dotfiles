@@ -1,6 +1,5 @@
 return {
 	{ "folke/trouble.nvim", opts = {}, cmd = "Trouble" },
-	{ "lewis6991/gitsigns.nvim" },
 	{
 		"nvim-pack/nvim-spectre",
 		opts = {},
