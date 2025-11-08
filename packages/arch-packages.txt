@@ -37,6 +37,7 @@ pacman:wl-clipboard
 pacman:yarn
 pacman:zsh
 pacman:discord
+pacman:steam
 
 aur:1password
 aur:1password-cli
