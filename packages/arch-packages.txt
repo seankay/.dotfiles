@@ -51,3 +51,4 @@ aur:visual-studio-code-bin
 aur:kwin-effects-forceblur
 aur:plasma6-applets-plasmusic-toolbar
 aur:localsend
+aur:mullvad-vpn-bin
