@@ -51,6 +51,7 @@ cask "zoom"
 cask "localsend"
 cask "jordanbaird-ice"
 cask "font-hack"
+cask "bleunlock"
 
 # Example Mac App Store entry:
 # mas "Xcode", id: 497799835
