@@ -42,6 +42,7 @@ aur:1password
 aur:1password-cli
 aur:backintime
 aur:google-chrome
+aur:brave-bin
 aur:oh-my-posh-bin
 aur:openai-codex-bin
 aur:slack-desktop
