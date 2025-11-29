@@ -37,6 +37,7 @@ pacman:wl-clipboard
 pacman:yarn
 pacman:zsh
 pacman:discord
+pacman:proton-vpn-gtk-app
 
 aur:1password
 aur:1password-cli
@@ -51,4 +52,3 @@ aur:visual-studio-code-bin
 aur:kwin-effects-forceblur
 aur:plasma6-applets-plasmusic-toolbar
 aur:localsend
-aur:mullvad-vpn-bin
