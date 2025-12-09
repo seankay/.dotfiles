@@ -13,6 +13,14 @@ export KEYTIMEOUT=20
 export WORDCHARS="*?[]~&;!$%^<>"
 export EZA_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}"
 
+DOTFILES_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/dotfiles"
+DOTFILES_LOCAL_ENV="${DOTFILES_CONFIG_HOME}/local.env"
+if [[ -r "${DOTFILES_LOCAL_ENV}" ]]; then
+  # shellcheck disable=SC1090
+  source "${DOTFILES_LOCAL_ENV}"
+fi
+export MACHINE_ROLE="${MACHINE_ROLE:-work}"
+
 # PATH enrichment
 typeset -U path
 path=(

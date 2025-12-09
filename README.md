@@ -61,6 +61,12 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 6. Open tmux and press Prefix + `I` to install/update configured plugins (catppuccin theme, navigator, battery, online-status, resurrect, continuum).
 7. `exec zsh`
 
+## Machine Roles (Personal vs. Work)
+
+- Create a local, untracked file at `~/.config/dotfiles/local.env` on each Mac with `MACHINE_ROLE=personal` or `MACHINE_ROLE=work`. If absent, it defaults to `work` for safety.
+- The macOS bootstrap (`scripts/setup-macos.sh`) only runs `brew bundle` when `MACHINE_ROLE=personal`, so your work Mac is left alone.
+- `~/.zshrc` sources the same file so the role is available in your shell if you need it for other conditionals.
+
 ## Extending the Stack
 
 ### Dotfiles
@@ -84,7 +90,7 @@ Update `data.bin_source` in `chezmoi.yaml.tmpl` if your repository layout differ
 
 ### Packages
 
-- macOS: maintain `packages/Brewfile` and run `brew bundle`.
+- macOS (when `MACHINE_ROLE=personal`): maintain `packages/Brewfile`; `brew bundle` runs during bootstrap on personal machines only.
 - Arch Linux: maintain `packages/arch-packages.txt`. Use `pacman:<pkg>` for core packages and `aur:<pkg>` for AUR entries (requires `yay`).
 
 ### What `bootstrap` Handles Automatically

@@ -4,6 +4,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
+: "${XDG_CONFIG_HOME:=${HOME}/.config}"
+LOCAL_ENV_FILE="${XDG_CONFIG_HOME}/dotfiles/local.env"
 DRY_RUN=false
 
 RESET="\033[0m"
@@ -27,6 +29,16 @@ log_warn() {
 
 log_error() {
   printf "${RED}✖ %s${RESET}\n" "$*"
+}
+
+load_machine_role() {
+  if [[ -r "${LOCAL_ENV_FILE}" ]]; then
+    log_debug "Loading machine role from ${LOCAL_ENV_FILE}"
+    # shellcheck disable=SC1090
+    source "${LOCAL_ENV_FILE}"
+  fi
+  : "${MACHINE_ROLE:=work}"
+  export MACHINE_ROLE
 }
 
 usage() {
@@ -79,6 +91,13 @@ while [[ $# -gt 0 ]]; do
   esac
   shift
 done
+
+load_machine_role
+
+if [[ "${MACHINE_ROLE}" != "personal" ]]; then
+  log_info "MACHINE_ROLE=${MACHINE_ROLE}; skipping Homebrew bundle on this machine."
+  exit 0
+fi
 
 ensure_homebrew
 
