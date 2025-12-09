@@ -64,7 +64,7 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 ## Machine Roles (Personal vs. Work)
 
 - Create a local, untracked file at `~/.config/dotfiles/local.env` on each Mac with `MACHINE_ROLE=personal` or `MACHINE_ROLE=work`. If absent, it defaults to `work` for safety.
-- The macOS bootstrap (`scripts/setup-macos.sh`) only runs `brew bundle` when `MACHINE_ROLE=personal`, so your work Mac is left alone.
+- The macOS bootstrap always applies the shared Brewfile (`packages/Brewfile`) so CLI tools stay in sync. It only runs the personal Brewfile (`packages/Brewfile.personal`)—intended for casks/GUI apps—when `MACHINE_ROLE=personal`, so your work Mac is left alone for apps.
 - `~/.zshrc` sources the same file so the role is available in your shell if you need it for other conditionals.
 
 ## Extending the Stack
@@ -90,7 +90,7 @@ Update `data.bin_source` in `chezmoi.yaml.tmpl` if your repository layout differ
 
 ### Packages
 
-- macOS (when `MACHINE_ROLE=personal`): maintain `packages/Brewfile`; `brew bundle` runs during bootstrap on personal machines only.
+- macOS: maintain shared CLI packages in `packages/Brewfile`. GUI apps (casks) go in `packages/Brewfile.personal`, which only runs when `MACHINE_ROLE=personal`.
 - Arch Linux: maintain `packages/arch-packages.txt`. Use `pacman:<pkg>` for core packages and `aur:<pkg>` for AUR entries (requires `yay`).
 
 ### What `bootstrap` Handles Automatically

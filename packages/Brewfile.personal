@@ -1,0 +1,32 @@
+# Personal-only Homebrew entries (e.g., GUI apps via cask).
+# Populate this with casks/formulas you only want on a personal Mac.
+# Example:
+# cask "google-chrome"
+
+cask "1password"
+cask "1password-cli"
+cask "alfred"
+cask "caffeine"
+cask "chatgpt"
+cask "cryptomator"
+cask "discord"
+cask "firefox"
+cask "google-chrome"
+cask "brave-browser"
+cask "istat-menus"
+cask "kitty"
+cask "protonvpn"
+cask "proton-drive"
+cask "obsidian"
+cask "rectangle-pro"
+cask "shottr"
+cask "slack"
+cask "spotify"
+cask "tableplus"
+cask "tailscale-app"
+cask "zoom"
+cask "localsend"
+cask "jordanbaird-ice"
+cask "font-hack"
+cask "bleunlock"
+
