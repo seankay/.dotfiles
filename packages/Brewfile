@@ -28,7 +28,6 @@ brew "tree-sitter-cli"
 
 cask "alfred"
 cask "caffeine"
-cask "chatgpt"
 cask "codex"
 cask "1password"
 cask "1password-cli"
