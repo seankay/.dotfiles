@@ -10,4 +10,4 @@ cask "protonvpn"
 cask "proton-drive"
 cask "tailscale-app"
 cask "bleunlock"
-
+cask "chatgpt"
