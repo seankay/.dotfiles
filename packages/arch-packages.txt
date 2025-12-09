@@ -46,9 +46,5 @@ aur:google-chrome
 aur:brave-bin
 aur:oh-my-posh-bin
 aur:openai-codex-bin
-aur:slack-desktop
 aur:timeshift-autosnap
-aur:visual-studio-code-bin
-aur:kwin-effects-forceblur
-aur:plasma6-applets-plasmusic-toolbar
 aur:localsend
