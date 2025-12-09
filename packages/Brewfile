@@ -41,7 +41,6 @@ cask "slack"
 cask "tableplus"
 cask "spotify"
 cask "zoom"
-cask "jordanbaird-ice"
 cask "font-hack"
 cask "localsend"
 
