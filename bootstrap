@@ -108,32 +108,6 @@ require_cmd() {
   fi
 }
 
-ensure_sudo_session() {
-  if "${DRY_RUN}"; then
-    log_info "Skipping sudo session setup in dry-run mode."
-    return
-  fi
-
-  if ! command -v sudo >/dev/null 2>&1; then
-    return
-  fi
-
-  if sudo -n true 2>/dev/null; then
-    log_info "Sudo credentials already cached."
-  else
-    log_info "Caching sudo credentials (you may be prompted for your password)."
-    sudo -v
-  fi
-
-  if [[ -z "${SUDO_KEEPALIVE_PID}" ]]; then
-    while true; do
-      sleep 60
-      sudo -n -v >/dev/null 2>&1 || exit
-    done &
-    SUDO_KEEPALIVE_PID=$!
-  fi
-}
-
 ensure_prereqs() {
   local args=()
   if "${DRY_RUN}"; then
@@ -208,7 +182,6 @@ done
 
 load_local_env
 
-ensure_sudo_session
 ensure_prereqs
 refresh_prereq_path
 
