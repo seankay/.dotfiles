@@ -37,7 +37,17 @@ load_machine_role() {
     # shellcheck disable=SC1090
     source "${LOCAL_ENV_FILE}"
   fi
-  : "${MACHINE_ROLE:=work}"
+
+  if [[ -z "${MACHINE_ROLE:-}" ]]; then
+    log_error "MACHINE_ROLE not set. Create ${LOCAL_ENV_FILE} with MACHINE_ROLE=personal|work."
+    exit 4
+  fi
+
+  if [[ "${MACHINE_ROLE}" != "personal" && "${MACHINE_ROLE}" != "work" ]]; then
+    log_error "Invalid MACHINE_ROLE=${MACHINE_ROLE}. Expected 'personal' or 'work'."
+    exit 5
+  fi
+
   export MACHINE_ROLE
 }
 
@@ -103,27 +113,63 @@ fi
 
 brewfile="${ROOT_DIR}/packages/Brewfile"
 personal_brewfile="${ROOT_DIR}/packages/Brewfile.personal"
+work_brewfile="${ROOT_DIR}/packages/Brewfile.work"
 
 if [[ ! -f "${brewfile}" ]]; then
   log_error "Brewfile not found at ${brewfile}"
   exit 2
 fi
 
+cleanup_sources=("${brewfile}")
+
 if "${DRY_RUN}"; then
   run brew bundle check --file "${brewfile}"
-  log_info "Would prune Homebrew packages not listed in ${brewfile}"
-  if [[ "${MACHINE_ROLE}" == "personal" ]] && [[ -f "${personal_brewfile}" ]]; then
-    run brew bundle check --file "${personal_brewfile}"
-    log_info "Would prune Homebrew packages not listed in ${personal_brewfile}"
-  fi
 else
   run brew bundle --file "${brewfile}"
-  run brew bundle cleanup --force --file "${brewfile}"
-  if [[ "${MACHINE_ROLE}" == "personal" ]] && [[ -f "${personal_brewfile}" ]]; then
-    run brew bundle --file "${personal_brewfile}"
-    run brew bundle cleanup --force --file "${personal_brewfile}"
+fi
+
+if [[ "${MACHINE_ROLE}" == "personal" ]]; then
+  if [[ -f "${personal_brewfile}" ]]; then
+    if "${DRY_RUN}"; then
+      run brew bundle check --file "${personal_brewfile}"
+    else
+      run brew bundle --file "${personal_brewfile}"
+    fi
+    cleanup_sources+=("${personal_brewfile}")
   else
-    log_info "MACHINE_ROLE=${MACHINE_ROLE}; skipping personal Brewfile (${personal_brewfile})."
+    log_info "MACHINE_ROLE=personal; skipping missing personal Brewfile (${personal_brewfile})."
+  fi
+elif [[ "${MACHINE_ROLE}" == "work" ]]; then
+  if [[ -f "${work_brewfile}" ]]; then
+    if "${DRY_RUN}"; then
+      run brew bundle check --file "${work_brewfile}"
+    else
+      run brew bundle --file "${work_brewfile}"
+    fi
+    cleanup_sources+=("${work_brewfile}")
+  else
+    log_info "MACHINE_ROLE=work; skipping missing work Brewfile (${work_brewfile})."
+  fi
+fi
+
+if "${DRY_RUN}"; then
+  log_info "Would prune Homebrew packages not listed in the combined Brewfile set: ${cleanup_sources[*]}"
+else
+  cleanup_file="${brewfile}"
+  tmp_cleanup=""
+  if ((${#cleanup_sources[@]} > 1)); then
+    tmp_cleanup="$(mktemp)"
+    for src in "${cleanup_sources[@]}"; do
+      cat "${src}" >>"${tmp_cleanup}"
+      printf "\n" >>"${tmp_cleanup}"
+    done
+    cleanup_file="${tmp_cleanup}"
+  fi
+
+  run brew bundle cleanup --force --file "${cleanup_file}"
+
+  if [[ -n "${tmp_cleanup}" ]]; then
+    rm -f "${tmp_cleanup}"
   fi
 fi
 

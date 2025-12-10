@@ -18,6 +18,8 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 │   └── bootstrap-prereqs.sh
 ├── packages/               <-- Declarative package manifests
 │   ├── Brewfile
+│   ├── Brewfile.personal
+│   ├── Brewfile.work
 │   └── arch-packages.txt
 ├── chezmoi/                <-- chezmoi source state (templates + dotfiles)
 │   ├── README.md
@@ -63,8 +65,8 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 
 ## Machine Roles (Personal vs. Work)
 
-- Create a local, untracked file at `~/.config/dotfiles/local.env` on each Mac with `MACHINE_ROLE=personal` or `MACHINE_ROLE=work`. If absent, it defaults to `work` for safety.
-- The macOS bootstrap always applies the shared Brewfile (`packages/Brewfile`) so CLI tools stay in sync. It only runs the personal Brewfile (`packages/Brewfile.personal`)—intended for casks/GUI apps—when `MACHINE_ROLE=personal`, so your work Mac is left alone for apps.
+- Create a local, untracked file at `~/.config/dotfiles/local.env` on each Mac with `MACHINE_ROLE=personal` or `MACHINE_ROLE=work`. The bootstrap scripts exit if this role is missing or invalid.
+- The macOS bootstrap always applies the shared Brewfile (`packages/Brewfile`) so CLI tools stay in sync. It additionally runs `packages/Brewfile.personal` when `MACHINE_ROLE=personal` and `packages/Brewfile.work` when `MACHINE_ROLE=work`, so you can scope GUI/corp apps by role; cleanup runs against the combined manifest so role-specific packages survive.
 - `~/.zshrc` sources the same file so the role is available in your shell if you need it for other conditionals.
 
 ## Extending the Stack
@@ -90,7 +92,7 @@ Update `data.bin_source` in `chezmoi.yaml.tmpl` if your repository layout differ
 
 ### Packages
 
-- macOS: maintain shared CLI packages in `packages/Brewfile`. GUI apps (casks) go in `packages/Brewfile.personal`, which only runs when `MACHINE_ROLE=personal`.
+- macOS: maintain shared CLI packages in `packages/Brewfile`. Role-specific extras belong in `packages/Brewfile.personal` or `packages/Brewfile.work`, which run only when the matching `MACHINE_ROLE` is set (the cleanup step uses the union so nothing gets pruned unintentionally).
 - Arch Linux: maintain `packages/arch-packages.txt`. Use `pacman:<pkg>` for core packages and `aur:<pkg>` for AUR entries (requires `yay`).
 
 ### What `bootstrap` Handles Automatically

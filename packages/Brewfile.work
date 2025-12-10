@@ -1,0 +1,7 @@
+# Work-only Homebrew entries (e.g., corp-mandated apps).
+# Populate this with casks/formulas you only want on a work Mac.
+# Example:
+# cask "microsoft-teams"
+
+brew "awscli"
+brew "session-manager-plugin"
