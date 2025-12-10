@@ -4,5 +4,6 @@
 # cask "microsoft-teams"
 
 brew "awscli"
+brew "go-task"
 
 cask "session-manager-plugin"

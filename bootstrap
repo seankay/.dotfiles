@@ -249,8 +249,6 @@ ensure_default_shell() {
       run sudo sh -c "echo '${desired_shell}' >> /etc/shells"
     fi
   fi
-
-  log_warn "Skipping shell change; macOS chsh prompts for a password even with cached sudo. Run 'chsh -s ${desired_shell}' manually if needed."
 }
 
 ensure_local_bin
