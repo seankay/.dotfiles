@@ -4,4 +4,5 @@
 # cask "microsoft-teams"
 
 brew "awscli"
-brew "session-manager-plugin"
+
+cask "session-manager-plugin"
