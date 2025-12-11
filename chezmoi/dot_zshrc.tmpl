@@ -28,6 +28,7 @@ path=(
   "$HOME/.local/bin"
   $path
 )
+path+=("${DOTFILES}/bin")
 
 case "{{ .chezmoi.os }}" in
   darwin)

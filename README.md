@@ -79,16 +79,12 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 - Git defaults (.gitconfig) include SSH signing via 1Password.
 - Tmux configuration resides at `.config/tmux/tmux.conf`; `bootstrap` bootstraps TPM so you can press Prefix + `I` inside tmux to fetch plugins.
 - Direnv, btop, and other app configs sit under `dot_config/` (symlinked to the existing `config/` directory where appropriate).
-- `symlink_bin.tmpl` keeps `$HOME/bin` pointing at the repository’s `bin/` directory so helper scripts are shared across machines.
-- Execution helpers in `bin/` are exposed both as `~/bin` and `~/.local/bin` via symlinks, so scripts like `colorscripts-squares` and `e` remain on your PATH regardless of OS.
-  - Update the symlink targets in `chezmoi.yaml.tmpl` if you relocate the repository.
+- Execution helpers in `bin/` are added to your PATH via `~/.dotfiles/bin`, so scripts like `colorscripts-squares` and `e` remain available regardless of OS.
 
 Keep secrets out of the repo. Suggested options:
 
 - `chezmoi` `age` integration (`chezmoi secret add`).
 - External secret manager (e.g., 1Password CLI, Bitwarden) referenced in templates.
-
-Update `data.bin_source` in `chezmoi.yaml.tmpl` if your repository layout differs and you need the symlink to target a different path.
 
 ### Packages
 
