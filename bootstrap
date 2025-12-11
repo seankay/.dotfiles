@@ -52,6 +52,10 @@ load_local_env() {
     # shellcheck disable=SC1090
     source "${LOCAL_ENV_FILE}"
     MACHINE_ROLE_SOURCE="${LOCAL_ENV_FILE}"
+  elif [[ -n "${CI:-}" ]]; then
+    MACHINE_ROLE="work"
+    MACHINE_ROLE_SOURCE="CI default"
+    log_info "CI environment detected; defaulting MACHINE_ROLE=${MACHINE_ROLE}."
   elif [[ -n "${MACHINE_ROLE:-}" ]]; then
     MACHINE_ROLE_SOURCE="env"
   else
