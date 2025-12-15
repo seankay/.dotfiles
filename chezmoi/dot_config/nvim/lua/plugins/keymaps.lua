@@ -28,14 +28,6 @@ return { -- which-key: discoverable keymaps for your current setup
 				{ "<leader>o", group = "Obsidian", icon = "" },
 				{ "<leader>d", group = "Debugger" },
 				{
-					"<leader>e",
-					function()
-						Snacks.picker.explorer()
-					end,
-					icon = "",
-					desc = "Explorer",
-				},
-				{
 					"<leader>/",
 					function()
 						Snacks.picker.grep()
