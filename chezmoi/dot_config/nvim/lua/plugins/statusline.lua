@@ -128,6 +128,12 @@ return {
 					},
 					separator(),
 					{
+						"filename",
+						file_status = true,
+						path = 1,
+					},
+					separator(),
+					{
 						function()
 							return require("dap").status()
 						end,
