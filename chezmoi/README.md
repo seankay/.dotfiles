@@ -22,3 +22,19 @@ export HOMEBREW_PREFIX="/opt/homebrew"
 ```
 
 > **Note:** Update `data.age_recipient` in `chezmoi.yaml.tmpl` to match your Age public key if you plan to encrypt files.
+
+## Local overrides
+
+Set machine- or identity-specific values in `~/.config/dotfiles/local.env` (read by zsh and available to templates). Example:
+
+```bash
+export MACHINE_ROLE=work # still used by other scripts (e.g., Brewfile selection)
+
+export GIT_NAME="Sean Kay"
+export GIT_EMAIL="email@example.com"
+export GIT_SIGNING_KEY="ssh-ed25519 AAAA..."
+# Optional: force a specific SSH key for git
+export GIT_SSH_KEY="$HOME/.ssh/id_ed25519_work"
+# Optional: rewrite github.com to an SSH host alias (e.g., github.com-work)
+export GIT_GITHUB_HOST_ALIAS="github.com-work"
+```

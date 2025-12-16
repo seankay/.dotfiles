@@ -1,7 +1,13 @@
+{{- $gitName := (env "GIT_NAME") | default "Sean Kay" -}}
+{{- $gitEmail := (env "GIT_EMAIL") | default "f.sean.kay@gmail.com" -}}
+{{- $gitSignKey := (env "GIT_SIGNING_KEY") | default "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILt4hoSPgK1vr7hKuM8J+4pka3a50vpltMJ0nqjrIfqd" -}}
+{{- $gitSshKey := (env "GIT_SSH_KEY") -}}
+{{- $githubHostAlias := (env "GIT_GITHUB_HOST_ALIAS") -}}
+
 [user]
-  name = Sean Kay
-  email = f.sean.kay@gmail.com
-  signingKey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILt4hoSPgK1vr7hKuM8J+4pka3a50vpltMJ0nqjrIfqd
+  name = {{ $gitName }}
+  email = {{ $gitEmail }}
+  signingKey = {{ $gitSignKey }}
 
 [color]
   ui = true
@@ -12,6 +18,9 @@
 [core]
   editor = nvim
   excludesFile = {{ .chezmoi.homeDir }}/.config/git/ignore
+{{- if $gitSshKey }}
+  sshCommand = ssh -i {{ $gitSshKey }} -F /dev/null
+{{- end }}
 
 [apply]
   whitespace = nowarn
@@ -51,6 +60,12 @@
 
 [hub]
   protocol = https
+
+{{- if $githubHostAlias }}
+[url "git@{{ $githubHostAlias }}:"]
+  insteadOf = git@github.com:
+  insteadOf = git@github.com/
+{{- end }}
 
 [gpg]
   format = ssh
