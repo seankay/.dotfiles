@@ -21,6 +21,8 @@ return {
 				exclude = {
 					"**/.git/*",
 					"node_modules",
+					".next",
+					".turbo",
 				},
 				sources = {
 					files = {
