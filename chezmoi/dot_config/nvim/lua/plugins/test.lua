@@ -8,6 +8,7 @@ return {
 			"nvim-treesitter/nvim-treesitter",
 			"olimorris/neotest-rspec",
 			"haydenmeade/neotest-jest",
+			"marilari88/neotest-vitest",
 			{
 				"fredrikaverpil/neotest-golang",
 				version = "*",
@@ -21,6 +22,11 @@ return {
 				adapters = {
 					require("neotest-golang")({}),
 					require("neotest-rspec")({ "bundle", "exec", "rspec" }),
+					require("neotest-vitest")({
+						filter_dir = function(name)
+							return name ~= "node_modules"
+						end,
+					}),
 					require("neotest-jest")({
 						jestCommand = "npm test --",
 						env = { CI = true },
