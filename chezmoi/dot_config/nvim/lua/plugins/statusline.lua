@@ -132,20 +132,6 @@ return {
 						file_status = true,
 						path = 1,
 					},
-					separator(),
-					{
-						function()
-							return require("dap").status()
-						end,
-						icon = { "", color = { fg = colors.red } },
-						cond = function()
-							if not package.loaded.dap then
-								return false
-							end
-							local session = require("dap").session()
-							return session ~= nil
-						end,
-					},
 				},
 				lualine_x = {
 					{
