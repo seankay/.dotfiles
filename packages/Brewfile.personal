@@ -3,6 +3,7 @@
 # Example:
 # cask "google-chrome"
 
+cask "balenaetcher"
 cask "cryptomator"
 cask "discord"
 cask "brave-browser"
