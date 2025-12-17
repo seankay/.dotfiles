@@ -24,6 +24,7 @@ return {
 				"terraform",
 				"tsx",
 				"typescript",
+				"typescriptreact",
 				"vim",
 				"vimdoc",
 			}
