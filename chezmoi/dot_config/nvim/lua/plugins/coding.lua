@@ -191,6 +191,7 @@ return {
 				"ruby_lsp",
 				"terraformls",
 				"ts_ls",
+				"eslint",
 			},
 		},
 		dependencies = {
