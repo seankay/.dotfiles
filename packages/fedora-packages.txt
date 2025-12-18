@@ -25,7 +25,6 @@ dnf:direnv
 rpm:discord https://discord.com/api/download?platform=linux&format=rpm
 dnf:docker
 dnf:docker-compose
-dnf:eza
 github:github.com/eza-community/eza eza v0.23.4 [eza]
 dnf:fastfetch
 dnf:fd
