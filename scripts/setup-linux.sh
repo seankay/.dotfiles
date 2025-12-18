@@ -404,9 +404,17 @@ install_fedora() {
   fi
 
   if (( ${#packages[@]} )); then
+    if "${DRY_RUN}"; then
+      log_info "Would refresh ${dnf_bin} metadata once before installing packages: ${packages[*]}"
+    else
+      if ! exec_cmd sudo "${dnf_bin}" makecache --refresh; then
+        log_warn "Failed to refresh ${dnf_bin} cache; continuing with package installs."
+      fi
+    fi
+
     local failed=()
     for package in "${packages[@]}"; do
-      local cmd=(sudo "${dnf_bin}" install --refresh)
+      local cmd=(sudo "${dnf_bin}" install)
       if "${DRY_RUN}"; then
         cmd+=(--assumeno)
       else
