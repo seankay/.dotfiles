@@ -35,7 +35,7 @@ Usage: $0 [--dry-run]
 
 Detects the Linux distribution and installs packages from packages/.
 - Arch Linux: pacman + yay (AUR) entries from arch-packages.txt
-- Fedora: dnf + rpm + flatpak entries from fedora-packages.txt (tested against Fedora 43)
+- Fedora: dnf + repo/rpm/flatpak entries from fedora-packages.txt (tested against Fedora 43)
 EOF
 }
 
@@ -176,6 +176,42 @@ install_fedora_rpm_packages() {
   fi
 }
 
+install_fedora_repo_commands() {
+  local repo_specs=("$@")
+  local name
+  local cmd
+  local i
+  local failed=()
+
+  if (( ${#repo_specs[@]} == 0 )); then
+    return 0
+  fi
+
+  for (( i=0; i<${#repo_specs[@]}; i+=2 )); do
+    name="${repo_specs[i]}"
+    cmd="${repo_specs[i+1]}"
+
+    if [[ -z "${name}" || -z "${cmd}" ]]; then
+      log_warn "Skipping invalid repo entry at index ${i}."
+      continue
+    fi
+
+    if "${DRY_RUN}"; then
+      log_info "Would configure repo ${name}: ${cmd}"
+      continue
+    fi
+
+    if ! exec_cmd sudo bash -c "${cmd}"; then
+      log_warn "Failed to configure repo ${name}"
+      failed+=("${name}")
+    fi
+  done
+
+  if (( ${#failed[@]} )); then
+    log_warn "Some Fedora repos were not configured: ${failed[*]}"
+  fi
+}
+
 install_fedora_flatpak_packages() {
   local flatpak_specs=("$@")
   local spec
@@ -236,15 +272,18 @@ install_fedora() {
   declare -A seen_packages=()
   declare -A seen_rpm=()
   declare -A seen_flatpak=()
+  declare -A seen_repo=()
   local packages=()
   local rpm_specs=()
   local flatpak_specs=()
+  local repo_specs=()
   local entry
   local rpm_name
   local rpm_url
   local remote
   local flatpak_id
   local spec_key
+  local repo_cmd
   while IFS= read -r line; do
     case "${line}" in
       dnf:*)
@@ -279,6 +318,30 @@ install_fedora() {
         if [[ -z "${seen_rpm[${rpm_name}]+x}" ]]; then
           seen_rpm["${rpm_name}"]=1
           rpm_specs+=("${rpm_name}|${rpm_url}")
+        fi
+        continue
+        ;;
+      repo:*)
+        entry="${line#repo:}"
+        entry="${entry#${entry%%[![:space:]]*}}"
+
+        if [[ -z "${entry}" ]]; then
+          log_warn "Skipping empty repo entry in ${manifest}."
+          continue
+        fi
+
+        spec_key="${entry%%[[:space:]]*}"
+        repo_cmd="${entry#${spec_key}}"
+        repo_cmd="${repo_cmd#${repo_cmd%%[![:space:]]*}}"
+
+        if [[ -z "${spec_key}" || -z "${repo_cmd}" ]]; then
+          log_warn "Invalid repo entry (format 'repo:<name> <command...>')."
+          continue
+        fi
+
+        if [[ -z "${seen_repo[${spec_key}]+x}" ]]; then
+          seen_repo["${spec_key}"]=1
+          repo_specs+=("${spec_key}" "${repo_cmd}")
         fi
         continue
         ;;
@@ -329,8 +392,14 @@ install_fedora() {
     fi
   done < <(read_manifest "${manifest}")
 
+  if (( ${#repo_specs[@]} )); then
+    install_fedora_repo_commands "${repo_specs[@]}"
+  fi
+
   if (( ${#packages[@]} == 0 )) && (( ${#rpm_specs[@]} == 0 )) && (( ${#flatpak_specs[@]} == 0 )); then
-    log_warn "No packages found in ${manifest}."
+    if (( ${#repo_specs[@]} == 0 )); then
+      log_warn "No packages found in ${manifest}."
+    fi
     return 0
   fi
 

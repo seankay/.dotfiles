@@ -3,8 +3,16 @@
 # toolset aligned across distros. Some names may differ on Fedora or require
 # additional repos (RPM Fusion/COPR) or Flatpak.
 #
-# Lines are either "dnf:<pkg>", "<pkg>", "rpm:<name> <url>" for raw RPM installs,
-# or "flatpak:[<remote>] <app-id>" (remote defaults to flathub when omitted).
+# Lines are either "dnf:<pkg>", "<pkg>", "repo:<name> <command...>" for enabling repos/keys
+# (commands run via `sudo bash -c` so omit explicit sudo), "rpm:<name> <url>" for raw RPM
+# installs, or "flatpak:[<remote>] <app-id>" (remote defaults to flathub when omitted).
+
+repo:rpmfusion-free dnf install --assumeyes --refresh https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+repo:rpmfusion-nonfree dnf install --assumeyes --refresh https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+repo:google-chrome rpm --import https://dl.google.com/linux/linux_signing_key.pub && printf '%s\n' '[google-chrome]' 'name=google-chrome' 'baseurl=http://dl.google.com/linux/chrome/rpm/stable/$basearch' 'enabled=1' 'gpgcheck=1' 'gpgkey=https://dl.google.com/linux/linux_signing_key.pub' > /etc/yum.repos.d/google-chrome.repo
+repo:1password rpm --import https://downloads.1password.com/linux/keys/1password.asc && printf '%s\n' '[1password]' 'name=1Password Stable Channel' 'baseurl=https://downloads.1password.com/linux/rpm/stable/$basearch' 'enabled=1' 'gpgcheck=1' 'gpgkey=https://downloads.1password.com/linux/keys/1password.asc' > /etc/yum.repos.d/1password.repo
+repo:brave rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc && dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+repo:protonvpn rpm --import https://repo.protonvpn.com/fedora/protonvpn_public.asc && dnf config-manager --add-repo https://repo.protonvpn.com/fedora/protonvpn-stable.repo
 
 dnf:base-devel
 dnf:bat
@@ -49,8 +57,8 @@ dnf:1password
 dnf:1password-cli
 dnf:backintime
 dnf:google-chrome
-dnf:brave-bin
-dnf:oh-my-posh-bin
+dnf:brave-browser
+dnf:oh-my-posh
 dnf:openai-codex-bin
 dnf:timeshift-autosnap
 dnf:localsend
