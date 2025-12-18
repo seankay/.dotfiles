@@ -1,0 +1,56 @@
+# Baseline Fedora (dnf) package list.
+# This file is derived from `packages/arch-packages.txt` to keep the desired
+# toolset aligned across distros. Some names may differ on Fedora or require
+# additional repos (RPM Fusion/COPR) or Flatpak.
+#
+# Lines are either "dnf:<pkg>" or "<pkg>".
+
+dnf:base-devel
+dnf:bat
+dnf:btop
+dnf:chezmoi
+dnf:direnv
+dnf:discord
+dnf:docker
+dnf:docker-compose
+dnf:eza
+dnf:fastfetch
+dnf:fd
+dnf:fzf
+dnf:gcc
+dnf:git
+dnf:github-cli
+dnf:gitleaks
+dnf:imagemagick
+dnf:kitty
+dnf:luarocks
+dnf:mise
+dnf:neovim
+dnf:nerd-fonts
+dnf:obsidian
+dnf:pre-commit
+dnf:ripgrep
+dnf:rust
+dnf:solaar
+dnf:spotify-launcher
+dnf:tailscale
+dnf:timeshift
+dnf:tmux
+dnf:trash-cli
+dnf:tree
+dnf:tree-sitter-cli
+dnf:wl-clipboard
+dnf:yarn
+dnf:zsh
+dnf:discord
+dnf:proton-vpn-gtk-app
+
+dnf:1password
+dnf:1password-cli
+dnf:backintime
+dnf:google-chrome
+dnf:brave-bin
+dnf:oh-my-posh-bin
+dnf:openai-codex-bin
+dnf:timeshift-autosnap
+dnf:localsend

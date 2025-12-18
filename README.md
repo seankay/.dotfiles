@@ -3,7 +3,7 @@
 This stack keeps dotfiles portable across macOS and Linux while staying close to native tooling.
 
 - **Dotfiles management:** [`chezmoi`](https://www.chezmoi.io/) templates drive a single source of truth.
-- **Packages:** Homebrew on macOS and `pacman`/`yay` on Arch Linux.
+- **Packages:** Homebrew on macOS, `pacman`/`yay` on Arch Linux, and `dnf` on Fedora.
 - **System automation:** Shell scripts keep the bootstrap idempotent while staying lightweight.
 - **Secrets:** Store confidential files via `chezmoi`'s `age` integration or a separate secret manager; the structure leaves room for either.
 
@@ -20,7 +20,8 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 │   ├── Brewfile
 │   ├── Brewfile.personal
 │   ├── Brewfile.work
-│   └── arch-packages.txt
+│   ├── arch-packages.txt
+│   └── fedora-packages.txt
 ├── chezmoi/                <-- chezmoi source state (templates + dotfiles)
 │   ├── README.md
 │   ├── chezmoi.yaml.tmpl
@@ -48,6 +49,13 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 5. Run the bootstrapper: `./bootstrap`.
 6. Open tmux and press Prefix + `I` to install/update configured plugins (catppuccin theme, navigator, battery, online-status, resurrect, continuum).
 7. `exec zsh`
+
+### Fedora 43
+
+1. Install Git
+2. Clone the repository: `git clone git@github.com:seankay/dotfiles.git ~/.dotfiles && cd ~/.dotfiles`.
+3. Run the bootstrapper: `./bootstrap` (uses `dnf` and `packages/fedora-packages.txt`).
+4. `exec zsh`
 
 ### macOS
 
@@ -90,6 +98,7 @@ Keep secrets out of the repo. Suggested options:
 
 - macOS: maintain shared CLI packages in `packages/Brewfile`. Role-specific extras belong in `packages/Brewfile.personal` or `packages/Brewfile.work`, which run only when the matching `MACHINE_ROLE` is set (the cleanup step uses the union so nothing gets pruned unintentionally).
 - Arch Linux: maintain `packages/arch-packages.txt`. Use `pacman:<pkg>` for core packages and `aur:<pkg>` for AUR entries (requires `yay`).
+- Fedora: maintain `packages/fedora-packages.txt` (installed via `dnf`).
 
 ### What `bootstrap` Handles Automatically
 

@@ -34,6 +34,7 @@ Usage: $0 [--dry-run]
 Bootstraps a fresh machine with required tooling:
 - macOS: installs Homebrew (if missing) and ensures chezmoi via brew.
 - Arch Linux: installs chezmoi via pacman (and yay when available).
+- Fedora: installs chezmoi via dnf.
 EOF
 }
 
@@ -113,6 +114,35 @@ install_arch() {
   run "${cmd[@]}"
 }
 
+detect_dnf() {
+  if command -v dnf >/dev/null 2>&1; then
+    printf '%s\n' "dnf"
+    return 0
+  fi
+  if command -v dnf5 >/dev/null 2>&1; then
+    printf '%s\n' "dnf5"
+    return 0
+  fi
+  return 1
+}
+
+install_fedora() {
+  local dnf_bin
+  if ! dnf_bin="$(detect_dnf)"; then
+    log_error "dnf not found on PATH."
+    exit 3
+  fi
+
+  cmd=(sudo "${dnf_bin}" install --refresh)
+  if "${DRY_RUN}"; then
+    cmd+=(--assumeno)
+  else
+    cmd+=(--assumeyes)
+  fi
+  cmd+=(chezmoi)
+  run "${cmd[@]}"
+}
+
 case "$(uname -s)" in
   Darwin)
     install_macos
@@ -128,6 +158,10 @@ case "$(uname -s)" in
       arch|endeavouros|manjaro)
         log_info "Detected Arch-based distribution (${ID})."
         install_arch
+        ;;
+      fedora)
+        log_info "Detected Fedora (${ID} ${VERSION_ID:-unknown})."
+        install_fedora
         ;;
       *)
         log_error "Unsupported distribution: ${ID}"
