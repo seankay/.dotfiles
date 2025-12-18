@@ -35,7 +35,7 @@ Usage: $0 [--dry-run]
 
 Detects the Linux distribution and installs packages from packages/.
 - Arch Linux: pacman + yay (AUR) entries from arch-packages.txt
-- Fedora: dnf + repo/rpm/github/flatpak entries from fedora-packages.txt (tested against Fedora 43)
+- Fedora: per-app installers under packages/fedora/apps (tested against Fedora 43)
 EOF
 }
 
@@ -119,232 +119,10 @@ install_arch() {
   fi
 }
 
-install_fedora_rpm_packages() {
-  local rpm_specs=("$@")
-  local spec
-  local rpm_name
-  local rpm_url
-  local tmp_rpm
-  local failed=()
-
-  if (( ${#rpm_specs[@]} == 0 )); then
-    return 0
-  fi
-
-  if ! command -v curl >/dev/null 2>&1; then
-    log_error "curl is required to download RPM packages."
-    exit 3
-  fi
-
-  for spec in "${rpm_specs[@]}"; do
-    rpm_name="${spec%%|*}"
-    rpm_url="${spec#*|}"
-
-    if [[ -z "${rpm_name}" || -z "${rpm_url}" || "${rpm_name}" == "${spec}" ]]; then
-      log_warn "Skipping invalid rpm entry: ${spec}"
-      continue
-    fi
-
-    if "${DRY_RUN}"; then
-      log_info "Would install RPM package ${rpm_name} from ${rpm_url}"
-      continue
-    fi
-
-    if ! tmp_rpm="$(mktemp "/tmp/${rpm_name}.XXXXXX.rpm")"; then
-      log_warn "Unable to create temporary file for ${rpm_name}."
-      failed+=("${rpm_name}")
-      continue
-    fi
-
-    if ! exec_cmd curl -fsSL -o "${tmp_rpm}" "${rpm_url}"; then
-      log_warn "Failed to download ${rpm_name} from ${rpm_url}"
-      failed+=("${rpm_name}")
-      rm -f "${tmp_rpm}"
-      continue
-    fi
-
-    if ! exec_cmd sudo rpm -Uvh --replacepkgs "${tmp_rpm}"; then
-      log_warn "Failed to install RPM package ${rpm_name}"
-      failed+=("${rpm_name}")
-    fi
-
-    rm -f "${tmp_rpm}"
-  done
-
-  if (( ${#failed[@]} )); then
-    log_warn "Some RPM packages were not installed: ${failed[*]}"
-  fi
-}
-
-install_fedora_repo_commands() {
-  local repo_specs=("$@")
-  local name
-  local cmd
-  local i
-  local failed=()
-
-  if (( ${#repo_specs[@]} == 0 )); then
-    return 0
-  fi
-
-  for (( i=0; i<${#repo_specs[@]}; i+=2 )); do
-    name="${repo_specs[i]}"
-    cmd="${repo_specs[i+1]}"
-
-    if [[ -z "${name}" || -z "${cmd}" ]]; then
-      log_warn "Skipping invalid repo entry at index ${i}."
-      continue
-    fi
-
-    if "${DRY_RUN}"; then
-      log_info "Would configure repo ${name}: ${cmd}"
-      continue
-    fi
-
-    if ! exec_cmd sudo bash -c "${cmd}"; then
-      log_warn "Failed to configure repo ${name}"
-      failed+=("${name}")
-    fi
-  done
-
-  if (( ${#failed[@]} )); then
-    log_warn "Some Fedora repos were not configured: ${failed[*]}"
-  fi
-}
-
-install_fedora_github_binaries() {
-  local github_specs=("$@")
-  local spec
-  local repo
-  local asset
-  local install_name
-  local dest
-  local tmp
-  local failed=()
-
-  if (( ${#github_specs[@]} == 0 )); then
-    return 0
-  fi
-
-  if ! command -v curl >/dev/null 2>&1; then
-    log_error "curl is required to download GitHub release assets."
-    exit 3
-  fi
-
-  for spec in "${github_specs[@]}"; do
-    IFS='|' read -r repo asset install_name <<< "${spec}"
-
-    if [[ -z "${repo}" || -z "${asset}" ]]; then
-      log_warn "Skipping invalid GitHub entry: ${spec}"
-      continue
-    fi
-
-    if [[ -z "${install_name}" ]]; then
-      install_name="${asset}"
-    fi
-
-    if [[ "${install_name}" == /* ]]; then
-      dest="${install_name}"
-    else
-      dest="/usr/local/bin/${install_name}"
-    fi
-
-    local url="https://github.com/${repo}/releases/latest/download/${asset}"
-
-    if "${DRY_RUN}"; then
-      log_info "Would download GitHub release ${repo}:${asset} to ${dest}"
-      continue
-    fi
-
-    if ! tmp="$(mktemp "/tmp/github-${install_name}.XXXXXX")"; then
-      log_warn "Unable to create temporary file for ${repo}:${asset}"
-      failed+=("${repo}/${asset}")
-      continue
-    fi
-
-    if ! exec_cmd curl -fsSL -o "${tmp}" "${url}"; then
-      log_warn "Failed to download ${url}"
-      failed+=("${repo}/${asset}")
-      rm -f "${tmp}"
-      continue
-    fi
-
-    if ! exec_cmd chmod +x "${tmp}"; then
-      log_warn "Failed to mark ${tmp} executable"
-      failed+=("${repo}/${asset}")
-      rm -f "${tmp}"
-      continue
-    fi
-
-    if ! exec_cmd sudo install -d "$(dirname "${dest}")"; then
-      log_warn "Failed to create directory for ${dest}"
-      failed+=("${repo}/${asset}")
-      rm -f "${tmp}"
-      continue
-    fi
-
-    if ! exec_cmd sudo install -m 0755 "${tmp}" "${dest}"; then
-      log_warn "Failed to install GitHub binary to ${dest}"
-      failed+=("${repo}/${asset}")
-      rm -f "${tmp}"
-      continue
-    fi
-
-    rm -f "${tmp}"
-  done
-
-  if (( ${#failed[@]} )); then
-    log_warn "Some GitHub binaries were not installed: ${failed[*]}"
-  fi
-}
-
-install_fedora_flatpak_packages() {
-  local flatpak_specs=("$@")
-  local spec
-  local remote
-  local ref
-  local failed=()
-
-  if (( ${#flatpak_specs[@]} == 0 )); then
-    return 0
-  fi
-
-  if ! command -v flatpak >/dev/null 2>&1; then
-    log_error "flatpak is required to install Flatpak packages."
-    exit 3
-  fi
-
-  for spec in "${flatpak_specs[@]}"; do
-    remote="${spec%%|*}"
-    ref="${spec#*|}"
-
-    if [[ -z "${remote}" || -z "${ref}" || "${remote}" == "${spec}" ]]; then
-      log_warn "Skipping invalid Flatpak entry: ${spec}"
-      continue
-    fi
-
-    if "${DRY_RUN}"; then
-      log_info "Would install Flatpak ${ref} from remote ${remote}"
-      continue
-    fi
-
-    local cmd=(flatpak install --assumeyes "${remote}" "${ref}")
-    if ! exec_cmd "${cmd[@]}"; then
-      log_warn "Failed to install Flatpak ${ref}"
-      failed+=("${ref}")
-    fi
-  done
-
-  if (( ${#failed[@]} )); then
-    log_warn "Some Flatpak packages were not installed: ${failed[*]}"
-  fi
-}
-
 install_fedora() {
-  local manifest="${ROOT_DIR}/packages/fedora-packages.txt"
+  local apps_dir="${ROOT_DIR}/packages/fedora/apps"
+  local helper="${SCRIPT_DIR}/installers/fedora/helpers.sh"
   local dnf_bin
-  local package
-  local line
 
   if ! dnf_bin="$(detect_dnf)"; then
     log_error "dnf not found on PATH."
@@ -352,226 +130,57 @@ install_fedora() {
   fi
 
   if [[ -n "${VERSION_ID:-}" ]] && [[ "${VERSION_ID}" != "43" ]]; then
-    log_warn "Fedora VERSION_ID=${VERSION_ID}; Fedora 43 is the known target for this manifest."
+    log_warn "Fedora VERSION_ID=${VERSION_ID}; Fedora 43 is the known target for this stack."
   fi
 
-  declare -A seen_packages=()
-  declare -A seen_rpm=()
-  declare -A seen_flatpak=()
-  declare -A seen_repo=()
-  declare -A seen_github=()
-  local packages=()
-  local rpm_specs=()
-  local flatpak_specs=()
-  local repo_specs=()
-  local github_specs=()
-  local entry
-  local rpm_name
-  local rpm_url
-  local remote
-  local flatpak_id
-  local spec_key
-  local repo_cmd
-  local github_repo
-  local github_asset
-  local github_install
-  while IFS= read -r line; do
-    case "${line}" in
-      dnf:*)
-        package="${line#dnf:}"
-        ;;
-      pacman:*|aur:*)
-        package="${line#*:}"
-        ;;
-      rpm:*)
-        entry="${line#rpm:}"
-        entry="${entry#${entry%%[![:space:]]*}}"
-
-        if [[ -z "${entry}" ]]; then
-          log_warn "Skipping empty rpm entry in ${manifest}."
-          continue
-        fi
-
-        if [[ "${entry}" != *[[:space:]]* ]]; then
-          log_warn "RPM entries must be formatted as 'rpm:<name> <url>': ${line}"
-          continue
-        fi
-
-        rpm_name="${entry%%[[:space:]]*}"
-        rpm_url="${entry#${rpm_name}}"
-        rpm_url="${rpm_url#${rpm_url%%[![:space:]]*}}"
-
-        if [[ -z "${rpm_name}" || -z "${rpm_url}" ]]; then
-          log_warn "Invalid RPM entry (missing name or URL): ${line}"
-          continue
-        fi
-
-        if [[ -z "${seen_rpm[${rpm_name}]+x}" ]]; then
-          seen_rpm["${rpm_name}"]=1
-          rpm_specs+=("${rpm_name}|${rpm_url}")
-        fi
-        continue
-        ;;
-      repo:*)
-        entry="${line#repo:}"
-        entry="${entry#${entry%%[![:space:]]*}}"
-
-        if [[ -z "${entry}" ]]; then
-          log_warn "Skipping empty repo entry in ${manifest}."
-          continue
-        fi
-
-        spec_key="${entry%%[[:space:]]*}"
-        repo_cmd="${entry#${spec_key}}"
-        repo_cmd="${repo_cmd#${repo_cmd%%[![:space:]]*}}"
-
-        if [[ -z "${spec_key}" || -z "${repo_cmd}" ]]; then
-          log_warn "Invalid repo entry (format 'repo:<name> <command...>')."
-          continue
-        fi
-
-        if [[ -z "${seen_repo[${spec_key}]+x}" ]]; then
-          seen_repo["${spec_key}"]=1
-          repo_specs+=("${spec_key}" "${repo_cmd}")
-        fi
-        continue
-        ;;
-      flatpak:*)
-        entry="${line#flatpak:}"
-        entry="${entry#${entry%%[![:space:]]*}}"
-
-        if [[ -z "${entry}" ]]; then
-          log_warn "Skipping empty flatpak entry in ${manifest}."
-          continue
-        fi
-
-        remote="${entry%%[[:space:]]*}"
-        flatpak_id=""
-
-        if [[ "${entry}" == "${remote}" ]]; then
-          flatpak_id="${remote}"
-          remote="flathub"
-        else
-          flatpak_id="${entry#${remote}}"
-          flatpak_id="${flatpak_id#${flatpak_id%%[![:space:]]*}}"
-        fi
-
-        if [[ -z "${flatpak_id}" ]]; then
-          log_warn "Invalid Flatpak entry (missing ref): ${line}"
-          continue
-        fi
-
-        spec_key="${remote}|${flatpak_id}"
-        if [[ -z "${seen_flatpak[${spec_key}]+x}" ]]; then
-          seen_flatpak["${spec_key}"]=1
-          flatpak_specs+=("${spec_key}")
-        fi
-        continue
-        ;;
-      github:*)
-        entry="${line#github:}"
-        entry="${entry#${entry%%[![:space:]]*}}"
-
-        if [[ -z "${entry}" ]]; then
-          log_warn "Skipping empty GitHub entry in ${manifest}."
-          continue
-        fi
-
-        github_repo="${entry%%[[:space:]]*}"
-        if [[ "${entry}" == "${github_repo}" ]]; then
-          log_warn "GitHub entries must include an asset name: ${line}"
-          continue
-        fi
-
-        entry="${entry#${github_repo}}"
-        entry="${entry#${entry%%[![:space:]]*}}"
-        github_asset="${entry%%[[:space:]]*}"
-
-        if [[ -z "${github_asset}" ]]; then
-          log_warn "GitHub entries must include an asset name: ${line}"
-          continue
-        fi
-
-        if [[ "${entry}" == "${github_asset}" ]]; then
-          github_install=""
-        else
-          github_install="${entry#${github_asset}}"
-          github_install="${github_install#${github_install%%[![:space:]]*}}"
-        fi
-
-        spec_key="${github_repo}|${github_asset}|${github_install}"
-        if [[ -z "${seen_github[${spec_key}]+x}" ]]; then
-          seen_github["${spec_key}"]=1
-          github_specs+=("${github_repo}|${github_asset}|${github_install}")
-        fi
-        continue
-        ;;
-      *)
-        package="${line}"
-        ;;
-    esac
-
-    if [[ -z "${package}" ]]; then
-      continue
-    fi
-
-    if [[ -z "${seen_packages[${package}]+x}" ]]; then
-      seen_packages["${package}"]=1
-      packages+=("${package}")
-    fi
-  done < <(read_manifest "${manifest}")
-
-  if (( ${#repo_specs[@]} )); then
-    install_fedora_repo_commands "${repo_specs[@]}"
+  if [[ ! -d "${apps_dir}" ]]; then
+    log_error "Fedora apps directory not found: ${apps_dir}"
+    exit 2
   fi
 
-  if (( ${#packages[@]} == 0 )) && (( ${#rpm_specs[@]} == 0 )) && (( ${#flatpak_specs[@]} == 0 )) && (( ${#github_specs[@]} == 0 )); then
-    if (( ${#repo_specs[@]} == 0 )); then
-      log_warn "No packages found in ${manifest}."
-    fi
+  if [[ ! -f "${helper}" ]]; then
+    log_error "Fedora helper functions missing: ${helper}"
+    exit 2
+  fi
+
+  local installers=()
+  mapfile -t installers < <(find "${apps_dir}" -mindepth 2 -maxdepth 2 -name install.sh -print | sort)
+
+  if (( ${#installers[@]} == 0 )); then
+    log_warn "No Fedora install scripts found beneath ${apps_dir}."
     return 0
   fi
 
-  if (( ${#packages[@]} )); then
-    if "${DRY_RUN}"; then
-      log_info "Would refresh ${dnf_bin} metadata once before installing packages: ${packages[*]}"
-    else
-      if ! exec_cmd sudo "${dnf_bin}" makecache --refresh; then
-        log_warn "Failed to refresh ${dnf_bin} cache; continuing with package installs."
-      fi
-    fi
-
-    local failed=()
-    for package in "${packages[@]}"; do
-      local cmd=(sudo "${dnf_bin}" install)
-      if "${DRY_RUN}"; then
-        cmd+=(--assumeno)
-      else
-        cmd+=(--assumeyes)
-      fi
-      cmd+=("${package}")
-
-      if ! exec_cmd "${cmd[@]}"; then
-        failed+=("${package}")
-        log_warn "Failed to install via ${dnf_bin}: ${package}"
-      fi
-    done
-
-    if (( ${#failed[@]} )); then
-      log_warn "Some Fedora packages were not installed (missing repo/renamed/etc): ${failed[*]}"
+  if "${DRY_RUN}"; then
+    log_info "Would refresh ${dnf_bin} metadata before running installers."
+  else
+    if ! exec_cmd sudo "${dnf_bin}" makecache --refresh; then
+      log_warn "Failed to refresh ${dnf_bin} cache; continuing with installers."
     fi
   fi
 
-  if (( ${#rpm_specs[@]} )); then
-    install_fedora_rpm_packages "${rpm_specs[@]}"
-  fi
+  local failed=()
+  local script
+  for script in "${installers[@]}"; do
+    local app_dir
+    local app_name
+    app_dir="$(dirname "${script}")"
+    app_name="$(basename "${app_dir}")"
 
-  if (( ${#flatpak_specs[@]} )); then
-    install_fedora_flatpak_packages "${flatpak_specs[@]}"
-  fi
+    log_info "Installing Fedora application: ${app_name}"
+    if ! APP_NAME="${app_name}" \
+        APP_DIR="${app_dir}" \
+        FEDORA_INSTALL_HELPERS="${helper}" \
+        DRY_RUN="${DRY_RUN}" \
+        DNF_BIN="${dnf_bin}" \
+        bash "${script}"; then
+      failed+=("${app_name}")
+      log_warn "Installation script failed for ${app_name}"
+    fi
+  done
 
-  if (( ${#github_specs[@]} )); then
-    install_fedora_github_binaries "${github_specs[@]}"
+  if (( ${#failed[@]} )); then
+    log_warn "Some Fedora applications failed to install: ${failed[*]}"
   fi
 }
 

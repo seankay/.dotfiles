@@ -21,7 +21,8 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 │   ├── Brewfile.personal
 │   ├── Brewfile.work
 │   ├── arch-packages.txt
-│   └── fedora-packages.txt
+│   └── fedora/
+│       └── apps/          <-- One install.sh per Fedora application
 ├── chezmoi/                <-- chezmoi source state (templates + dotfiles)
 │   ├── README.md
 │   ├── chezmoi.yaml.tmpl
@@ -54,7 +55,7 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 
 1. Install Git
 2. Clone the repository: `git clone git@github.com:seankay/dotfiles.git ~/.dotfiles && cd ~/.dotfiles`.
-3. Run the bootstrapper: `./bootstrap` (uses `dnf` and `packages/fedora-packages.txt`).
+3. Run the bootstrapper: `./bootstrap` (executes the app installers under `packages/fedora/apps`).
 4. `exec zsh`
 
 ### macOS
@@ -98,7 +99,7 @@ Keep secrets out of the repo. Suggested options:
 
 - macOS: maintain shared CLI packages in `packages/Brewfile`. Role-specific extras belong in `packages/Brewfile.personal` or `packages/Brewfile.work`, which run only when the matching `MACHINE_ROLE` is set (the cleanup step uses the union so nothing gets pruned unintentionally).
 - Arch Linux: maintain `packages/arch-packages.txt`. Use `pacman:<pkg>` for core packages and `aur:<pkg>` for AUR entries (requires `yay`).
-- Fedora: maintain `packages/fedora-packages.txt` (installed via `dnf`; declare repo prerequisites with `repo:<name> <command...>` lines that run under `sudo bash -c`, `rpm:<name> <url>` entries for direct RPM downloads, `github:<owner>/<repo> <asset> [<install-name>]` entries for binaries fetched from the latest GitHub release (installing into `/usr/local/bin`), and `flatpak:[<remote>] <app-id>` entries for Flatpak installs).
+- Fedora: maintain one installer per application under `packages/fedora/apps/<app>/install.sh`. Each script sources `${FEDORA_INSTALL_HELPERS}` to gain helper functions such as `dnf_install`, `dnf_group_install`, `flatpak_install`, `rpm_install`, `github_install`, and `repo_setup`. This keeps repo setup, RPM/Flatpak installs, and any application-specific tweaks close to the software they configure.
 
 ### What `bootstrap` Handles Automatically
 
