@@ -5,7 +5,9 @@
 #
 # Lines are either "dnf:<pkg>", "<pkg>", "repo:<name> <command...>" for enabling repos/keys
 # (commands run via `sudo bash -c` so omit explicit sudo), "rpm:<name> <url>" for raw RPM
-# installs, or "flatpak:[<remote>] <app-id>" (remote defaults to flathub when omitted).
+# installs, "github:<owner>/<repo> <asset> [<install-name>]" for downloading release binaries
+# (installs to /usr/local/bin/<install-name or asset>), or "flatpak:[<remote>] <app-id>"
+# (remote defaults to flathub when omitted).
 
 repo:rpmfusion-free dnf install --assumeyes --refresh https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
 repo:rpmfusion-nonfree dnf install --assumeyes --refresh https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
@@ -14,7 +16,8 @@ repo:1password rpm --import https://downloads.1password.com/linux/keys/1password
 repo:brave rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc && dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
 repo:protonvpn rpm --import https://repo.protonvpn.com/fedora/protonvpn_public.asc && dnf config-manager --add-repo https://repo.protonvpn.com/fedora/protonvpn-stable.repo
 
-dnf:base-devel
+dnf:@c-development
+dnf:@development-tools
 dnf:bat
 dnf:btop
 dnf:chezmoi
@@ -23,6 +26,7 @@ rpm:discord https://discord.com/api/download?platform=linux&format=rpm
 dnf:docker
 dnf:docker-compose
 dnf:eza
+github:github.com/eza-community/eza eza v0.23.4 [eza]
 dnf:fastfetch
 dnf:fd
 dnf:fzf

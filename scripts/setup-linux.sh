@@ -35,7 +35,7 @@ Usage: $0 [--dry-run]
 
 Detects the Linux distribution and installs packages from packages/.
 - Arch Linux: pacman + yay (AUR) entries from arch-packages.txt
-- Fedora: dnf + repo/rpm/flatpak entries from fedora-packages.txt (tested against Fedora 43)
+- Fedora: dnf + repo/rpm/github/flatpak entries from fedora-packages.txt (tested against Fedora 43)
 EOF
 }
 
@@ -212,6 +212,92 @@ install_fedora_repo_commands() {
   fi
 }
 
+install_fedora_github_binaries() {
+  local github_specs=("$@")
+  local spec
+  local repo
+  local asset
+  local install_name
+  local dest
+  local tmp
+  local failed=()
+
+  if (( ${#github_specs[@]} == 0 )); then
+    return 0
+  fi
+
+  if ! command -v curl >/dev/null 2>&1; then
+    log_error "curl is required to download GitHub release assets."
+    exit 3
+  fi
+
+  for spec in "${github_specs[@]}"; do
+    IFS='|' read -r repo asset install_name <<< "${spec}"
+
+    if [[ -z "${repo}" || -z "${asset}" ]]; then
+      log_warn "Skipping invalid GitHub entry: ${spec}"
+      continue
+    fi
+
+    if [[ -z "${install_name}" ]]; then
+      install_name="${asset}"
+    fi
+
+    if [[ "${install_name}" == /* ]]; then
+      dest="${install_name}"
+    else
+      dest="/usr/local/bin/${install_name}"
+    fi
+
+    local url="https://github.com/${repo}/releases/latest/download/${asset}"
+
+    if "${DRY_RUN}"; then
+      log_info "Would download GitHub release ${repo}:${asset} to ${dest}"
+      continue
+    fi
+
+    if ! tmp="$(mktemp "/tmp/github-${install_name}.XXXXXX")"; then
+      log_warn "Unable to create temporary file for ${repo}:${asset}"
+      failed+=("${repo}/${asset}")
+      continue
+    fi
+
+    if ! exec_cmd curl -fsSL -o "${tmp}" "${url}"; then
+      log_warn "Failed to download ${url}"
+      failed+=("${repo}/${asset}")
+      rm -f "${tmp}"
+      continue
+    fi
+
+    if ! exec_cmd chmod +x "${tmp}"; then
+      log_warn "Failed to mark ${tmp} executable"
+      failed+=("${repo}/${asset}")
+      rm -f "${tmp}"
+      continue
+    fi
+
+    if ! exec_cmd sudo install -d "$(dirname "${dest}")"; then
+      log_warn "Failed to create directory for ${dest}"
+      failed+=("${repo}/${asset}")
+      rm -f "${tmp}"
+      continue
+    fi
+
+    if ! exec_cmd sudo install -m 0755 "${tmp}" "${dest}"; then
+      log_warn "Failed to install GitHub binary to ${dest}"
+      failed+=("${repo}/${asset}")
+      rm -f "${tmp}"
+      continue
+    fi
+
+    rm -f "${tmp}"
+  done
+
+  if (( ${#failed[@]} )); then
+    log_warn "Some GitHub binaries were not installed: ${failed[*]}"
+  fi
+}
+
 install_fedora_flatpak_packages() {
   local flatpak_specs=("$@")
   local spec
@@ -273,10 +359,12 @@ install_fedora() {
   declare -A seen_rpm=()
   declare -A seen_flatpak=()
   declare -A seen_repo=()
+  declare -A seen_github=()
   local packages=()
   local rpm_specs=()
   local flatpak_specs=()
   local repo_specs=()
+  local github_specs=()
   local entry
   local rpm_name
   local rpm_url
@@ -284,6 +372,9 @@ install_fedora() {
   local flatpak_id
   local spec_key
   local repo_cmd
+  local github_repo
+  local github_asset
+  local github_install
   while IFS= read -r line; do
     case "${line}" in
       dnf:*)
@@ -377,6 +468,44 @@ install_fedora() {
         fi
         continue
         ;;
+      github:*)
+        entry="${line#github:}"
+        entry="${entry#${entry%%[![:space:]]*}}"
+
+        if [[ -z "${entry}" ]]; then
+          log_warn "Skipping empty GitHub entry in ${manifest}."
+          continue
+        fi
+
+        github_repo="${entry%%[[:space:]]*}"
+        if [[ "${entry}" == "${github_repo}" ]]; then
+          log_warn "GitHub entries must include an asset name: ${line}"
+          continue
+        fi
+
+        entry="${entry#${github_repo}}"
+        entry="${entry#${entry%%[![:space:]]*}}"
+        github_asset="${entry%%[[:space:]]*}"
+
+        if [[ -z "${github_asset}" ]]; then
+          log_warn "GitHub entries must include an asset name: ${line}"
+          continue
+        fi
+
+        if [[ "${entry}" == "${github_asset}" ]]; then
+          github_install=""
+        else
+          github_install="${entry#${github_asset}}"
+          github_install="${github_install#${github_install%%[![:space:]]*}}"
+        fi
+
+        spec_key="${github_repo}|${github_asset}|${github_install}"
+        if [[ -z "${seen_github[${spec_key}]+x}" ]]; then
+          seen_github["${spec_key}"]=1
+          github_specs+=("${github_repo}|${github_asset}|${github_install}")
+        fi
+        continue
+        ;;
       *)
         package="${line}"
         ;;
@@ -396,7 +525,7 @@ install_fedora() {
     install_fedora_repo_commands "${repo_specs[@]}"
   fi
 
-  if (( ${#packages[@]} == 0 )) && (( ${#rpm_specs[@]} == 0 )) && (( ${#flatpak_specs[@]} == 0 )); then
+  if (( ${#packages[@]} == 0 )) && (( ${#rpm_specs[@]} == 0 )) && (( ${#flatpak_specs[@]} == 0 )) && (( ${#github_specs[@]} == 0 )); then
     if (( ${#repo_specs[@]} == 0 )); then
       log_warn "No packages found in ${manifest}."
     fi
@@ -439,6 +568,10 @@ install_fedora() {
 
   if (( ${#flatpak_specs[@]} )); then
     install_fedora_flatpak_packages "${flatpak_specs[@]}"
+  fi
+
+  if (( ${#github_specs[@]} )); then
+    install_fedora_github_binaries "${github_specs[@]}"
   fi
 }
 
