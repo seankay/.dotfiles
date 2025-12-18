@@ -98,7 +98,7 @@ Keep secrets out of the repo. Suggested options:
 
 - macOS: maintain shared CLI packages in `packages/Brewfile`. Role-specific extras belong in `packages/Brewfile.personal` or `packages/Brewfile.work`, which run only when the matching `MACHINE_ROLE` is set (the cleanup step uses the union so nothing gets pruned unintentionally).
 - Arch Linux: maintain `packages/arch-packages.txt`. Use `pacman:<pkg>` for core packages and `aur:<pkg>` for AUR entries (requires `yay`).
-- Fedora: maintain `packages/fedora-packages.txt` (installed via `dnf`).
+- Fedora: maintain `packages/fedora-packages.txt` (installed via `dnf` with optional `rpm:<name> <url>` entries for direct RPM downloads and `flatpak:[<remote>] <app-id>` entries for Flatpak installs).
 
 ### What `bootstrap` Handles Automatically
 

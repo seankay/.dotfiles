@@ -35,7 +35,7 @@ Usage: $0 [--dry-run]
 
 Detects the Linux distribution and installs packages from packages/.
 - Arch Linux: pacman + yay (AUR) entries from arch-packages.txt
-- Fedora: dnf entries from fedora-packages.txt (tested against Fedora 43)
+- Fedora: dnf + rpm + flatpak entries from fedora-packages.txt (tested against Fedora 43)
 EOF
 }
 
@@ -119,6 +119,105 @@ install_arch() {
   fi
 }
 
+install_fedora_rpm_packages() {
+  local rpm_specs=("$@")
+  local spec
+  local rpm_name
+  local rpm_url
+  local tmp_rpm
+  local failed=()
+
+  if (( ${#rpm_specs[@]} == 0 )); then
+    return 0
+  fi
+
+  if ! command -v curl >/dev/null 2>&1; then
+    log_error "curl is required to download RPM packages."
+    exit 3
+  fi
+
+  for spec in "${rpm_specs[@]}"; do
+    rpm_name="${spec%%|*}"
+    rpm_url="${spec#*|}"
+
+    if [[ -z "${rpm_name}" || -z "${rpm_url}" || "${rpm_name}" == "${spec}" ]]; then
+      log_warn "Skipping invalid rpm entry: ${spec}"
+      continue
+    fi
+
+    if "${DRY_RUN}"; then
+      log_info "Would install RPM package ${rpm_name} from ${rpm_url}"
+      continue
+    fi
+
+    if ! tmp_rpm="$(mktemp "/tmp/${rpm_name}.XXXXXX.rpm")"; then
+      log_warn "Unable to create temporary file for ${rpm_name}."
+      failed+=("${rpm_name}")
+      continue
+    fi
+
+    if ! exec_cmd curl -fsSL -o "${tmp_rpm}" "${rpm_url}"; then
+      log_warn "Failed to download ${rpm_name} from ${rpm_url}"
+      failed+=("${rpm_name}")
+      rm -f "${tmp_rpm}"
+      continue
+    fi
+
+    if ! exec_cmd sudo rpm -Uvh --replacepkgs "${tmp_rpm}"; then
+      log_warn "Failed to install RPM package ${rpm_name}"
+      failed+=("${rpm_name}")
+    fi
+
+    rm -f "${tmp_rpm}"
+  done
+
+  if (( ${#failed[@]} )); then
+    log_warn "Some RPM packages were not installed: ${failed[*]}"
+  fi
+}
+
+install_fedora_flatpak_packages() {
+  local flatpak_specs=("$@")
+  local spec
+  local remote
+  local ref
+  local failed=()
+
+  if (( ${#flatpak_specs[@]} == 0 )); then
+    return 0
+  fi
+
+  if ! command -v flatpak >/dev/null 2>&1; then
+    log_error "flatpak is required to install Flatpak packages."
+    exit 3
+  fi
+
+  for spec in "${flatpak_specs[@]}"; do
+    remote="${spec%%|*}"
+    ref="${spec#*|}"
+
+    if [[ -z "${remote}" || -z "${ref}" || "${remote}" == "${spec}" ]]; then
+      log_warn "Skipping invalid Flatpak entry: ${spec}"
+      continue
+    fi
+
+    if "${DRY_RUN}"; then
+      log_info "Would install Flatpak ${ref} from remote ${remote}"
+      continue
+    fi
+
+    local cmd=(flatpak install --assumeyes "${remote}" "${ref}")
+    if ! exec_cmd "${cmd[@]}"; then
+      log_warn "Failed to install Flatpak ${ref}"
+      failed+=("${ref}")
+    fi
+  done
+
+  if (( ${#failed[@]} )); then
+    log_warn "Some Flatpak packages were not installed: ${failed[*]}"
+  fi
+}
+
 install_fedora() {
   local manifest="${ROOT_DIR}/packages/fedora-packages.txt"
   local dnf_bin
@@ -135,7 +234,17 @@ install_fedora() {
   fi
 
   declare -A seen_packages=()
+  declare -A seen_rpm=()
+  declare -A seen_flatpak=()
   local packages=()
+  local rpm_specs=()
+  local flatpak_specs=()
+  local entry
+  local rpm_name
+  local rpm_url
+  local remote
+  local flatpak_id
+  local spec_key
   while IFS= read -r line; do
     case "${line}" in
       dnf:*)
@@ -143,6 +252,67 @@ install_fedora() {
         ;;
       pacman:*|aur:*)
         package="${line#*:}"
+        ;;
+      rpm:*)
+        entry="${line#rpm:}"
+        entry="${entry#${entry%%[![:space:]]*}}"
+
+        if [[ -z "${entry}" ]]; then
+          log_warn "Skipping empty rpm entry in ${manifest}."
+          continue
+        fi
+
+        if [[ "${entry}" != *[[:space:]]* ]]; then
+          log_warn "RPM entries must be formatted as 'rpm:<name> <url>': ${line}"
+          continue
+        fi
+
+        rpm_name="${entry%%[[:space:]]*}"
+        rpm_url="${entry#${rpm_name}}"
+        rpm_url="${rpm_url#${rpm_url%%[![:space:]]*}}"
+
+        if [[ -z "${rpm_name}" || -z "${rpm_url}" ]]; then
+          log_warn "Invalid RPM entry (missing name or URL): ${line}"
+          continue
+        fi
+
+        if [[ -z "${seen_rpm[${rpm_name}]+x}" ]]; then
+          seen_rpm["${rpm_name}"]=1
+          rpm_specs+=("${rpm_name}|${rpm_url}")
+        fi
+        continue
+        ;;
+      flatpak:*)
+        entry="${line#flatpak:}"
+        entry="${entry#${entry%%[![:space:]]*}}"
+
+        if [[ -z "${entry}" ]]; then
+          log_warn "Skipping empty flatpak entry in ${manifest}."
+          continue
+        fi
+
+        remote="${entry%%[[:space:]]*}"
+        flatpak_id=""
+
+        if [[ "${entry}" == "${remote}" ]]; then
+          flatpak_id="${remote}"
+          remote="flathub"
+        else
+          flatpak_id="${entry#${remote}}"
+          flatpak_id="${flatpak_id#${flatpak_id%%[![:space:]]*}}"
+        fi
+
+        if [[ -z "${flatpak_id}" ]]; then
+          log_warn "Invalid Flatpak entry (missing ref): ${line}"
+          continue
+        fi
+
+        spec_key="${remote}|${flatpak_id}"
+        if [[ -z "${seen_flatpak[${spec_key}]+x}" ]]; then
+          seen_flatpak["${spec_key}"]=1
+          flatpak_specs+=("${spec_key}")
+        fi
+        continue
         ;;
       *)
         package="${line}"
@@ -159,29 +329,39 @@ install_fedora() {
     fi
   done < <(read_manifest "${manifest}")
 
-  if (( ${#packages[@]} == 0 )); then
+  if (( ${#packages[@]} == 0 )) && (( ${#rpm_specs[@]} == 0 )) && (( ${#flatpak_specs[@]} == 0 )); then
     log_warn "No packages found in ${manifest}."
     return 0
   fi
 
-  local failed=()
-  for package in "${packages[@]}"; do
-    local cmd=(sudo "${dnf_bin}" install --refresh)
-    if "${DRY_RUN}"; then
-      cmd+=(--assumeno)
-    else
-      cmd+=(--assumeyes)
-    fi
-    cmd+=("${package}")
+  if (( ${#packages[@]} )); then
+    local failed=()
+    for package in "${packages[@]}"; do
+      local cmd=(sudo "${dnf_bin}" install --refresh)
+      if "${DRY_RUN}"; then
+        cmd+=(--assumeno)
+      else
+        cmd+=(--assumeyes)
+      fi
+      cmd+=("${package}")
 
-    if ! exec_cmd "${cmd[@]}"; then
-      failed+=("${package}")
-      log_warn "Failed to install via ${dnf_bin}: ${package}"
-    fi
-  done
+      if ! exec_cmd "${cmd[@]}"; then
+        failed+=("${package}")
+        log_warn "Failed to install via ${dnf_bin}: ${package}"
+      fi
+    done
 
-  if (( ${#failed[@]} )); then
-    log_warn "Some Fedora packages were not installed (missing repo/renamed/etc): ${failed[*]}"
+    if (( ${#failed[@]} )); then
+      log_warn "Some Fedora packages were not installed (missing repo/renamed/etc): ${failed[*]}"
+    fi
+  fi
+
+  if (( ${#rpm_specs[@]} )); then
+    install_fedora_rpm_packages "${rpm_specs[@]}"
+  fi
+
+  if (( ${#flatpak_specs[@]} )); then
+    install_fedora_flatpak_packages "${flatpak_specs[@]}"
   fi
 }
 

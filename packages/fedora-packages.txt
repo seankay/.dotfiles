@@ -3,14 +3,15 @@
 # toolset aligned across distros. Some names may differ on Fedora or require
 # additional repos (RPM Fusion/COPR) or Flatpak.
 #
-# Lines are either "dnf:<pkg>" or "<pkg>".
+# Lines are either "dnf:<pkg>", "<pkg>", "rpm:<name> <url>" for raw RPM installs,
+# or "flatpak:[<remote>] <app-id>" (remote defaults to flathub when omitted).
 
 dnf:base-devel
 dnf:bat
 dnf:btop
 dnf:chezmoi
 dnf:direnv
-dnf:discord
+rpm:discord https://discord.com/api/download?platform=linux&format=rpm
 dnf:docker
 dnf:docker-compose
 dnf:eza
@@ -32,7 +33,7 @@ dnf:pre-commit
 dnf:ripgrep
 dnf:rust
 dnf:solaar
-dnf:spotify-launcher
+flatpak:flathub com.spotify.Client
 dnf:tailscale
 dnf:timeshift
 dnf:tmux
@@ -42,7 +43,6 @@ dnf:tree-sitter-cli
 dnf:wl-clipboard
 dnf:yarn
 dnf:zsh
-dnf:discord
 dnf:proton-vpn-gtk-app
 
 dnf:1password
