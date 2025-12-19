@@ -9,6 +9,14 @@ version="v0.23.4"
 install_name="eza"
 dest="/usr/local/bin/${install_name}"
 url="https://github.com/eza-community/eza/releases/download/${version}/eza_x86_64-unknown-linux-gnu.tar.gz"
+cache_dir="${HOME}/.cache/dotfiles"
+marker="${cache_dir}/${install_name}-${version}.installed"
+
+mkdir -p "${cache_dir}"
+if [[ -f "${marker}" ]]; then
+  log_info "${install_name} ${version} already installed; skipping."
+  exit 0
+fi
 
 if "${DRY_RUN}"; then
   log_info "Would download GitHub asset ${url}"
@@ -34,3 +42,4 @@ if ! run_cmd tar --overwrite -xvzf "${tmp}" -C "${extract_target}"; then
 fi
 
 rm -f "${tmp}"
+touch "${marker}"
