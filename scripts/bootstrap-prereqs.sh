@@ -3,6 +3,7 @@
 set -euo pipefail
 
 DRY_RUN=false
+PKG_UPDATE="${PKG_UPDATE:-1}"
 
 RESET="\033[0m"
 INFO_COLOR="\033[94m"
@@ -35,6 +36,7 @@ Bootstraps a fresh machine with required tooling:
 - macOS: installs Homebrew (if missing) and ensures chezmoi via brew.
 - Arch Linux: installs chezmoi via pacman (and yay when available).
 - Fedora: installs chezmoi via dnf.
+Set PKG_UPDATE=0 to skip prerequisite installs.
 EOF
 }
 
@@ -64,6 +66,11 @@ while [[ $# -gt 0 ]]; do
   esac
   shift
 done
+
+if [[ "${PKG_UPDATE}" == "0" ]]; then
+  log_info "PKG_UPDATE=0 set; skipping prerequisite installs."
+  exit 0
+fi
 
 require_cmd() {
   if ! command -v "$1" >/dev/null 2>&1; then

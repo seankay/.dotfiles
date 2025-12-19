@@ -7,6 +7,7 @@ ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 : "${XDG_CONFIG_HOME:=${HOME}/.config}"
 LOCAL_ENV_FILE="${XDG_CONFIG_HOME}/dotfiles/local.env"
 DRY_RUN=false
+PKG_UPDATE="${PKG_UPDATE:-1}"
 
 RESET="\033[0m"
 INFO_COLOR="\033[94m"
@@ -56,6 +57,7 @@ usage() {
 Usage: $0 [--dry-run]
 
 Installs Homebrew (if missing) and applies packages from packages/Brewfile.
+Set PKG_UPDATE=0 to skip package installs.
 EOF
 }
 
@@ -101,6 +103,11 @@ while [[ $# -gt 0 ]]; do
   esac
   shift
 done
+
+if [[ "${PKG_UPDATE}" == "0" ]]; then
+  log_info "PKG_UPDATE=0 set; skipping Homebrew package installs."
+  exit 0
+fi
 
 load_machine_role
 

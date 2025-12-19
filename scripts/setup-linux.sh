@@ -5,6 +5,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 DRY_RUN=false
+PKG_UPDATE="${PKG_UPDATE:-1}"
 
 RESET="\033[0m"
 INFO_COLOR="\033[94m"
@@ -36,6 +37,7 @@ Usage: $0 [--dry-run]
 Detects the Linux distribution and installs packages from packages/.
 - Arch Linux: pacman + yay (AUR) entries from arch-packages.txt
 - Fedora: per-app installers under packages/fedora/apps (tested against Fedora 43)
+Set PKG_UPDATE=0 to skip package installs.
 EOF
 }
 
@@ -193,6 +195,11 @@ while [[ $# -gt 0 ]]; do
   esac
   shift
 done
+
+if [[ "${PKG_UPDATE}" == "0" ]]; then
+  log_info "PKG_UPDATE=0 set; skipping Linux package installs."
+  exit 0
+fi
 
 if [[ ! -r /etc/os-release ]]; then
   log_error "/etc/os-release not found. Unable to detect distribution."
