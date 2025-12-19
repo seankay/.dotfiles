@@ -3,7 +3,6 @@ set -euo pipefail
 
 source "${FEDORA_INSTALL_HELPERS}"
 
-run_cmd sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc || true
-run_cmd sudo dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo || true
-
+dnf_install "dnf-plugins-core"
+run_cmd sudo dnf config-manager addrepo --overwrite --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
 dnf_install "brave-browser"

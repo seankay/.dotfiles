@@ -151,14 +151,6 @@ install_fedora() {
     return 0
   fi
 
-  if "${DRY_RUN}"; then
-    log_info "Would refresh ${dnf_bin} metadata before running installers."
-  else
-    if ! exec_cmd sudo "${dnf_bin}" makecache --refresh; then
-      log_warn "Failed to refresh ${dnf_bin} cache; continuing with installers."
-    fi
-  fi
-
   local failed=()
   local script
   for script in "${installers[@]}"; do

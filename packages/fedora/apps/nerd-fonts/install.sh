@@ -3,4 +3,4 @@ set -euo pipefail
 
 source "${FEDORA_INSTALL_HELPERS}"
 
-dnf_install "nerd-fonts"
+dnf_install "source-foundry-hack-fonts"

@@ -30,7 +30,6 @@ brew "tree-sitter-cli"
 
 cask "alfred"
 cask "caffeine"
-cask "codex"
 cask "1password"
 cask "1password-cli"
 cask "google-chrome"

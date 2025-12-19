@@ -3,4 +3,4 @@ set -euo pipefail
 
 source "${FEDORA_INSTALL_HELPERS}"
 
-dnf_install "localsend"
+flatpak_install flathub org.localsend.localsend_app

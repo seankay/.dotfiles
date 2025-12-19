@@ -3,4 +3,4 @@ set -euo pipefail
 
 source "${FEDORA_INSTALL_HELPERS}"
 
-dnf_install "obsidian"
+flatpak_install flathub md.obsidian.Obsidian
