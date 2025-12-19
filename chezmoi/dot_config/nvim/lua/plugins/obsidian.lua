@@ -1,17 +1,15 @@
--- set OBISIDIAN_VAULT_PATH=/path/to/your/vault if needed
+-- set OBSIDIAN_VAULT_PATH=/path/to/your/vault if needed
 local obsidian = function()
 	local file_exists = function(filename)
-		local command = string.format('test -d "' .. filename .. '" 2>/dev/null', filename)
-		local status = os.execute(command)
-
-		if status ~= 0 then
+		if vim.fn.isdirectory(filename) ~= 1 then
 			vim.notify(
-				"Vault not found. Set OBSIDIAN_VAULT_PATH envr var if needed.",
+				"Vault not found. Set OBSIDIAN_VAULT_PATH env var if needed.",
 				vim.log.levels.ERROR,
 				{ title = "Obsidian" }
 			)
+			return false
 		end
-		return status == 0
+		return true
 	end
 
 	local home = os.getenv("HOME")
