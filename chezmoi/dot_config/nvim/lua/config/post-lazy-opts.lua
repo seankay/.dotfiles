@@ -100,7 +100,7 @@ vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
 -- =====================================================================
 -- LOAD LAST:
 --  * make cursor white
---  * put this *after* you load material.nvim
+--  * put this *after* you load colorscheme
 -- =====================================================================
 local function set_cursor_white()
 	vim.api.nvim_set_hl(0, "Cursor", { fg = "#1b1e2b", bg = "#ffffff" })

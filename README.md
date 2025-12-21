@@ -48,7 +48,7 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
    - Test SSH access: `ssh -T git@github.com`
 4. Clone the repository: `git clone git@github.com:seankay/dotfiles.git ~/.dotfiles && cd ~/.dotfiles`.
 5. Run the bootstrapper: `./bootstrap`.
-6. Open tmux and press Prefix + `I` to install/update configured plugins (catppuccin theme, navigator, battery, online-status, resurrect, continuum).
+6. Open tmux and press Prefix + `I` to install/update configured plugins (tokyonight theme, navigator, battery, online-status, resurrect, continuum).
 7. `exec zsh`
 
 ### Fedora 43
@@ -69,7 +69,7 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
    - Test SSH access: `ssh -T git@github.com`
 4. Clone the repository: `git clone git@github.com:seankay/dotfiles.git ~/.dotfiles && cd ~/.dotfiles`.
 5. Run the bootstrapper: `./bootstrap`.
-6. Open tmux and press Prefix + `I` to install/update configured plugins (catppuccin theme, navigator, battery, online-status, resurrect, continuum).
+6. Open tmux and press Prefix + `I` to install/update configured plugins (tokyonight theme, navigator, battery, online-status, resurrect, continuum).
 7. `exec zsh`
 
 ## Machine Roles (Personal vs. Work)

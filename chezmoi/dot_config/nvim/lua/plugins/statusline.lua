@@ -4,15 +4,16 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = function(_, opts)
 			local auto = require("lualine.themes.auto")
-			local colors = require("catppuccin.palettes").get_palette()
-			local bg = require("catppuccin.utils.colors").darken(colors.surface0, 0.25, colors.base)
+			local colors = require("tokyonight.colors").setup()
+			local bg = colors.bg
+			local fg = colors.fg
 
 			local function separator()
 				return {
 					function()
 						return "│"
 					end,
-					color = { fg = colors.surface0, bg = bg, gui = "bold" },
+					color = { fg = fg, bg = bg, gui = "bold" },
 					padding = { left = 1, right = 1 },
 				}
 			end
