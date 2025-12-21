@@ -30,7 +30,7 @@ usage() {
   cat <<'USAGE'
 Usage: $0 [--dry-run]
 
-Clones TPM (tmux plugin manager) if it is not already installed under ~/.tmux/plugins/tpm.
+Clones TPM (tmux plugin manager) if it is not already installed under ~/.local/share/tmux/plugins/tpm.
 Run inside a terminal after installing tmux. After cloning, open tmux and press Prefix + I to install/update plugins.
 USAGE
 }
@@ -71,7 +71,16 @@ require_cmd() {
 
 require_cmd git
 
-TPM_DIR="${HOME}/.tmux/plugins/tpm"
+PLUGINS_DIR="${HOME}/.local/share/tmux/plugins"
+TPM_DIR="${PLUGINS_DIR}/tpm"
+RESURRECT_DIR="${HOME}/.local/state/tmux/resurrect"
+
+if "$DRY_RUN"; then
+  log_info "Would ensure tmux plugin directories exist: ${PLUGINS_DIR}, ${RESURRECT_DIR}"
+else
+  run mkdir -p "${PLUGINS_DIR}" "${RESURRECT_DIR}"
+fi
+
 if [[ -d "$TPM_DIR/.git" ]]; then
   log_info "TPM already installed at ${TPM_DIR}."
   if ! "$DRY_RUN"; then
@@ -80,10 +89,6 @@ if [[ -d "$TPM_DIR/.git" ]]; then
     log_info "Would update TPM with 'git pull --ff-only'."
   fi
 else
-  parent_dir="$(dirname "$TPM_DIR")"
-  if [[ ! -d "$parent_dir" ]]; then
-    run mkdir -p "$parent_dir"
-  fi
   run git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
 fi
 

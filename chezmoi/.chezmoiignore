@@ -1,2 +1,0 @@
-# Ignore generated Neovim lockfile; it changes frequently with plugin updates.
-.config/nvim/lazy-lock.json

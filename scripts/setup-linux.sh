@@ -5,7 +5,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 DRY_RUN=false
-PKG_UPDATE="${PKG_UPDATE:-1}"
+UPDATE=false
 
 RESET="\033[0m"
 INFO_COLOR="\033[94m"
@@ -32,11 +32,11 @@ log_error() {
 
 usage() {
   cat <<EOF
-Usage: $0 [--dry-run]
+Usage: $0 [--dry-run] [--update]
 
 Detects the Linux distribution and installs packages from packages/.
 - Fedora: per-app installers under packages/fedora/apps (tested against Fedora 43)
-Set PKG_UPDATE=0 to skip package installs.
+Pass --update to install packages.
 EOF
 }
 
@@ -121,6 +121,9 @@ while [[ $# -gt 0 ]]; do
     --dry-run)
       DRY_RUN=true
       ;;
+    --update)
+      UPDATE=true
+      ;;
     -h|--help)
       usage
       exit 0
@@ -134,8 +137,8 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-if [[ "${PKG_UPDATE}" == "0" ]]; then
-  log_info "PKG_UPDATE=0 set; skipping Linux package installs."
+if [[ "${UPDATE}" != "true" ]]; then
+  log_info "Package updates disabled; skipping Linux package installs."
   exit 0
 fi
 

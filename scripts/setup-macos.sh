@@ -7,7 +7,7 @@ ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 : "${XDG_CONFIG_HOME:=${HOME}/.config}"
 LOCAL_ENV_FILE="${XDG_CONFIG_HOME}/dotfiles/local.env"
 DRY_RUN=false
-PKG_UPDATE="${PKG_UPDATE:-1}"
+UPDATE=false
 
 RESET="\033[0m"
 INFO_COLOR="\033[94m"
@@ -35,7 +35,6 @@ log_error() {
 load_machine_role() {
   if [[ -r "${LOCAL_ENV_FILE}" ]]; then
     log_debug "Loading machine role from ${LOCAL_ENV_FILE}"
-    # shellcheck disable=SC1090
     source "${LOCAL_ENV_FILE}"
   fi
 
@@ -54,10 +53,10 @@ load_machine_role() {
 
 usage() {
   cat <<EOF
-Usage: $0 [--dry-run]
+Usage: $0 [--dry-run] [--update]
 
 Installs Homebrew (if missing) and applies packages from packages/Brewfile.
-Set PKG_UPDATE=0 to skip package installs.
+Pass --update to install packages.
 EOF
 }
 
@@ -91,6 +90,9 @@ while [[ $# -gt 0 ]]; do
     --dry-run)
       DRY_RUN=true
       ;;
+    --update)
+      UPDATE=true
+      ;;
     -h|--help)
       usage
       exit 0
@@ -104,8 +106,8 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-if [[ "${PKG_UPDATE}" == "0" ]]; then
-  log_info "PKG_UPDATE=0 set; skipping Homebrew package installs."
+if [[ "${UPDATE}" != "true" ]]; then
+  log_info "Package updates disabled; skipping Homebrew package installs."
   exit 0
 fi
 

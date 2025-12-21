@@ -1,4 +1,4 @@
-# Managed via chezmoi. Customize as needed.
+# Managed via the dotfiles repo. Customize as needed.
 
 # --- Session defaults --------------------------------------------------------
 export DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
@@ -16,7 +16,6 @@ export EZA_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}"
 DOTFILES_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/dotfiles"
 DOTFILES_LOCAL_ENV="${DOTFILES_CONFIG_HOME}/local.env"
 if [[ -r "${DOTFILES_LOCAL_ENV}" ]]; then
-  # shellcheck disable=SC1090
   source "${DOTFILES_LOCAL_ENV}"
 fi
 export MACHINE_ROLE="${MACHINE_ROLE:-work}"
@@ -28,10 +27,9 @@ path=(
   "$HOME/.local/bin"
   $path
 )
-path+=("${DOTFILES}/bin")
 
-case "{{ .chezmoi.os }}" in
-  darwin)
+case "$(uname -s)" in
+  Darwin)
     if [[ -r "/opt/homebrew/bin/brew" ]]; then
       eval "$(/opt/homebrew/bin/brew shellenv)"
     elif [[ -r "/usr/local/bin/brew" ]]; then
@@ -107,6 +105,10 @@ bindkey '^[[D' backward-char
 bindkey '^[[C' forward-char
 
 # --- Functions ---------------------------------------------------------------
+e() {
+  "${EDITOR}" "${1:-.}"
+}
+
 fh() {
   command -v fzf >/dev/null 2>&1 || return 0
   local selected

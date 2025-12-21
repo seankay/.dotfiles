@@ -2,7 +2,6 @@
 
 brew "bat"
 brew "btop"
-brew "chezmoi"
 brew "colima"
 brew "docker"
 brew "docker-compose"

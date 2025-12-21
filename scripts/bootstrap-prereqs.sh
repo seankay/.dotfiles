@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Installs baseline tooling (Homebrew on macOS, chezmoi).
+# Installs baseline tooling (Homebrew on macOS).
 set -euo pipefail
 
 DRY_RUN=false
-PKG_UPDATE="${PKG_UPDATE:-1}"
+UPDATE=false
 
 RESET="\033[0m"
 INFO_COLOR="\033[94m"
@@ -30,12 +30,12 @@ log_error() {
 
 usage() {
   cat <<EOF
-Usage: $0 [--dry-run]
+Usage: $0 [--dry-run] [--update]
 
 Bootstraps a fresh machine with required tooling:
-- macOS: installs Homebrew (if missing) and ensures chezmoi via brew.
-- Fedora: installs chezmoi via dnf.
-Set PKG_UPDATE=0 to skip prerequisite installs.
+- macOS: installs Homebrew (if missing).
+- Fedora: no-op (package installs happen later).
+Pass --update to install prerequisites.
 EOF
 }
 
@@ -53,6 +53,9 @@ while [[ $# -gt 0 ]]; do
     --dry-run)
       DRY_RUN=true
       ;;
+    --update)
+      UPDATE=true
+      ;;
     -h|--help)
       usage
       exit 0
@@ -66,8 +69,8 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-if [[ "${PKG_UPDATE}" == "0" ]]; then
-  log_info "PKG_UPDATE=0 set; skipping prerequisite installs."
+if [[ "${UPDATE}" != "true" ]]; then
+  log_info "Package updates disabled; skipping prerequisite installs."
   exit 0
 fi
 
@@ -85,11 +88,10 @@ fi
 
 install_macos() {
   if ! command -v brew >/dev/null 2>&1; then
-    if "${DRY_RUN}"; then
-      log_warn "Homebrew not found. Would run official installer."
-      log_info "Would install packages via Homebrew: chezmoi"
-      return
-    fi
+  if "${DRY_RUN}"; then
+    log_warn "Homebrew not found. Would run official installer."
+    return
+  fi
 
     log_info "Installing Homebrew (this may prompt for sudo)."
     NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -98,16 +100,6 @@ install_macos() {
     log_info "Homebrew already present."
   fi
 
-  if "${DRY_RUN}"; then
-    log_info "Would ensure Homebrew packages installed: chezmoi"
-    return
-  fi
-
-  if brew list --formula chezmoi >/dev/null 2>&1; then
-    log_info "chezmoi already installed."
-  else
-    run brew install chezmoi
-  fi
 }
 detect_dnf() {
   if command -v dnf >/dev/null 2>&1; then
@@ -128,14 +120,7 @@ install_fedora() {
     exit 3
   fi
 
-  cmd=(sudo "${dnf_bin}" install --refresh)
-  if "${DRY_RUN}"; then
-    cmd+=(--assumeno)
-  else
-    cmd+=(--assumeyes)
-  fi
-  cmd+=(chezmoi)
-  run "${cmd[@]}"
+  log_info "No additional prerequisites needed for Fedora."
 }
 
 case "$(uname -s)" in
@@ -147,15 +132,14 @@ case "$(uname -s)" in
       log_error "/etc/os-release not found. Cannot detect distribution."
       exit 2
     fi
-    # shellcheck disable=SC1091
     . /etc/os-release
-    case "${ID}" in
+    case "${ID:-}" in
       fedora)
         log_info "Detected Fedora (${ID} ${VERSION_ID:-unknown})."
         install_fedora
         ;;
       *)
-        log_error "Unsupported distribution: ${ID}"
+        log_error "Unsupported distribution: ${ID:-unknown}"
         exit 3
         ;;
     esac

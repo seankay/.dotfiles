@@ -5,11 +5,12 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="${ROOT_DIR}/scripts"
 BOOTSTRAP_SCRIPT="${SCRIPTS_DIR}/bootstrap-prereqs.sh"
+APPLY_SCRIPT="${SCRIPTS_DIR}/apply-dotfiles.sh"
 : "${XDG_CONFIG_HOME:=${HOME}/.config}"
 LOCAL_ENV_FILE="${XDG_CONFIG_HOME}/dotfiles/local.env"
 
 DRY_RUN=false
-PKG_UPDATE="${PKG_UPDATE:-1}"
+UPDATE=false
 SUDO_KEEPALIVE_PID=""
 
 RESET="\033[0m"
@@ -21,10 +22,10 @@ RED="\033[31m"
 
 usage() {
   cat <<EOF
-Usage: $0 [--dry-run]
+Usage: $0 [--dry-run] [--update]
 
 --dry-run   Run supporting tools in their dry-run/check modes.
-PKG_UPDATE=0   Skip package installs and prerequisite setup.
+--update   Install/update packages and prerequisites.
 EOF
 }
 
@@ -55,7 +56,7 @@ load_local_env() {
     source "${LOCAL_ENV_FILE}"
     MACHINE_ROLE_SOURCE="${LOCAL_ENV_FILE}"
   elif [[ -n "${CI:-}" ]]; then
-    MACHINE_ROLE="work"
+    MACHINE_ROLE="personal"
     MACHINE_ROLE_SOURCE="CI default"
     log_info "CI environment detected; defaulting MACHINE_ROLE=${MACHINE_ROLE}."
   elif [[ -n "${MACHINE_ROLE:-}" ]]; then
@@ -119,6 +120,9 @@ ensure_prereqs() {
   if "${DRY_RUN}"; then
     args+=(--dry-run)
   fi
+  if "${UPDATE}"; then
+    args+=(--update)
+  fi
   log_info "Ensuring prerequisites via ${BOOTSTRAP_SCRIPT}"
   if ((${#args[@]})); then
     run "${BOOTSTRAP_SCRIPT}" "${args[@]}"
@@ -173,6 +177,9 @@ while [[ $# -gt 0 ]]; do
     --dry-run)
       DRY_RUN=true
       ;;
+    --update)
+      UPDATE=true
+      ;;
     -h|--help)
       usage
       exit 0
@@ -188,10 +195,10 @@ done
 
 load_local_env
 
-if [[ "${PKG_UPDATE}" != "0" ]]; then
+if "${UPDATE}"; then
   ensure_prereqs
 else
-  log_info "PKG_UPDATE=0 set; skipping prerequisite installs."
+  log_info "Package updates disabled; skipping prerequisite installs."
 fi
 refresh_prereq_path
 
@@ -208,29 +215,27 @@ case "$(uname -s)" in
     ;;
 esac
 
-require_cmd chezmoi
-
-log_info "Applying dotfiles via chezmoi"
-chezmoi_args=(chezmoi "--source=${ROOT_DIR}/chezmoi" apply)
+log_info "Applying dotfiles via bash"
 if "${DRY_RUN}"; then
-  chezmoi_args+=("--dry-run" "--verbose")
+  run "${APPLY_SCRIPT}" --dry-run
+else
+  run "${APPLY_SCRIPT}"
 fi
-run "${chezmoi_args[@]}"
 
-if [[ "${PKG_UPDATE}" != "0" ]]; then
+if "${UPDATE}"; then
   log_info "Running platform bootstrap: ${PLATFORM_SCRIPT}"
   if "${DRY_RUN}"; then
     run "${PLATFORM_SCRIPT}" --dry-run
   else
-    run "${PLATFORM_SCRIPT}"
+    run "${PLATFORM_SCRIPT}" --update
   fi
 else
-  log_info "PKG_UPDATE=0 set; skipping platform package installs."
+  log_info "Package updates disabled; skipping platform package installs."
 fi
 
 ensure_local_bin() {
   local dir="${HOME}/.local/bin"
-  if [[ -d "${dir}" ]]; then
+  if [[ -d "${dir}" || -L "${dir}" ]]; then
     log_info "Directory ${dir} already exists."
     return
   fi

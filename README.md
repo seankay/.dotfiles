@@ -1,11 +1,9 @@
-# Cross-Platform Dotfiles with chezmoi
+# Cross-Platform Dotfiles with Bash + Symlinks
 
 This stack keeps dotfiles portable across macOS and Linux while staying close to native tooling.
 
-- **Dotfiles management:** [`chezmoi`](https://www.chezmoi.io/) templates drive a single source of truth.
+- **Dotfiles management:** Bash templates + symlinks drive a single source of truth.
 - **Packages:** Homebrew on macOS and `dnf` on Fedora.
-- **System automation:** Shell scripts keep the bootstrap idempotent while staying lightweight.
-- **Secrets:** Store confidential files via `chezmoi`'s `age` integration or a separate secret manager; the structure leaves room for either.
 
 ## Layout
 
@@ -13,23 +11,20 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 .
 ├── bootstrap               <-- Cross-platform entry point
 ├── scripts/                <-- OS-specific helpers invoked by bootstrap
-│   ├── setup-macos.sh
-│   ├── setup-linux.sh
-│   └── bootstrap-prereqs.sh
+│   ├── apply-dotfiles.sh       <-- Bash templates + symlink installer
+│   ├── bootstrap-prereqs.sh    <-- Bootstrap prerequisites
+│   ├── install-tmux-plugins.sh <-- TPM bootstrap helper
+│   ├── setup-macos.sh          <-- macOS package bootstrap
+│   ├── setup-linux.sh          <-- Linux package bootstrap
+│   └── fedora-installer-helpers.sh
 ├── packages/               <-- Declarative package manifests
 │   ├── Brewfile
 │   ├── Brewfile.personal
 │   ├── Brewfile.work
 │   └── fedora/
 │       └── apps/          <-- One install.sh per Fedora application
-├── chezmoi/                <-- chezmoi source state (templates + dotfiles)
-│   ├── README.md
-│   ├── chezmoi.yaml.tmpl
-│   ├── dot_config/
-│   ├── dot_gitconfig.tmpl
-│   ├── dot_local/
-│   └── dot_zshrc.tmpl
-├── bin/                    <-- Helper executables exposed via symlinks
+├── config/                 <-- XDG config files symlinked into ~/.config
+├── zshrc                   <-- Symlinked to ~/.zshrc
 └── assets/                 <-- Misc assets
     ├── Agents.example.md
 ```
@@ -40,22 +35,17 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 
 1. Install Git
 2. Clone the repository: `git clone git@github.com:seankay/dotfiles.git ~/.dotfiles && cd ~/.dotfiles`.
-3. Run the bootstrapper: `./bootstrap` (executes the app installers under `packages/fedora/apps`).
-4. `exec zsh`
+3. Run the bootstrapper: `./bootstrap --update` (executes the app installers under `packages/fedora/apps`).
+4. Open tmux and press Prefix + `I` to install/update configured plugins
+5. `exec zsh`
 
 ### macOS
 
 1. Install Xcode Command Line Tools if prompted: `xcode-select --install`.
-2. Install 1Password
-3. Install Git and copy SSH keys from 1Password
-   - `mkdir -p ~/.ssh && chmod 700 ~/.ssh`
-   - Copy private key from 1Password and save as `~/.ssh/id_rsa`, then `chmod 600 ~/.ssh/id_rsa`
-   - Add GitHub to known hosts: `ssh-keyscan github.com >> ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts`
-   - Test SSH access: `ssh -T git@github.com`
-4. Clone the repository: `git clone git@github.com:seankay/dotfiles.git ~/.dotfiles && cd ~/.dotfiles`.
-5. Run the bootstrapper: `./bootstrap`.
-6. Open tmux and press Prefix + `I` to install/update configured plugins (tokyonight theme, navigator, battery, online-status, resurrect, continuum).
-7. `exec zsh`
+2. Clone the repository: `git clone git@github.com:seankay/dotfiles.git ~/.dotfiles && cd ~/.dotfiles`.
+3. Run the bootstrapper: `./bootstrap --update`.
+4. Open tmux and press Prefix + `I` to install/update configured plugins
+5. `exec zsh`
 
 ## Machine Roles (Personal vs. Work)
 
@@ -67,18 +57,21 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 
 ### Dotfiles
 
-`chezmoi/` is the authoritative chezmoi source directory. Add files using `chezmoi add path/to/file`. Templates can differentiate OS- or host-specific values using `.chezmoitemplates`.
+`config/` and `zshrc` are the authoritative sources.
 
-- Zsh configuration lives in `.zshrc.tmpl` (aliases, functions, keymaps, tmux auto-attach, oh-my-posh prompt).
-- Git defaults (.gitconfig) include SSH signing via 1Password.
-- Tmux configuration resides at `.config/tmux/tmux.conf`; `bootstrap` bootstraps TPM so you can press Prefix + `I` inside tmux to fetch plugins.
-- Direnv, btop, and other app configs sit under `dot_config/` (symlinked to the existing `config/` directory where appropriate).
-- Execution helpers in `bin/` are added to your PATH via `~/.dotfiles/bin`, so scripts like `colorscripts-squares` and `e` remain available regardless of OS.
+- Zsh configuration lives in `zshrc` (aliases, functions, keymaps, tmux auto-attach, oh-my-posh prompt).
+- Git defaults (`~/.gitconfig`) are generated from `local.env`.
 
-Keep secrets out of the repo. Suggested options:
+`local.env` must define git identity values:
 
-- `chezmoi` `age` integration (`chezmoi secret add`).
-- External secret manager (e.g., 1Password CLI, Bitwarden) referenced in templates.
+```bash
+export GIT_NAME="Sean Kay"
+export GIT_EMAIL="email@example.com"
+export GIT_SIGNING_KEY="ssh-ed25519 AAAA..."
+# optional
+export GIT_SSH_KEY="$HOME/.ssh/id_ed25519"
+export GIT_GITHUB_HOST_ALIAS="github.com-work"
+```
 
 ### Packages
 
@@ -87,12 +80,10 @@ Keep secrets out of the repo. Suggested options:
 
 ### What `bootstrap` Handles Automatically
 
-- Installs prerequisite tooling (Homebrew, chezmoi) before applying dotfiles.
-- Runs the appropriate package installer for macOS and Fedora (Homebrew or the Fedora app installers).
+- Installs prerequisite tooling (Homebrew) before applying dotfiles.
+- Applies dotfiles via `scripts/apply-dotfiles.sh` (bash templates + symlinks).
+- Runs the appropriate package installer for macOS and Fedora (Homebrew or the Fedora app installers) when `--update` is set.
 - On macOS, prunes Homebrew packages that are not declared in the Brewfile.
-- Ensures `~/.local/bin` exists so your PATH includes a per-user bin directory.
-- Bootstraps TPM so tmux plugins can be installed with Prefix + `I`.
-- Installs the repository's `pre-commit` hooks (gitleaks) when `pre-commit` is available.
 
 ## Testing & CI Hooks
 
@@ -101,6 +92,6 @@ Keep secrets out of the repo. Suggested options:
 
 ## Maintenance Workflow
 
-1. Add or modify files in `chezmoi/`.
-2. Run `./bootstrap --dry-run` to preview changes.
-3. Run `./bootstrap` to apply updates on your machine.
+1. Add or modify files in `config/` or `zshrc`.
+2. Run `./scripts/apply-dotfiles.sh --dry-run` to preview changes.
+3. Run `./bootstrap --update` to apply package updates on your machine.
