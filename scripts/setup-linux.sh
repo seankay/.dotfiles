@@ -35,7 +35,6 @@ usage() {
 Usage: $0 [--dry-run]
 
 Detects the Linux distribution and installs packages from packages/.
-- Arch Linux: pacman + yay (AUR) entries from arch-packages.txt
 - Fedora: per-app installers under packages/fedora/apps (tested against Fedora 43)
 Set PKG_UPDATE=0 to skip package installs.
 EOF
@@ -49,16 +48,6 @@ exec_cmd() {
   log_debug "$*"
   "$@"
 }
-
-read_manifest() {
-  local manifest="$1"
-  if [[ ! -f "${manifest}" ]]; then
-    log_error "Manifest not found: ${manifest}"
-    exit 2
-  fi
-  grep -v '^\s*#' "${manifest}" | awk 'length($0)>0'
-}
-
 detect_dnf() {
   if command -v dnf >/dev/null 2>&1; then
     printf '%s\n' "dnf"
@@ -70,57 +59,6 @@ detect_dnf() {
   fi
   return 1
 }
-
-install_arch() {
-  local manifest="${ROOT_DIR}/packages/arch-packages.txt"
-  local pacman_packages=()
-  local aur_packages=()
-  local line
-
-  while IFS= read -r line; do
-    case "${line}" in
-      pacman:*)
-        pacman_packages+=("${line#pacman:}")
-        ;;
-      aur:*)
-        aur_packages+=("${line#aur:}")
-        ;;
-      *)
-        pacman_packages+=("${line}")
-        ;;
-    esac
-  done < <(read_manifest "${manifest}")
-
-  if (( ${#pacman_packages[@]} )); then
-    cmd=(sudo pacman -S --needed)
-    if ! "${DRY_RUN}"; then
-      cmd+=(--noconfirm)
-    fi
-    cmd+=("${pacman_packages[@]}")
-    exec_cmd "${cmd[@]}"
-  fi
-
-  if (( ${#aur_packages[@]} )); then
-    if ! command -v yay >/dev/null 2>&1; then
-      if "${DRY_RUN}"; then
-        log_warn "yay not found. Would install AUR packages: ${aur_packages[*]}"
-      else
-        log_error "yay (AUR helper) required but not installed."
-        exit 3
-      fi
-    else
-      cmd=(yay -S --needed)
-      if ! "${DRY_RUN}"; then
-        cmd+=(--noconfirm)
-      else
-        cmd+=(--dry-run)
-      fi
-      cmd+=("${aur_packages[@]}")
-      exec_cmd "${cmd[@]}"
-    fi
-  fi
-}
-
 install_fedora() {
   local apps_dir="${ROOT_DIR}/packages/fedora/apps"
   local helper="${SCRIPT_DIR}/installers/fedora/helpers.sh"
@@ -209,17 +147,13 @@ fi
 . /etc/os-release
 
 case "${ID}" in
-  arch|endeavouros|manjaro)
-    log_info "Detected Arch-based distribution (${ID})."
-    install_arch
-    ;;
   fedora)
     log_info "Detected Fedora (${ID} ${VERSION_ID:-unknown})."
     install_fedora
     ;;
   *)
     log_error "Unsupported distribution: ${ID}"
-    log_warn "Supported Linux distributions: Arch-based and Fedora."
+    log_warn "Supported Linux distributions: Fedora."
     exit 5
     ;;
 esac

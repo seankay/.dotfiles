@@ -34,7 +34,6 @@ Usage: $0 [--dry-run]
 
 Bootstraps a fresh machine with required tooling:
 - macOS: installs Homebrew (if missing) and ensures chezmoi via brew.
-- Arch Linux: installs chezmoi via pacman (and yay when available).
 - Fedora: installs chezmoi via dnf.
 Set PKG_UPDATE=0 to skip prerequisite installs.
 EOF
@@ -110,17 +109,6 @@ install_macos() {
     run brew install chezmoi
   fi
 }
-
-install_arch() {
-  packages=(chezmoi)
-  cmd=(sudo pacman -S --needed)
-  if ! "${DRY_RUN}"; then
-    cmd+=(--noconfirm)
-  fi
-  cmd+=("${packages[@]}")
-  run "${cmd[@]}"
-}
-
 detect_dnf() {
   if command -v dnf >/dev/null 2>&1; then
     printf '%s\n' "dnf"
@@ -162,10 +150,6 @@ case "$(uname -s)" in
     # shellcheck disable=SC1091
     . /etc/os-release
     case "${ID}" in
-      arch|endeavouros|manjaro)
-        log_info "Detected Arch-based distribution (${ID})."
-        install_arch
-        ;;
       fedora)
         log_info "Detected Fedora (${ID} ${VERSION_ID:-unknown})."
         install_fedora

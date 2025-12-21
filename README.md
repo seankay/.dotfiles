@@ -3,7 +3,7 @@
 This stack keeps dotfiles portable across macOS and Linux while staying close to native tooling.
 
 - **Dotfiles management:** [`chezmoi`](https://www.chezmoi.io/) templates drive a single source of truth.
-- **Packages:** Homebrew on macOS, `pacman`/`yay` on Arch Linux, and `dnf` on Fedora.
+- **Packages:** Homebrew on macOS and `dnf` on Fedora.
 - **System automation:** Shell scripts keep the bootstrap idempotent while staying lightweight.
 - **Secrets:** Store confidential files via `chezmoi`'s `age` integration or a separate secret manager; the structure leaves room for either.
 
@@ -20,7 +20,6 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 │   ├── Brewfile
 │   ├── Brewfile.personal
 │   ├── Brewfile.work
-│   ├── arch-packages.txt
 │   └── fedora/
 │       └── apps/          <-- One install.sh per Fedora application
 ├── chezmoi/                <-- chezmoi source state (templates + dotfiles)
@@ -36,20 +35,6 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 ```
 
 ## Quick Start
-
-### (Arch) Linux
-
-1. Install Git
-2. Install 1Password
-3. Copy SSH keys from 1Password
-   - `mkdir -p ~/.ssh && chmod 700 ~/.ssh`
-   - Copy private key from 1Password and save as `~/.ssh/id_ed25519`, then `chmod 600 ~/.ssh/id_ed25519`
-   - Add GitHub to known hosts: `ssh-keyscan github.com >> ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts`
-   - Test SSH access: `ssh -T git@github.com`
-4. Clone the repository: `git clone git@github.com:seankay/dotfiles.git ~/.dotfiles && cd ~/.dotfiles`.
-5. Run the bootstrapper: `./bootstrap`.
-6. Open tmux and press Prefix + `I` to install/update configured plugins (tokyonight theme, navigator, battery, online-status, resurrect, continuum).
-7. `exec zsh`
 
 ### Fedora 43
 
@@ -98,13 +83,12 @@ Keep secrets out of the repo. Suggested options:
 ### Packages
 
 - macOS: maintain shared CLI packages in `packages/Brewfile`. Role-specific extras belong in `packages/Brewfile.personal` or `packages/Brewfile.work`, which run only when the matching `MACHINE_ROLE` is set (the cleanup step uses the union so nothing gets pruned unintentionally).
-- Arch Linux: maintain `packages/arch-packages.txt`. Use `pacman:<pkg>` for core packages and `aur:<pkg>` for AUR entries (requires `yay`).
 - Fedora: maintain one installer per application under `packages/fedora/apps/<app>/install.sh`. Each script sources `${FEDORA_INSTALL_HELPERS}` to gain helper functions such as `dnf_install`, `dnf_group_install`, `flatpak_install`, `rpm_install`, `github_install`, and `repo_setup`. This keeps repo setup, RPM/Flatpak installs, and any application-specific tweaks close to the software they configure.
 
 ### What `bootstrap` Handles Automatically
 
 - Installs prerequisite tooling (Homebrew, chezmoi) before applying dotfiles.
-- Runs the appropriate package installer for macOS/Arch (using Homebrew or `pacman`/`yay`).
+- Runs the appropriate package installer for macOS and Fedora (Homebrew or the Fedora app installers).
 - On macOS, prunes Homebrew packages that are not declared in the Brewfile.
 - Ensures `~/.local/bin` exists so your PATH includes a per-user bin directory.
 - Bootstraps TPM so tmux plugins can be installed with Prefix + `I`.

@@ -28,17 +28,6 @@ jobs:
       - name: Bootstrap dry-run
         run: ./bootstrap --dry-run
 
-  arch-manifest-check:
-    name: Arch manifest lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Validate arch package list syntax
-        run: |
-          set -euo pipefail
-          awk 'NF && $1 !~ /^#/' packages/arch-packages.txt >/dev/null
-
   scan:
     name: gitleaks
     runs-on: ubuntu-latest
