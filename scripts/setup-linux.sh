@@ -61,7 +61,7 @@ detect_dnf() {
 }
 install_fedora() {
   local apps_dir="${ROOT_DIR}/packages/fedora/apps"
-  local helper="${SCRIPT_DIR}/installers/fedora/helpers.sh"
+  local helper="${SCRIPT_DIR}/fedora-installer-helpers.sh"
   local dnf_bin
 
   if ! dnf_bin="$(detect_dnf)"; then
