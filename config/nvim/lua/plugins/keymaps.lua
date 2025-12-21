@@ -112,11 +112,42 @@ return { -- which-key: discoverable keymaps for your current setup
 				mode = { "n", "v" },
 			},
 			{
-				"<leader>at",
+				"<leader>an",
 				function()
 					require("sidekick.nes").toggle()
 				end,
 				desc = "Sidekick Toggle NES",
+			},
+			{
+				"<leader>at",
+				function()
+					require("sidekick.cli").send({ msg = "{this}" })
+				end,
+				mode = { "x", "n" },
+				desc = "Send This",
+			},
+			{
+				"<leader>af",
+				function()
+					require("sidekick.cli").send({ msg = "{file}" })
+				end,
+				desc = "Send File",
+			},
+			{
+				"<leader>av",
+				function()
+					require("sidekick.cli").send({ msg = "{selection}" })
+				end,
+				mode = { "x" },
+				desc = "Send Visual Selection",
+			},
+			{
+				"<leader>ap",
+				function()
+					require("sidekick.cli").prompt()
+				end,
+				mode = { "n", "x" },
+				desc = "Sidekick Select Prompt",
 			},
 			-- buffers
 			{
