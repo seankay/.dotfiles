@@ -178,24 +178,64 @@ gprune() {
     return 1
   fi
 
-  local main_branch origin_head
-  origin_head=$(command git symbolic-ref --quiet refs/remotes/origin/HEAD 2>/dev/null)
-  if [[ -n $origin_head ]]; then
-    main_branch=${origin_head#refs/remotes/origin/}
-  elif command git rev-parse --verify main >/dev/null 2>&1; then
-    main_branch=main
-  elif command git rev-parse --verify master >/dev/null 2>&1; then
-    main_branch=master
-  else
+  local main_branch main_ref current_branch target_rev
+  local log_prefix="[gprune]"
+  local debug=${GPRUNE_DEBUG:-1}
+  local log
+  log() {
+    [[ $debug -eq 0 ]] && return
+    echo "${log_prefix} $*"
+  }
+
+  main_branch=$(command git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null)
+  main_branch=${main_branch#origin/}
+  log "origin/HEAD -> ${main_branch:-<unset>}"
+
+  if [[ -z $main_branch ]]; then
+    if command git show-ref --verify --quiet refs/heads/main; then main_branch=main; fi
+    if [[ -z $main_branch ]] && command git show-ref --verify --quiet refs/heads/master; then main_branch=master; fi
+  fi
+
+  if [[ -z $main_branch ]]; then
     echo "gprune: unable to determine main branch" >&2
     return 1
   fi
+  main_ref="origin/${main_branch}"
+  current_branch=$(git_current_branch)
+  log "main branch: $main_branch"
+  log "current branch: $current_branch"
+  log "main ref: $main_ref"
 
-  command git checkout "$main_branch" || return 1
-  command git for-each-ref refs/heads --format='%(refname:short)' --merged "$main_branch" \
-    | while read -r branch; do
-        [[ -z $branch || $branch == "$main_branch" ]] && continue
-        command git branch -d "$branch"
+  log "fetching origin with prune (tags included)"
+  command git fetch --prune --tags origin >/dev/null 2>&1 || log "fetch failed (continuing with local refs)"
+
+  target_rev=$(command git rev-parse --verify "$main_ref" 2>/dev/null || command git rev-parse --verify "$main_branch" 2>/dev/null)
+  log "resolved target rev: ${target_rev:-<unset>}"
+  if [[ -z $target_rev ]]; then
+    echo "gprune: unable to resolve ${main_ref} or ${main_branch}" >&2
+    return 1
+  fi
+
+  log "scanning local branches for merge ancestor of ${target_rev}"
+  command git for-each-ref --format='%(refname:short) %(upstream:short)' "refs/heads" \
+    | while read -r branch upstream; do
+        [[ -z $branch ]] && continue
+        log "consider: $branch (upstream: ${upstream:-<none>})"
+        if [[ $branch == "$main_branch" ]]; then
+          log "skip: main branch"
+          continue
+        fi
+        if [[ $branch == "$current_branch" ]]; then
+          log "skip: current branch"
+          continue
+        fi
+
+        if command git merge-base --is-ancestor "$branch" "$target_rev" 2>/dev/null; then
+          log "merged into ${main_branch}; deleting $branch"
+          command git branch -d "$branch"
+        else
+          log "not merged; keep $branch"
+        fi
       done
 }
 
