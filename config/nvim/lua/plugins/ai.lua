@@ -1,5 +1,4 @@
 return {
-	-- AI assistant
 	{
 		"folke/sidekick.nvim",
 		opts = {

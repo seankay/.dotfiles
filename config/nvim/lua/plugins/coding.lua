@@ -123,7 +123,7 @@ return {
 				ruby = { "rubocop" },
 				javascript = { "eslint_d" },
 				typescript = { "eslint_d" },
-				javascriptreact = { "eslint_d" }, -- fixed spelling
+				javascriptreact = { "eslint_d" },
 				typescriptreact = { "eslint_d" },
 				go = { "golangcilint" },
 			},
@@ -131,6 +131,20 @@ return {
 		config = function(_, opts)
 			local lint = require("lint")
 			lint.linters_by_ft = opts.linters_by_ft or {}
+
+			-- Force eslint_d to run with CI=true and strip noisy prefix lines before JSON parse
+			if lint.linters.eslint_d then
+				local eslint_parser = lint.linters.eslint.parser
+				lint.linters.eslint_d = vim.tbl_extend("force", lint.linters.eslint_d, {
+					env = { CI = "true" },
+					parser = function(output, bufnr)
+						-- Remove any "Processing ..." log lines that eslint_d may emit to stdout
+						local cleaned = output:match("[%[{].*") or ""
+						return eslint_parser(cleaned, bufnr)
+					end,
+				})
+			end
+
 			local group = vim.api.nvim_create_augroup("nvim-lint-autocmds", { clear = true })
 
 			vim.api.nvim_create_autocmd(opts.events or { "BufWritePost" }, {
