@@ -52,12 +52,6 @@ return {
 			dashboard = {
 				enabled = true,
 				sections = {
-					{
-						section = "terminal",
-						cmd = "colorscripts-squares",
-						height = 5,
-						padding = 1,
-					},
 					{ section = "keys", gap = 1, padding = 1 },
 					{
 						icon = " ",
