@@ -289,3 +289,6 @@ eval "$(mise activate zsh)"
  if command -v sdxcli &>/dev/null; then
      eval "$(sdxcli output-shell-commands)"
  fi
+ if command -v zoxide &>/dev/null; then
+   eval "$(zoxide init zsh --cmd cd)"
+ fi

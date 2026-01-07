@@ -23,6 +23,7 @@ brew "wget"
 brew "zsh"
 brew "luarocks"
 brew "tree-sitter-cli"
+brew "zoxide"
 
 cask "betterdisplay"
 cask "caffeine"
