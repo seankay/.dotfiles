@@ -15,7 +15,7 @@ return {
 			scope = { enabled = true },
 			scroll = { enabled = true },
 			words = { enabled = true },
-			explorer = { enabled = false },
+			explorer = { enabled = true },
 			picker = {
 				enabled = true,
 				exclude = {
