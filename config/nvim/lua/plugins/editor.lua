@@ -18,6 +18,7 @@ return {
 			explorer = { enabled = true },
 			picker = {
 				enabled = true,
+				ignored = true,
 				exclude = {
 					"**/.git/*",
 					"node_modules",
@@ -27,6 +28,7 @@ return {
 				sources = {
 					files = {
 						hidden = true,
+						ignored = true,
 						exclude = {
 							"**/.git/*",
 							"node_modules",
@@ -34,6 +36,7 @@ return {
 					},
 					explorer = {
 						hidden = true,
+						ignored = true,
 						exclude = {
 							"**/.git/*",
 							"node_modules",
