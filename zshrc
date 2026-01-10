@@ -66,6 +66,7 @@ if [[ -d "${HOME}/.oh-my-zsh" ]]; then
     docker
     gh
     git
+    git-auto-fetch
   )
   source "${ZSH}/oh-my-zsh.sh"
 fi
