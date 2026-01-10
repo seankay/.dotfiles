@@ -74,17 +74,6 @@ return {
 								cmd = "git --no-pager diff --stat -B -M -C",
 								height = 6,
 							},
-							{
-								title = "Notifications",
-								cmd = "gh notify -s -a -n5",
-								action = function()
-									vim.ui.open("https://github.com/notifications")
-								end,
-								key = "n",
-								icon = " ",
-								height = 5,
-								enabled = true,
-							},
 						}
 						return vim.tbl_map(function(cmd)
 							return vim.tbl_extend("force", {

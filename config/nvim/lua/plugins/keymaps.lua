@@ -424,17 +424,17 @@ return { -- which-key: discoverable keymaps for your current setup
 			{ "<leader>gF", "<cmd>Git pull<cr>", desc = "Git pull" },
 			{ "<leader>gl", "<cmd>Git log<cr>", desc = "Git log" },
 
-			-- vim-rhubarb
 			{
 				"<leader>go",
 				"<cmd>GBrowse<cr>",
 				desc = "Open in GitHub (GBrowse)",
+				mode = "n",
 			},
 			{
-				"<leader>gO",
-				"<cmd>GBrowse!<cr>",
-				desc = "Open selection in GitHub (GBrowse!)",
-				mode = { "n", "v" },
+				"<leader>go",
+				":GBrowse<cr>",
+				desc = "Open in GitHub (GBrowse)",
+				mode = "x",
 			},
 
 			-- gitsigns.nvim
