@@ -23,7 +23,6 @@ return { -- which-key: discoverable keymaps for your current setup
 				{ "<leader>r", group = "Tasks" },
 				{ "<leader>b", group = "Buffer" },
 				{ "<leader>a", group = "AI" },
-				{ "<leader>s", group = "Spectre", icon = "󰛔" },
 				{ "<leader>l", group = "LSP", icon = "󰲽" },
 				{ "<leader>o", group = "Obsidian", icon = "" },
 				{ "<leader>d", group = "Debugger" },
@@ -347,19 +346,6 @@ return { -- which-key: discoverable keymaps for your current setup
 				end,
 				desc = "Find Keymap",
 				mode = { "n", "x" },
-			},
-
-			-- Replace: spectre
-			{ "<leader>st", '<cmd>lua require("spectre").toggle()<CR>', desc = "Toggle Spectre" },
-			{
-				"<leader>sw",
-				'<cmd>lua require("spectre").open_visual({select_word=true})<CR>',
-				desc = "Search current word",
-			},
-			{
-				"<leader>sp",
-				'<cmd>lua require("spectre").open_file_search({select_word=true})<CR>',
-				desc = "Search current word in file",
 			},
 
 			-- diagnostics
