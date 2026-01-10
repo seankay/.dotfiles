@@ -1,5 +1,3 @@
-# Managed via the dotfiles repo. Customize as needed.
-
 # --- Session defaults --------------------------------------------------------
 export DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"

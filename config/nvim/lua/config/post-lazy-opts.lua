@@ -11,11 +11,20 @@ vim.keymap.set("c", "%%", function()
 	return vim.fn.expand("%:h") .. "/"
 end, { expr = true })
 
--- Typos
-vim.api.nvim_create_user_command("W", "w", {})
-vim.api.nvim_create_user_command("Q", "q", {})
-vim.api.nvim_create_user_command("Wq", "wq", {})
-vim.api.nvim_create_user_command("WQ", "wq", {})
+-- Typos (command-line abbreviations)
+vim.cmd([[cabbrev W w]])
+vim.cmd([[cabbrev Wall wall]])
+vim.cmd([[cabbrev W! w!]])
+vim.cmd([[cabbrev Q q]])
+vim.cmd([[cabbrev Qall qall]])
+vim.cmd([[cabbrev Q! q!]])
+vim.cmd([[cabbrev Qall! qall!]])
+vim.cmd([[cabbrev Wq wq]])
+vim.cmd([[cabbrev WQ wq]])
+
+-- Keybinds
+map("n", "<leader>W", "<cmd>wall<cr>")
+map("n", "<leader>Q", "<cmd>qall<cr>")
 
 -- =====================================================================
 -- options

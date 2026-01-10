@@ -6,13 +6,6 @@ vim.opt.hidden = true
 vim.opt.encoding = "utf-8"
 vim.opt.showcmd = true
 vim.opt.number = true
--- vim.opt.guicursor = {
--- 	"n-v-c:block", -- Normal/Visual/Command: block cursor
--- 	"i-ci-ve:ver25", -- Insert/Command-line Insert/Visual-ex: vertical bar (beam)
--- 	"r-cr:hor20", -- Replace/Command-line Replace: horizontal underline
--- 	"o:hor50", -- Operator-pending: half-height block
--- 	"sm:block-blinkwait175-blinkoff150-blinkon175", -- showmatch
--- }
 
 -- Whitespace / indent
 vim.opt.wrap = false
