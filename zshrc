@@ -238,6 +238,18 @@ gprune() {
       done
 }
 
+function sesh-sessions() {
+  {
+    exec </dev/tty
+    exec <&1
+    local session
+    session=$(sesh list -t -c | fzf --ansi --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ')
+    zle reset-prompt > /dev/null 2>&1 || true
+    [[ -z "$session" ]] && return
+    sesh connect $session
+  }
+}
+
 # --- Aliases -----------------------------------------------------------------
 alias c='cd ~/c'
 alias cat='bat'
@@ -265,7 +277,8 @@ alias tf='terraform'
 alias tg='terragrunt'
 alias top='btop'
 alias vimdiff='${EDITOR} -d'
-alias s="kitten ssh"
+alias s="sesh"
+alias ss="sesh-sessions"
 
 case "$(uname -s)" in
   Darwin)
