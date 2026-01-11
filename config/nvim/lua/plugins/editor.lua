@@ -23,16 +23,12 @@ return {
 				},
 				sources = {
 					files = {
-						hidden = true,
-						ignored = true,
 						exclude = {
 							"**/.git/*",
 							"node_modules",
 						},
 					},
 					explorer = {
-						hidden = true,
-						ignored = true,
 						exclude = {
 							"**/.git/*",
 							"node_modules",
