@@ -5,6 +5,7 @@ ruby = "latest"
 python = "latest"
 elixir = "latest"
 erlang = "latest"
+opencode = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["ruby", "node"]
