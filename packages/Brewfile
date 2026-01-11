@@ -39,6 +39,7 @@ cask "shottr"
 cask "slack"
 cask "tableplus"
 cask "font-hack"
+cask "font-jetbrains-mono"
 cask "localsend"
 
 # Example Mac App Store entry:
