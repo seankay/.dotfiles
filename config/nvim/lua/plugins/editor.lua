@@ -18,7 +18,6 @@ return {
 			explorer = { enabled = true },
 			picker = {
 				enabled = true,
-				ignored = true,
 				exclude = {
 					"**/.git/*",
 					"node_modules",
