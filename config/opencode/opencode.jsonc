@@ -9,7 +9,7 @@
         "gpt-5-codex": {
           "options": {
             "store": false,
-            "reasoningEffort": "high",
+            "reasoningEffort": "medium",
             "textVerbosity": "medium",
             "reasoningSummary": "auto",
             "include": ["reasoning.encrypted_content"]
