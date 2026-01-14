@@ -115,12 +115,16 @@ return {
 			-- Force eslint_d to run with CI=true and strip noisy prefix lines before JSON parse
 			if lint.linters.eslint_d then
 				local eslint_parser = lint.linters.eslint.parser
-				lint.linters.eslint_d = vim.tbl_extend("force", lint.linters.eslint_d, {
+				local eslint_d = lint.linters.eslint_d
+				if type(eslint_d) == "function" then
+					eslint_d = eslint_d()
+				end
+				lint.linters.eslint_d = vim.tbl_extend("force", eslint_d, {
 					env = { CI = "true" },
-					parser = function(output, bufnr)
+					parser = function(output, bufnr, linter_cwd)
 						-- Remove any "Processing ..." log lines that eslint_d may emit to stdout
 						local cleaned = output:match("[%[{].*") or ""
-						return eslint_parser(cleaned, bufnr)
+						return eslint_parser(cleaned, bufnr, linter_cwd)
 					end,
 				})
 			end
