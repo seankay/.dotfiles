@@ -28,9 +28,7 @@ return { -- which-key: discoverable keymaps for your current setup
 				{ "<leader>d", group = "Debugger" },
 				{
 					"<leader>e",
-					function()
-						Snacks.explorer()
-					end,
+					"<cmd>Explore<cr>",
 					icon = "󰥨",
 					desc = "Explore",
 				},
