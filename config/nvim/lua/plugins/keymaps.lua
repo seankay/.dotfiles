@@ -23,7 +23,6 @@ return { -- which-key: discoverable keymaps for your current setup
 				{ "<leader>r", group = "Tasks" },
 				{ "<leader>b", group = "Buffer" },
 				{ "<leader>a", group = "AI" },
-				{ "<leader>s", group = "Spectre", icon = "󰛔" },
 				{ "<leader>l", group = "LSP", icon = "󰲽" },
 				{ "<leader>o", group = "Obsidian", icon = "" },
 				{ "<leader>d", group = "Debugger" },
@@ -349,19 +348,6 @@ return { -- which-key: discoverable keymaps for your current setup
 				mode = { "n", "x" },
 			},
 
-			-- Replace: spectre
-			{ "<leader>st", '<cmd>lua require("spectre").toggle()<CR>', desc = "Toggle Spectre" },
-			{
-				"<leader>sw",
-				'<cmd>lua require("spectre").open_visual({select_word=true})<CR>',
-				desc = "Search current word",
-			},
-			{
-				"<leader>sp",
-				'<cmd>lua require("spectre").open_file_search({select_word=true})<CR>',
-				desc = "Search current word in file",
-			},
-
 			-- diagnostics
 			{
 				"<leader>xn",
@@ -435,64 +421,6 @@ return { -- which-key: discoverable keymaps for your current setup
 				":GBrowse<cr>",
 				desc = "Open in GitHub (GBrowse)",
 				mode = "x",
-			},
-
-			-- gitsigns.nvim
-			{
-				"<leader>g[",
-				function()
-					require("gitsigns").nav_hunk("prev")
-				end,
-				desc = "Next Git hunk",
-			},
-			{
-				"<leader>g]",
-				function()
-					require("gitsigns").nav_hunk("next")
-				end,
-				desc = "Prev Git hunk",
-			},
-			{
-				"<leader>gp",
-				function()
-					require("gitsigns").preview_hunk()
-				end,
-				desc = "Preview hunk",
-			},
-			{
-				"<leader>gr",
-				function()
-					require("gitsigns").reset_hunk()
-				end,
-				desc = "Reset hunk",
-			},
-			{
-				"<leader>gR",
-				function()
-					require("gitsigns").reset_buffer()
-				end,
-				desc = "Reset buffer",
-			},
-			{
-				"<leader>gs",
-				function()
-					require("gitsigns").stage_hunk()
-				end,
-				desc = "[Un]stage hunk",
-			},
-			{
-				"<leader>gS",
-				function()
-					require("gitsigns").stage_buffer()
-				end,
-				desc = "Stage buffer",
-			},
-			{
-				"<leader>gd",
-				function()
-					require("gitsigns").diffthis()
-				end,
-				desc = "Git diff against index",
 			},
 
 			-- Tests (neotest)

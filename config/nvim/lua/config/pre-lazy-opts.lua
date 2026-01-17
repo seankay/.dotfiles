@@ -21,13 +21,17 @@ vim.opt.smartindent = true
 vim.opt.backup = false
 vim.opt.writebackup = false
 
+-- Undo
+vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+vim.opt.undofile = true
+
 -- UI / perf
 -- vim.opt.cmdheight = 0
 vim.opt.updatetime = 300
 vim.opt.shortmess:append("c")
 
 -- Search
-vim.opt.hlsearch = true
+vim.opt.hlsearch = false
 vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true

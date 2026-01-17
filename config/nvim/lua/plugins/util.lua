@@ -2,7 +2,7 @@ return {
 	{ "christoomey/vim-tmux-navigator" },
 	{
 		"folke/lazydev.nvim",
-		ft = "lua", -- only load on lua files
+		ft = "lua",
 		opts = {
 			library = {
 				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },

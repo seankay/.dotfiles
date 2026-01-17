@@ -46,6 +46,26 @@ return {
 
 	{
 		"neovim/nvim-lspconfig",
+		dependencies = { "saghen/blink.cmp" },
+		config = function()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
+			local servers = {
+				"copilot",
+				"gopls",
+				"graphql",
+				"lua_ls",
+				"pyright",
+				"ruby_lsp",
+				"terraformls",
+				"ts_ls",
+				"eslint",
+			}
+
+			for _, server in ipairs(servers) do
+				vim.lsp.config(server, { capabilities = capabilities })
+				vim.lsp.enable(server)
+			end
+		end,
 	},
 	-- Mason <-> LSP bridge (auto-enables servers)
 	{
@@ -68,10 +88,6 @@ return {
 			"neovim/nvim-lspconfig",
 		},
 	},
-	-- {
-	-- 	"enochchau/nvim-pretty-ts-errors",
-	-- 	build = "npm install",
-	-- },
 	{
 		"ray-x/go.nvim",
 		dependencies = { -- optional packages

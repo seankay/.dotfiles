@@ -1,10 +1,6 @@
 return {
 	{ "folke/trouble.nvim", opts = {}, cmd = "Trouble" },
 	{
-		"nvim-pack/nvim-spectre",
-		opts = {},
-	},
-	{
 		"folke/snacks.nvim",
 		priority = 1000,
 		lazy = false,

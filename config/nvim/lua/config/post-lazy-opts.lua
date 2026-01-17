@@ -26,6 +26,22 @@ vim.cmd([[cabbrev WQ wq]])
 map("n", "<leader>W", "<cmd>wall<cr>")
 map("n", "<leader>Q", "<cmd>qall<cr>")
 
+-- visual move
+map("v", "J", ":m '>+1<CR>gv=gv")
+map("v", "K", ":m '<-2<CR>gv=gv")
+-- cursor stays in place while running commands in normal mode
+map("n", "J", "mzJ`z")
+map("n", "<C-d>", "<C-d>zz")
+map("n", "<C-d>", "<C-u>zz")
+map("n", "n", "nzzzv")
+map("n", "N", "Nzzzv")
+
+-- keep yanked work when pasting
+map("x", "<leader>p", '"_dP')
+
+-- replace word under cursor
+vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+
 -- =====================================================================
 -- options
 -- =====================================================================
