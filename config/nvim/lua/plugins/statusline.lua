@@ -4,7 +4,7 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = function(_, opts)
 			local auto = require("lualine.themes.auto")
-			local colors = require("tokyonight.colors").setup()
+			local colors = require("oldworld.palette")
 			local bg = colors.bg
 			local fg = colors.fg
 

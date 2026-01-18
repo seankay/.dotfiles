@@ -14,7 +14,6 @@ return {
 				"hcl",
 				"javascript",
 				"json",
-				"jsonc",
 				"lua",
 				"markdown",
 				"markdown_inline",
@@ -24,7 +23,6 @@ return {
 				"terraform",
 				"tsx",
 				"typescript",
-				"typescriptreact",
 				"vim",
 				"vimdoc",
 			}
