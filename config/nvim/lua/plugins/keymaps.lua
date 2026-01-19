@@ -28,9 +28,9 @@ return { -- which-key: discoverable keymaps for your current setup
 				{ "<leader>d", group = "Debugger" },
 				{
 					"<leader>e",
-					"<cmd>Explore<cr>",
+					"<cmd>Oil<cr>",
 					icon = "󰥨",
-					desc = "Explore",
+					desc = "Oil",
 				},
 				{
 					"<leader>/",
