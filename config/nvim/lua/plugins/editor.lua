@@ -44,7 +44,7 @@ return {
 				},
 			},
 			dashboard = {
-				enabled = true,
+				enabled = false,
 				sections = {
 					{ section = "keys", gap = 1, padding = 1 },
 					{

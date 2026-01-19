@@ -16,4 +16,20 @@ return {
 		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
 		opts = {},
 	},
+	{
+		"stevearc/oil.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+		lazy = false,
+		opts = {
+			delete_to_trash = true,
+			keymaps = {
+				["<C-o>"] = "actions.preview",
+				["<C-p>"] = false,
+			},
+			view_options = {
+				show_hidden = true,
+			},
+		},
+	},
 }
