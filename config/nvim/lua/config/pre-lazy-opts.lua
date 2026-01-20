@@ -1,7 +1,7 @@
 -- =====================================================================
 -- Options
 -- =====================================================================
-vim.g.mapleader = " " -- leader
+vim.g.mapleader = "," -- leader
 vim.opt.hidden = true
 vim.opt.encoding = "utf-8"
 vim.opt.showcmd = true
