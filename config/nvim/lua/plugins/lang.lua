@@ -47,14 +47,6 @@ return {
 		dependencies = { "saghen/blink.cmp" },
 		config = function()
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
-			local inlay_group = vim.api.nvim_create_augroup("LspInlayHints", { clear = true })
-			vim.api.nvim_create_autocmd("FileType", {
-				group = inlay_group,
-				pattern = { "go", "gomod" },
-				callback = function(ev)
-					vim.lsp.inlay_hint.enable(false, { bufnr = ev.buf })
-				end,
-			})
 			local servers = {
 				"copilot",
 				"gopls",
