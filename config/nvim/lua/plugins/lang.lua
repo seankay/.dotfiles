@@ -13,6 +13,7 @@ return {
 				"graphql",
 				"hcl",
 				"javascript",
+				"jsdoc",
 				"json",
 				"lua",
 				"markdown",
