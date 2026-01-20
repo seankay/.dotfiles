@@ -5,7 +5,7 @@ return {
 		lazy = false,
 		build = ":TSUpdate",
 		config = function()
-			local langs = {
+			local parsers = {
 				"bash",
 				"elixir",
 				"erlang",
@@ -28,13 +28,16 @@ return {
 				"vimdoc",
 			}
 
+			local filetypes = vim.deepcopy(parsers)
+			vim.list_extend(filetypes, { "javascriptreact", "typescriptreact" })
+
 			-- keep desired parsers up to date
-			require("nvim-treesitter").install(langs, { summary = true })
+			require("nvim-treesitter").install(parsers, { summary = true })
 
 			local group = vim.api.nvim_create_augroup("TreesitterFeatures", {})
 			vim.api.nvim_create_autocmd("FileType", {
 				group = group,
-				pattern = langs,
+				pattern = filetypes,
 				callback = function(ev)
 					vim.treesitter.start(ev.buf) -- syntax highlighting (built into Neovim)
 					vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
