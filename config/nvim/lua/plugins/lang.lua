@@ -64,7 +64,19 @@ return {
 			}
 
 			for _, server in ipairs(servers) do
-				vim.lsp.config(server, { capabilities = capabilities })
+				local settings = nil
+				if server == "lua_ls" then
+					settings = {
+						Lua = {
+							diagnostics = { globals = { "vim" } },
+							workspace = {
+								library = vim.api.nvim_get_runtime_file("", true),
+								checkThirdParty = false,
+							},
+						},
+					}
+				end
+				vim.lsp.config(server, { capabilities = capabilities, settings = settings })
 				vim.lsp.enable(server)
 			end
 		end,
