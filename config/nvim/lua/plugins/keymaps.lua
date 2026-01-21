@@ -16,16 +16,16 @@ return { -- which-key: discoverable keymaps for your current setup
 				align = "left",
 			},
 			spec = {
-				{ "<leader>g", group = "Git" },
-				{ "<leader>t", group = "Tests", icon = "󰙨" },
-				{ "<leader>f", group = "Find" },
-				{ "<leader>x", group = "Diagnostics" },
-				{ "<leader>r", group = "Tasks" },
-				{ "<leader>b", group = "Buffer" },
-				{ "<leader>a", group = "AI" },
-				{ "<leader>l", group = "LSP", icon = "󰲽" },
-				{ "<leader>o", group = "Obsidian", icon = "" },
-				{ "<leader>d", group = "Debugger" },
+				{ "<leader>g", group = "[Git]" },
+				{ "<leader>t", group = "[T]ests", icon = "󰙨" },
+				{ "<leader>f", group = "[F]ind" },
+				{ "<leader>x", group = "[D]iagnostics" },
+				{ "<leader>r", group = "[T]asks" },
+				{ "<leader>b", group = "[B]uffer" },
+				{ "<leader>a", group = "[A]I" },
+				{ "<leader>l", group = "[L]SP", icon = "󰲽" },
+				{ "<leader>o", group = "[O]bsidian", icon = "" },
+				{ "<leader>d", group = "[D]ebugger" },
 				{
 					"<leader>e",
 					"<cmd>Oil<cr>",
@@ -148,19 +148,6 @@ return { -- which-key: discoverable keymaps for your current setup
 				mode = { "n", "x" },
 				desc = "Sidekick Select Prompt",
 			},
-			-- buffers
-			{
-				"H",
-				"<cmd>BufferLineCyclePrev<cr>",
-				desc = "Previous buffer",
-				mode = "n",
-			},
-			{
-				"L",
-				"<cmd>BufferLineCycleNext<cr>",
-				desc = "Next buffer",
-				mode = "n",
-			},
 			--Windows
 			-- Split windows
 			{
@@ -214,33 +201,6 @@ return { -- which-key: discoverable keymaps for your current setup
 				desc = "Previous buffer",
 				mode = "n",
 			},
-
-			-- If using bufferline.nvim
-			{
-				"<leader>bl",
-				"<cmd>BufferLinePick<cr>",
-				desc = "Pick buffer",
-				mode = "n",
-			},
-			{
-				"<leader>bp",
-				"<cmd>BufferLineTogglePin<cr>",
-				desc = "Toggle pin",
-				mode = "n",
-			},
-			{
-				"<leader>bP",
-				"<cmd>BufferLineGroupClose ungrouped<cr>",
-				desc = "Close unpinned",
-				mode = "n",
-			},
-			{
-				"<leader>bN",
-				"<cmd>new<cr>",
-				desc = "New buffer",
-				mode = "n",
-			},
-
 			-- files / nav
 			{
 				"<leader><leader>",
