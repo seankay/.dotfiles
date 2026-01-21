@@ -101,6 +101,7 @@ return {
 				end
 				lint.linters.eslint_d = vim.tbl_extend("force", eslint_d, {
 					env = { CI = "true" },
+					args = vim.list_extend(eslint_d.args or {}, { "--no-warn-ignored" }),
 					parser = function(output, bufnr, linter_cwd)
 						-- Remove any "Processing ..." log lines that eslint_d may emit to stdout
 						local cleaned = output:match("[%[{].*") or ""
