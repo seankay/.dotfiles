@@ -1,5 +1,10 @@
 return {
 	{
+		"nvim-mini/mini.ai",
+		version = "*",
+		opts = {},
+	},
+	{
 		"nvim-mini/mini.surround",
 		version = "*",
 		opts = {
