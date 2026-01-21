@@ -32,7 +32,7 @@ map("v", "K", ":m '<-2<CR>gv=gv")
 -- cursor stays in place while running commands in normal mode
 map("n", "J", "mzJ`z")
 map("n", "<C-d>", "<C-d>zz")
-map("n", "<C-d>", "<C-u>zz")
+map("n", "<C-u>", "<C-u>zz")
 map("n", "n", "nzzzv")
 map("n", "N", "Nzzzv")
 

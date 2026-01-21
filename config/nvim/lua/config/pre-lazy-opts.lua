@@ -27,7 +27,6 @@ vim.opt.undofile = true
 
 -- UI / perf
 -- vim.opt.cmdheight = 0
-vim.opt.updatetime = 300
 vim.opt.shortmess:append("c")
 
 -- Search
