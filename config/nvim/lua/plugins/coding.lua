@@ -1,5 +1,4 @@
 return {
-	{ "tpope/vim-endwise" },
 	{
 		"nvim-mini/mini.surround",
 		version = "*",
