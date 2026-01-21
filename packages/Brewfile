@@ -1,5 +1,6 @@
 # macOS packages managed by Homebrew Bundle.
 
+brew "btop"
 brew "direnv"
 brew "gcc"
 brew "git"

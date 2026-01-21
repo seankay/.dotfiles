@@ -1,8 +1,6 @@
 [tools]
 "cargo:stylua" = "latest"
 "cargo:tree-sitter-cli" = "latest"
-"gem:rubocop" = "latest"
-"gem:ruby-lsp" = "latest"
 "github:LuaLS/lua-language-server" = "latest"
 "go:github.com/golangci/golangci-lint/cmd/golangci-lint" = "latest"
 "go:github.com/hashicorp/terraform-ls" = "latest"
@@ -22,7 +20,7 @@
 "pipx:trash-cli" = "latest"
 awscli = "latest"
 bat = "latest"
-btop = "latest"
+btop = { version = "latest", os = ["linux"] }
 elixir = "latest"
 erlang = "latest"
 eza = "latest"
