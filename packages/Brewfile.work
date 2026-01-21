@@ -3,9 +3,7 @@
 # Example:
 # cask "microsoft-teams"
 
-brew "awscli"
 brew "go-task"
-brew "redis"
 
 cask "google-drive"
 cask "session-manager-plugin"
