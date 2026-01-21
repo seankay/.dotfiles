@@ -1,9 +1,11 @@
 # macOS packages managed by Homebrew Bundle.
 
+brew "bat"
 brew "btop"
 brew "direnv"
 brew "gcc"
 brew "git"
+brew "gh"
 brew "mise"
 brew "neovim"
 brew "sesh"
