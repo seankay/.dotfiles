@@ -16,6 +16,7 @@
 "npm:pyright" = "latest"
 "npm:typescript-language-server" = "latest"
 "pipx:black" = "latest"
+"pipx:httpie" = "latest"
 "pipx:pre-commit" = "latest"
 "pipx:trash-cli" = "latest"
 awscli = "latest"
