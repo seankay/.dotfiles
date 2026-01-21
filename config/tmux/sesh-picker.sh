@@ -2,7 +2,7 @@
 
 set -o pipefail
 
-export PATH="$HOME/.local/share/mise/shims:$HOME/.local/share/mise/bin:$HOME/.fzf/bin:$HOME/.local/bin:$HOME/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+export PATH="$HOME/.local/share/mise/installs:$HOME/.local/share/mise/shims:$HOME/.local/share/mise/bin:$HOME/.fzf/bin:$HOME/.local/bin:$HOME/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 
 require_cmd() {
 	local cmd="$1"
