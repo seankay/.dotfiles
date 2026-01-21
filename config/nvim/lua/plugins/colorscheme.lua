@@ -1,11 +1,14 @@
 return {
 	{
-		"dgox16/oldworld.nvim",
+		"folke/tokyonight.nvim",
 		lazy = false,
 		priority = 1000,
+		opts = {
+			transparent = true,
+		},
 		config = function(_, opts)
-			require("oldworld").setup(opts)
-			vim.cmd.colorscheme("oldworld")
+			require("tokyonight").setup(opts)
+			vim.cmd.colorscheme("tokyonight-night")
 		end,
 	},
 }

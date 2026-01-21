@@ -48,7 +48,7 @@ if command -v fzf >/dev/null 2>&1 && [[ -f "${HOME}/.fzf.zsh" ]]; then
 fi
 
 if command -v oh-my-posh >/dev/null 2>&1; then
-  theme_path="${XDG_CONFIG_HOME:-${HOME}/.config}/oh-my-posh/themes/oldworld.json"
+  theme_path="${XDG_CONFIG_HOME:-${HOME}/.config}/oh-my-posh/themes/tokyonight_night.json"
   if [[ -r "${theme_path}" ]]; then
     cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/oh-my-posh"
     mkdir -p "${cache_dir}"

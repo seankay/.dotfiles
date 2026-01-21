@@ -15,6 +15,7 @@ return {
 				"javascript",
 				"jsdoc",
 				"json",
+				"jsonc",
 				"lua",
 				"markdown",
 				"markdown_inline",
@@ -24,6 +25,7 @@ return {
 				"terraform",
 				"tsx",
 				"typescript",
+				"typescriptreact",
 				"vim",
 				"vimdoc",
 			}
