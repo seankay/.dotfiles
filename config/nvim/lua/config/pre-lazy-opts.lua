@@ -89,3 +89,10 @@ vim.opt.foldenable = true
 --diagnostics
 vim.o.updatetime = 250 -- Adjust this value to control the delay
 vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
+vim.diagnostic.config({
+	virtual_text = {
+		severity = { min = vim.diagnostic.severity.WARN },
+		spacing = 4,
+		prefix = "●",
+	},
+})
