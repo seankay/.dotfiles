@@ -5,4 +5,3 @@ vim.g.path_dev = vim.env.HOME .. "/c"
 require("config.pre-lazy-opts")
 require("config.lazy")
 require("config.post-lazy-opts")
-require("statusline")
