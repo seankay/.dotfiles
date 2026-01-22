@@ -15,6 +15,7 @@
 "npm:opencode-ai" = "latest"
 "npm:pyright" = "latest"
 "npm:typescript-language-server" = "latest"
+"npm:vscode-langservers-extracted" = "latest"
 "pipx:black" = "latest"
 "pipx:httpie" = "latest"
 "pipx:pre-commit" = "latest"

@@ -57,6 +57,7 @@ return {
 				"copilot",
 				"gopls",
 				"graphql",
+				"jsonls",
 				"lua_ls",
 				"pyright",
 				"ruby_lsp",
