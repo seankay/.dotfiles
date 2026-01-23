@@ -12,6 +12,19 @@ return {
 				background_colour = "#000000",
 			}, opts))
 
+			local function map_noice_scroll(lhs, delta)
+				vim.keymap.set({ "n", "i", "s" }, lhs, function()
+					local ok, lsp = pcall(require, "noice.lsp")
+					if ok and lsp.scroll(delta) then
+						return ""
+					end
+					return lhs
+				end, { silent = true, expr = true, desc = "Scroll Noice floating window" })
+			end
+
+			map_noice_scroll("<C-f>", 4)
+			map_noice_scroll("<C-b>", -4)
+
 			return {
 				lsp = {
 					-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
