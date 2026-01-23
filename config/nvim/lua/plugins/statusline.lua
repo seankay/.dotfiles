@@ -3,17 +3,35 @@ return {
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = function(_, opts)
-			local auto = require("lualine.themes.auto")
-			local colors = require("tokyonight.colors").setup()
+			local theme = (function()
+				local ok, rose = pcall(require, "lualine.themes.rose-pine")
+				if ok then
+					return vim.deepcopy(rose)
+				end
+				return require("lualine.themes.auto")
+			end)()
+
+			local palette = require("rose-pine.palette")
+			local colors = {
+				bg = palette.surface,
+				fg = palette.text,
+				subtle = palette.subtle,
+				muted = palette.muted,
+				blue = palette.iris,
+				green = palette.pine,
+				yellow = palette.gold,
+				red = palette.love,
+				teal = palette.foam,
+				text = palette.text,
+			}
 			local bg = colors.bg
-			local fg = colors.fg
 
 			local function separator()
 				return {
 					function()
 						return "│"
 					end,
-					color = { fg = fg, bg = bg, gui = "bold" },
+					color = { fg = colors.subtle, bg = bg, gui = "bold" },
 					padding = { left = 1, right = 1 },
 				}
 			end
@@ -31,13 +49,13 @@ return {
 
 			local modes = { "normal", "insert", "visual", "replace", "command", "inactive", "terminal" }
 			for _, mode in ipairs(modes) do
-				if auto[mode] and auto[mode].c then
-					auto[mode].c.bg = bg
+				if theme[mode] and theme[mode].c then
+					theme[mode].c.bg = bg
 				end
 			end
 
 			opts.options = vim.tbl_deep_extend("force", opts.options or {}, {
-				theme = auto,
+				theme = theme,
 				component_separators = "",
 				section_separators = "",
 				globalstatus = true,

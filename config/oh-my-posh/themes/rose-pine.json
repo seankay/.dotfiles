@@ -1,14 +1,14 @@
 {
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
   "palette": {
-    "os": "#ACB0BE",
+    "os": "#6e6a86",
     "closer": "p:os",
-    "pink": "#F5C2E7",
-    "lavender": "#9d7cd8",
-    "blue": "#7aa2f7",
-    "green": "#9ece6a",
-    "yellow": "#e0af68",
-    "red": "#f7768e"
+    "pink": "#ebbcba",
+    "lavender": "#c4a7e7",
+    "blue": "#9ccfd8",
+    "green": "#31748f",
+    "yellow": "#f6c177",
+    "red": "#eb6f92"
   },
   "transient_prompt": {
     "background": "transparent",

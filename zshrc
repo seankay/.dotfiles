@@ -290,7 +290,7 @@ eval "$(mise activate zsh)"
 
 # ensure mise installed tools remain under this line
 if command -v oh-my-posh >/dev/null 2>&1; then
-  theme_path="${XDG_CONFIG_HOME:-${HOME}/.config}/oh-my-posh/themes/tokyonight_night.json"
+  theme_path="${XDG_CONFIG_HOME:-${HOME}/.config}/oh-my-posh/themes/rose-pine.json"
   if [[ -r "${theme_path}" ]]; then
     cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/oh-my-posh"
     mkdir -p "${cache_dir}"
