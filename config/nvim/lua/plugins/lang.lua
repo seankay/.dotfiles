@@ -15,7 +15,6 @@ return {
 				"javascript",
 				"jsdoc",
 				"json",
-				"jsonc",
 				"lua",
 				"markdown",
 				"markdown_inline",
@@ -25,13 +24,19 @@ return {
 				"terraform",
 				"tsx",
 				"typescript",
-				"typescriptreact",
 				"vim",
 				"vimdoc",
 			}
 
 			local filetypes = vim.deepcopy(parsers)
-			vim.list_extend(filetypes, { "javascriptreact", "typescriptreact" })
+			vim.list_extend(filetypes, { "javascriptreact", "jsonc", "typescriptreact" })
+
+			local language = vim.treesitter.language
+			if language and language.register then
+				language.register("javascript", "javascriptreact")
+				language.register("json", "jsonc")
+				language.register("tsx", "typescriptreact")
+			end
 
 			-- keep desired parsers up to date
 			require("nvim-treesitter").install(parsers, { summary = true })
