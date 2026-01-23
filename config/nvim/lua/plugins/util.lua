@@ -12,6 +12,11 @@ return {
 		},
 	},
 	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
+		opts = {},
+	},
+	{
 		"stevearc/oil.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
