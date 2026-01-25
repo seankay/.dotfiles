@@ -134,7 +134,7 @@ cleanup_sources=("${brewfile}")
 if "${DRY_RUN}"; then
   run brew bundle check --file "${brewfile}"
 else
-  run brew bundle --file "${brewfile}"
+  run brew bundle --verbose --file "${brewfile}"
 fi
 
 if [[ "${MACHINE_ROLE}" == "personal" ]]; then
