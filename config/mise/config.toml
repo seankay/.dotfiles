@@ -1,6 +1,7 @@
 [tools]
 "cargo:stylua" = "latest"
 "cargo:tree-sitter-cli" = "latest"
+"cargo:bob-nvim" = "latest"
 "github:LuaLS/lua-language-server" = "latest"
 "go:github.com/golangci/golangci-lint/cmd/golangci-lint" = "latest"
 "go:github.com/hashicorp/terraform-ls" = "latest"

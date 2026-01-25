@@ -1,0 +1,64 @@
+-- plugins
+vim.pack.add({
+  { src = "https://github.com/rose-pine/neovim" },
+  { src = "https://github.com/nvim-mini/mini.ai" },
+  { src = "https://github.com/nvim-mini/mini.surround" },
+  { src = "https://github.com/nvim-mini/mini.pick" },
+  { src = "https://github.com/nvim-mini/mini.hipatterns" },
+  { src = "https://github.com/nvim-mini/mini.extra" },
+  { src = "https://github.com/tpope/vim-fugitive" },
+  { src = "https://github.com/tpope/vim-rhubarb" },
+  { src = "https://github.com/lewis6991/gitsigns.nvim" },
+  { src = "https://github.com/christoomey/vim-tmux-navigator" },
+  { src = "https://github.com/stevearc/oil.nvim" },
+})
+
+vim.cmd("colorscheme rose-pine")
+
+require('mini.extra').setup()
+local hipatterns = require("mini.hipatterns")
+hipatterns.setup({
+  highlighters = {
+    fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
+    hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
+    todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
+    note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
+
+    hex_color = hipatterns.gen_highlighter.hex_color(),
+  },
+})
+require("mini.pick").setup({
+  mappings = {
+    choose_marked = '<C-q>',
+    mark = '<tab>'
+  },
+  window = {
+    config = {
+      relative = 'cursor',
+      anchor = 'NW',
+      row = 0,
+      col = 0,
+      width = 40,
+      height = 20,
+    },
+  },
+})
+require("mini.surround").setup()
+require("oil").setup({
+  delete_to_trash = true,
+  keymaps = {
+    ["<C-o>"] = "actions.preview",
+    ["<C-p>"] = false,
+  },
+  view_options = {
+    show_hidden = true,
+  },
+})
+
+require("opts")
+require("lsp")
+require("statusline")
+require("keymaps")
+require("completion")
+require("treesitter")
+require("undotree_setup")
