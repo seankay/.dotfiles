@@ -34,7 +34,7 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 ### Fedora 43
 
 1. Install Git
-2. Clone the repository: `git clone git@github.com:seankay/dotfiles.git ~/.dotfiles && cd ~/.dotfiles`.
+2. Clone the repository: `git clone ssh://git@codeberg.org/seankay/.dotfiles.git ~/.dotfiles && cd ~/.dotfiles`.
 3. Run the bootstrapper: `./bootstrap --update` (executes the app installers under `packages/fedora/apps`).
 4. Open tmux and press Prefix + `I` to install/update configured plugins
 5. `exec zsh`
