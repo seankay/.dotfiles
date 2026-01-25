@@ -1,4 +1,3 @@
-vim.g.mapleader = ","
 vim.o.hidden = true
 vim.o.encoding = "utf-8"
 vim.o.showcmd = true

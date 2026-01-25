@@ -1,6 +1,6 @@
 -- plugins
 vim.pack.add({
-  { src = "https://github.com/rose-pine/neovim" },
+  { src = "https://github.com/vague-theme/vague.nvim" },
   { src = "https://github.com/nvim-mini/mini.ai" },
   { src = "https://github.com/nvim-mini/mini.surround" },
   { src = "https://github.com/nvim-mini/mini.pick" },
@@ -13,7 +13,7 @@ vim.pack.add({
   { src = "https://github.com/stevearc/oil.nvim" },
 })
 
-vim.cmd("colorscheme rose-pine")
+vim.cmd("colorscheme vague")
 
 require('mini.extra').setup()
 local hipatterns = require("mini.hipatterns")
@@ -59,9 +59,9 @@ require("oil").setup({
 })
 
 require("opts")
+require("keymaps")
 require("lsp")
 require("statusline")
-require("keymaps")
 require("completion")
 require("treesitter")
 require("undotree_setup")
