@@ -101,8 +101,35 @@ function M.lsp_status()
   return label
 end
 
+function M.mode()
+  local modes = {
+    ["n"] = "N",
+    ["no"] = "N",
+    ["v"] = "V",
+    ["V"] = "V",
+    [""] = "V",
+    ["s"] = "S",
+    ["S"] = "S",
+    [""] = "S",
+    ["i"] = "I",
+    ["ic"] = "I",
+    ["R"] = "I",
+    ["Rv"] = "V",
+    ["c"] = "!",
+    ["cv"] = "!",
+    ["ce"] = "!",
+    ["r"] = "?",
+    ["rm"] = "?",
+    ["r?"] = "?",
+    ["!"] = "!",
+    ["t"] = "T",
+  }
+  return string.format("%s", modes[vim.api.nvim_get_mode().mode])
+end
+
 function M.statusline()
   return table.concat({
+    " " .. M.mode(),
     " " .. M.git_branch(),
     " ",
     " %f",  -- file
