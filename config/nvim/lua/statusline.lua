@@ -105,7 +105,7 @@ function M.statusline()
   return table.concat({
     " " .. M.git_branch(),
     " ",
-    " %f", -- file
+    " %f",  -- file
     "%m%r", -- modified/readonly
     " %= ",
     " " .. M.lsp_status(),
