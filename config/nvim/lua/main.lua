@@ -11,6 +11,7 @@ vim.pack.add({
   { src = "https://github.com/lewis6991/gitsigns.nvim" },
   { src = "https://github.com/christoomey/vim-tmux-navigator" },
   { src = "https://github.com/stevearc/oil.nvim" },
+  { src = "https://github.com/stevearc/conform.nvim" },
 })
 
 vim.cmd("colorscheme vague")
@@ -56,6 +57,20 @@ require("oil").setup({
   view_options = {
     show_hidden = true,
   },
+})
+
+require("conform").setup({
+  formatters_by_ft = {
+    javascript = { "prettierd" },
+    javascriptreact = { "prettierd" },
+    typescript = { "prettierd" },
+    typescriptreact = { "prettierd" },
+    json = { "prettierd" },
+    markdown = { "prettierd" },
+  },
+  format_on_save = function()
+    return { lsp_fallback = true, timeout_ms = 2000 }
+  end,
 })
 
 require("opts")
