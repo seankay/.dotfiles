@@ -1,5 +1,5 @@
 -- Keymaps
-vim.g.mapleader = "," -- init before mappings
+vim.g.mapleader = " " -- init before mappings
 local map = vim.keymap.set
 
 map("i", "jj", "<Esc>")
