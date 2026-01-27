@@ -10,6 +10,7 @@ export GIT_PAGER="${GIT_PAGER:-less}"
 export KEYTIMEOUT=20
 export WORDCHARS="*?[]~&;!$%^<>"
 export EZA_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}"
+export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/ripgrep.conf"
 
 DOTFILES_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/dotfiles"
 DOTFILES_LOCAL_ENV="${DOTFILES_CONFIG_HOME}/local.env"
