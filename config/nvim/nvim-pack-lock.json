@@ -12,6 +12,10 @@
       "rev": "abf82a65f185bd54adc0679f74b7d6e1ada690c9",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
+    "kitty-scrollback.nvim": {
+      "rev": "5574df779fbe03205a08af4d9154279ff491be75",
+      "src": "https://github.com/mikesmithgh/kitty-scrollback.nvim"
+    },
     "mini.ai": {
       "rev": "9eae720f2b20f6ad28cbfa0ddc524e10dc2c3201",
       "src": "https://github.com/nvim-mini/mini.ai"

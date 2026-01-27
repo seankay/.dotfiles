@@ -10,8 +10,11 @@ vim.pack.add({
   { src = "https://github.com/tpope/vim-rhubarb" },
   { src = "https://github.com/lewis6991/gitsigns.nvim" },
   { src = "https://github.com/knubie/vim-kitty-navigator" },
+  { src = "https://github.com/mikesmithgh/kitty-scrollback.nvim" },
   { src = "https://github.com/stevearc/oil.nvim" },
 })
+
+require('kitty-scrollback').setup()
 
 vim.cmd("colorscheme vague")
 

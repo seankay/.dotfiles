@@ -271,6 +271,7 @@ alias top='btop'
 alias vimdiff='${EDITOR} -d'
 alias s="sesh"
 alias ss="sesh-sessions"
+alias icat="kitten icat"
 
 case "$(uname -s)" in
   Darwin)
