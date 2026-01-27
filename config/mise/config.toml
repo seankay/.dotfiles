@@ -40,7 +40,7 @@ python = "latest"
 redis = "latest"
 ripgrep = "latest"
 ruby = "latest"
-rust = "latest"
+rust = "nightly"
 zoxide = "latest"
 
 [settings]
