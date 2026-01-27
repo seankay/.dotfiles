@@ -33,7 +33,8 @@ hipatterns.setup({
 require("mini.pick").setup({
   mappings = {
     choose_marked = '<C-q>',
-    mark = '<tab>'
+    mark = '<tab>',
+    toggle_preview = '<C-<tab>>'
   },
   window = {
     config = function()

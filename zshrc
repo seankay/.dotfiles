@@ -230,18 +230,6 @@ gprune() {
       done
 }
 
-function sesh-sessions() {
-  {
-    exec </dev/tty
-    exec <&1
-    local session
-    session=$(sesh list -t -c | fzf --ansi --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ')
-    zle reset-prompt > /dev/null 2>&1 || true
-    [[ -z "$session" ]] && return
-    sesh connect $session
-  }
-}
-
 # --- Aliases -----------------------------------------------------------------
 alias c='cd ~/c'
 alias cat='bat'
@@ -269,8 +257,7 @@ alias tf='terraform'
 alias tg='terragrunt'
 alias top='btop'
 alias vimdiff='${EDITOR} -d'
-alias s="sesh"
-alias ss="sesh-sessions"
+alias s="kitty +kitten ssh"
 alias icat="kitten icat"
 
 case "$(uname -s)" in
