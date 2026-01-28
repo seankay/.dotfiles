@@ -1,32 +1,33 @@
 # macOS packages managed by Homebrew Bundle.
 
+
 brew "bat"
 brew "btop"
 brew "direnv"
 brew "gcc"
-brew "git"
 brew "gh"
+brew "git"
+brew "luarocks"
 brew "mise"
+brew "shellcheck"
 brew "trash"
 brew "wget"
 brew "zsh"
-brew "luarocks"
-
-cask "betterdisplay"
-cask "caffeine"
 cask "1password"
 cask "1password-cli"
+cask "betterdisplay"
+cask "caffeine"
+cask "font-hack"
+cask "font-jetbrains-mono"
 cask "google-chrome"
 cask "istat-menus"
 cask "kitty"
+cask "localsend"
 cask "obsidian"
 cask "rectangle-pro"
 cask "shottr"
 cask "slack"
 cask "tableplus"
-cask "font-hack"
-cask "font-jetbrains-mono"
-cask "localsend"
 
 # Example Mac App Store entry:
 # mas "Xcode", id: 497799835

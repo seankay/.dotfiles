@@ -9,6 +9,7 @@
 "go:golang.org/x/tools/cmd/goimports" = "latest"
 "go:golang.org/x/tools/gopls" = "latest"
 "go:mvdan.cc/gofumpt" = "latest"
+"npm:bash-language-server" = "latest"
 "npm:@fsouza/prettierd" = "latest"
 "npm:eslint" = "latest"
 "npm:eslint_d" = "latest"

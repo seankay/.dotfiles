@@ -22,6 +22,11 @@ vim.lsp.config('lua_ls', {
   }
 })
 
+vim.lsp.config.bashls = {
+  cmd = { 'bash-language-server', 'start' },
+  filetypes = { 'bash', 'sh', 'zsh' }
+}
+
 vim.lsp.enable({
   "lua_ls",
   "jsonls",
@@ -29,5 +34,6 @@ vim.lsp.enable({
   "terraformls",
   "ts_ls",
   "eslint",
-  "gopls"
+  "gopls",
+  "bashls"
 })
