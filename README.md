@@ -13,7 +13,6 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 ├── scripts/                <-- OS-specific helpers invoked by bootstrap
 │   ├── apply-dotfiles.sh       <-- Bash templates + symlink installer
 │   ├── bootstrap-prereqs.sh    <-- Bootstrap prerequisites
-│   ├── install-tmux-plugins.sh <-- TPM bootstrap helper
 │   ├── setup-macos.sh          <-- macOS package bootstrap
 │   ├── setup-linux.sh          <-- Linux package bootstrap
 │   └── fedora-installer-helpers.sh
@@ -36,7 +35,6 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 1. Install Git
 2. Clone the repository: `git clone ssh://git@codeberg.org/seankay/.dotfiles.git ~/.dotfiles && cd ~/.dotfiles`.
 3. Run the bootstrapper: `./bootstrap --update` (executes the app installers under `packages/fedora/apps`).
-4. Open tmux and press Prefix + `I` to install/update configured plugins
 5. `exec zsh`
 
 ### macOS
@@ -44,7 +42,6 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 1. Install Xcode Command Line Tools if prompted: `xcode-select --install`.
 2. Clone the repository: `git clone git@github.com:seankay/dotfiles.git ~/.dotfiles && cd ~/.dotfiles`.
 3. Run the bootstrapper: `./bootstrap --update`.
-4. Open tmux and press Prefix + `I` to install/update configured plugins
 5. `exec zsh`
 
 ## Machine Roles (Personal vs. Work)
@@ -59,7 +56,7 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 
 `config/` and `zshrc` are the authoritative sources.
 
-- Zsh configuration lives in `zshrc` (aliases, functions, keymaps, tmux auto-attach, oh-my-posh prompt).
+- Zsh configuration lives in `zshrc` (aliases, functions, keymaps, oh-my-posh prompt).
 - Git defaults (`~/.gitconfig`) are generated from `local.env`.
 
 `local.env` must define git identity values:

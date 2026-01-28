@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Orchestrates dotfile application, package installs, and shell/tmux setup.
+# Orchestrates dotfile application, package installs, and shell setup.
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -272,13 +272,6 @@ ensure_default_shell() {
 
 ensure_local_bin
 ensure_default_shell
-
-log_info "Ensuring tmux plugin manager is available"
-if "${DRY_RUN}"; then
-  run "${SCRIPTS_DIR}/install-tmux-plugins.sh" --dry-run
-else
-  run "${SCRIPTS_DIR}/install-tmux-plugins.sh"
-fi
 
 ensure_gh_notify() {
   if ! command -v gh >/dev/null 2>&1; then
