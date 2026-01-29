@@ -84,3 +84,9 @@ map("n", "gt", function()
     scope = "type_definition"
   })
 end)
+
+-- obsidian
+map("n", "<leader>oo", ":split | Obsidian new TODO<cr>")
+map("n", "<leader>of", "<cmd>:Obsidian quick_switch<cr>")
+map("n", "<leader>og", "<cmd>:Obsidian search<cr>")
+map("n", "<leader>on", "<cmd>:Obsidian new<cr>")
