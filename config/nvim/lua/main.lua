@@ -33,7 +33,6 @@ hipatterns.setup({
 require("mini.pick").setup({
   mappings = {
     choose_marked = '<C-q>',
-    mark = '<C-x>',
   },
   window = {
     config = function()
