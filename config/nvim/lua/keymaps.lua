@@ -57,6 +57,10 @@ map("n", "<leader>ghn", ":Gitsigns next_hunk next<cr>")
 map("n", "<leader>ghp", ":Gitsigns next_hunk prev<cr>")
 map("n", "<leader>gsh", ":Gitsigns stage_hunk<cr>")
 
+--quickfix
+map("n", "<M-j>", "<cmd>cnext<cr>")
+map("n", "<M-k>", "<cmd>cprev<cr>")
+
 -- Pickers
 map("n", "<c-p>", ":Pick files<cr>")
 map("n", "<leader>/", ":Pick grep_live<cr>")
