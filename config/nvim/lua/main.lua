@@ -1,17 +1,17 @@
 -- plugins
 vim.pack.add({
-  { src = "https://github.com/vague-theme/vague.nvim" },
+  { src = "https://github.com/christoomey/vim-tmux-navigator" },
+  { src = "https://github.com/lewis6991/gitsigns.nvim" },
   { src = "https://github.com/nvim-mini/mini.ai" },
-  { src = "https://github.com/nvim-mini/mini.surround" },
-  { src = "https://github.com/nvim-mini/mini.pick" },
-  { src = "https://github.com/nvim-mini/mini.hipatterns" },
   { src = "https://github.com/nvim-mini/mini.extra" },
+  { src = "https://github.com/nvim-mini/mini.hipatterns" },
+  { src = "https://github.com/nvim-mini/mini.pick" },
+  { src = "https://github.com/nvim-mini/mini.surround" },
+  { src = "https://github.com/stevearc/conform.nvim" },
+  { src = "https://github.com/stevearc/oil.nvim" },
   { src = "https://github.com/tpope/vim-fugitive" },
   { src = "https://github.com/tpope/vim-rhubarb" },
-  { src = "https://github.com/lewis6991/gitsigns.nvim" },
-  { src = "https://github.com/christoomey/vim-tmux-navigator" },
-  { src = "https://github.com/stevearc/oil.nvim" },
-  { src = "https://github.com/stevearc/conform.nvim" },
+  { src = "https://github.com/vague-theme/vague.nvim" },
 })
 
 vim.cmd("colorscheme vague")
@@ -79,3 +79,4 @@ require("statusline")
 require("completion")
 require("treesitter")
 require("undotree_setup")
+require("obsidian_setup")

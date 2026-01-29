@@ -50,6 +50,12 @@ map("n", "<leader>gd", ":Gvdiffsplit<cr>")
 map("n", "<leader>gl", ":Git log<cr>")
 map("n", "<leader>go", ":GBrowse<cr>")
 map("x", "<leader>go", ":GBrowse<cr>")
+map("n", "<leader>gx", function()
+  require("gitsigns").setqflist("all")
+end)
+map("n", "<leader>ghn", ":Gitsigns next_hunk next<cr>")
+map("n", "<leader>ghp", ":Gitsigns next_hunk prev<cr>")
+map("n", "<leader>gsh", ":Gitsigns stage_hunk<cr>")
 
 -- Pickers
 map("n", "<c-p>", ":Pick files<cr>")
