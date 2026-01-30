@@ -1,5 +1,6 @@
+local utils = require("utils")
 vim.pack.add({
-  { src = "https://github.com/nvim-treesitter/nvim-treesitter" }
+  { src = utils.gh("nvim-treesitter/nvim-treesitter") }
 })
 local ts_runtime = vim.fn.stdpath("data") .. "/site/pack/core/opt/nvim-treesitter/runtime"
 if vim.uv.fs_stat(ts_runtime) then

@@ -1,5 +1,6 @@
+local utils = require("utils")
 vim.pack.add({
-  { src = 'https://github.com/neovim/nvim-lspconfig' },
+  { src = utils.gh("neovim/nvim-lspconfig") },
 })
 
 -- format on save

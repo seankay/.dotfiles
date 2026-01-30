@@ -1,6 +1,7 @@
+local utils = require("utils")
 vim.pack.add({
-  { src = "https://github.com/saghen/blink.cmp" },
-  { src = "https://github.com/rafamadriz/friendly-snippets" },
+  { src = utils.gh("saghen/blink.cmp") },
+  { src = utils.gh("rafamadriz/friendly-snippets") },
 
 })
 require('blink.cmp').setup({
