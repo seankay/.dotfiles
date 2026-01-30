@@ -4,4 +4,4 @@ launch --title "@@session@@" zsh
 
 new_tab server
 cd @@session-path@@ 
-launch zsh
+launch --title "@@session@@" zsh 
