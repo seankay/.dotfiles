@@ -1,8 +1,10 @@
 local utils = require("utils")
 vim.pack.add({
-  { src = utils.gh("saghen/blink.cmp") },
+  {
+    src = utils.gh("saghen/blink.cmp"),
+    version = vim.version.range("^1.8.0")
+  },
   { src = utils.gh("rafamadriz/friendly-snippets") },
-
 })
 require('blink.cmp').setup({
   keymap = { preset = 'super-tab' },
