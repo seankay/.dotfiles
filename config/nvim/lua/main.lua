@@ -13,6 +13,7 @@ vim.pack.add({
   { src = utils.gh("knubie/vim-kitty-navigator") },
   { src = utils.gh("mikesmithgh/kitty-scrollback.nvim") },
   { src = utils.gh("stevearc/oil.nvim") },
+  { src = utils.gh("stevearc/conform.nvim") },
 })
 
 require('kitty-scrollback').setup()
@@ -61,6 +62,20 @@ require("oil").setup({
   },
 })
 
+require("conform").setup({
+  formatters_by_ft = {
+    javascript = { "prettierd" },
+    javascriptreact = { "prettierd" },
+    typescript = { "prettierd" },
+    typescriptreact = { "prettierd" },
+    json = { "prettierd" },
+    markdown = { "prettierd" },
+  },
+  format_on_save = function()
+    return { lsp_fallback = true, timeout_ms = 2000 }
+  end,
+})
+
 require("opts")
 require("keymaps")
 require("lsp")
@@ -68,3 +83,4 @@ require("statusline")
 require("completion")
 require("treesitter")
 require("undotree_setup")
+require("obsidian_setup")

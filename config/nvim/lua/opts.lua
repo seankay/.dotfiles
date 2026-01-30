@@ -16,7 +16,7 @@ vim.o.expandtab = true
 vim.o.backspace = "indent,eol,start"
 vim.o.autoindent = true
 vim.o.smartindent = true
-vim.o.hlsearch = false
+vim.o.hlsearch = true
 vim.o.incsearch = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
@@ -58,7 +58,7 @@ vim.o.updatetime = 250 -- Adjust this value to control the delay
 -- vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
 vim.diagnostic.config({
   virtual_text = {
-    severity = { min = vim.diagnostic.severity.WARN },
+    severity = { min = vim.diagnostic.severity.HINT },
     spacing = 4,
     prefix = "●",
   },

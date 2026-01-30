@@ -50,6 +50,16 @@ map("n", "<leader>gd", ":Gvdiffsplit<cr>")
 map("n", "<leader>gl", ":Git log<cr>")
 map("n", "<leader>go", ":GBrowse<cr>")
 map("x", "<leader>go", ":GBrowse<cr>")
+map("n", "<leader>gx", function()
+  require("gitsigns").setqflist("all")
+end)
+map("n", "<leader>ghn", ":Gitsigns next_hunk next<cr>")
+map("n", "<leader>ghp", ":Gitsigns next_hunk prev<cr>")
+map("n", "<leader>gsh", ":Gitsigns stage_hunk<cr>")
+
+--quickfix
+map("n", "<M-j>", "<cmd>cnext<cr>")
+map("n", "<M-k>", "<cmd>cprev<cr>")
 
 -- Pickers
 map("n", "<c-p>", ":Pick files<cr>")
@@ -84,3 +94,9 @@ map("n", "gt", function()
     scope = "type_definition"
   })
 end)
+
+-- obsidian
+map("n", "<leader>oo", ":split | Obsidian new TODO<cr>")
+map("n", "<leader>of", "<cmd>:Obsidian quick_switch<cr>")
+map("n", "<leader>og", "<cmd>:Obsidian search<cr>")
+map("n", "<leader>on", "<cmd>:Obsidian new<cr>")
