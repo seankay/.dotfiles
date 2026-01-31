@@ -4,9 +4,25 @@ from __future__ import annotations
 import atexit
 import logging
 import os
+import shlex
 import subprocess
 import sys
 from pathlib import Path
+from textwrap import dedent
+
+
+def show_help() -> str:
+    return dedent(
+        """\
+        Usage: sesh [OPTIONS]
+        Options:
+          -d, --debug                  Enable debug logging
+          -e, --edit                   Edit session file
+          -c, --auto-close             Close window on selection
+        
+        For more information about kitty session visit: https://sw.kovidgoyal.net/kitty/sessions/
+        """
+    ).strip()
 
 
 def close_launcher_window(window_id: str | None) -> None:
@@ -128,6 +144,19 @@ def ensure_session_file(
     return session_file
 
 
+def launch_editor(session_file: Path) -> int:
+    default_editor = "nvim"
+    editor = os.environ.get("EDITOR", default_editor)
+    editor_parts = shlex.split(editor) if editor else [default_editor]
+    editor_parts.append(str(session_file))
+    try:
+        result = subprocess.run(editor_parts)
+        return result.returncode
+    except FileNotFoundError:
+        emit(f"sesh: editor '{editor_parts[0]}' not found", stderr=True)
+        return 1
+
+
 def goto_session(session_file: Path) -> int:
     try:
         result = subprocess.run(
@@ -140,16 +169,28 @@ def goto_session(session_file: Path) -> int:
 
     return result.returncode
 
-def parse_args(argv: list[str]) -> bool | int:
+
+def parse_args(argv: list[str]) -> dict | int:
+    editing = False
     debug = False
+    auto_close = False
 
     for arg in argv[1:]:
-        if arg in ("-d", "--debug"):
+        if arg in ("-e", "--edit"):
+            editing = True
+        elif arg in ("-d", "--debug"):
             debug = True
+        elif arg in ("-c", "--auto-close"):
+            auto_close = True
         else:
+            emit(show_help())
             return 1
 
-    return debug
+    return {
+        "editing": editing, 
+        "debug": debug, 
+        "auto_close": auto_close,
+    }
 
 
 def main(argv: list[str]) -> int:
@@ -160,10 +201,11 @@ def main(argv: list[str]) -> int:
     if isinstance(parsed, int):
         return parsed
 
-    debug = parsed
+    editing, debug, auto_close = parsed.values()
     launcher_window_id = os.environ.get("KITTY_WINDOW_ID")
 
-    atexit.register(close_launcher_window, launcher_window_id)
+    if auto_close:
+        atexit.register(close_launcher_window, launcher_window_id)
 
     candidates = run_zoxide()
     if candidates is None:
@@ -175,6 +217,7 @@ def main(argv: list[str]) -> int:
 
     if not session_path:
         emit("No session selected", stderr=True)
+        emit(show_help(), stderr=True)
         return 1
 
     session_name = Path(session_path).name
@@ -193,7 +236,10 @@ def main(argv: list[str]) -> int:
 
     session_file = ensured
 
-    log(f"Opening:{session_file}", debug)
+    log(f"Opening:{session_file} editing={'yes' if editing else ''}", debug)
+
+    if editing:
+        return launch_editor(session_file)
 
     return goto_session(session_file)
 
