@@ -70,6 +70,10 @@
       "rev": "f01addc6f07b79ef1be5f4297eafbee9e0959018",
       "src": "https://github.com/marilari88/neotest-vitest"
     },
+    "nvim-bqf": {
+      "rev": "daa1a130632dc2b05a9a73538bac058dfa4e0b86",
+      "src": "https://github.com/kevinhwang91/nvim-bqf"
+    },
     "nvim-lspconfig": {
       "rev": "3f58aeca0c6ece8a9fb8782ea3fcb6024f285be3",
       "src": "https://github.com/neovim/nvim-lspconfig"
@@ -98,6 +102,10 @@
     "render-markdown.nvim": {
       "rev": "48934b49a2363b49ae1d698ed4cb30fb79d7efe8",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
+    },
+    "toggleterm.nvim": {
+      "rev": "9a88eae817ef395952e08650b3283726786fb5fb",
+      "src": "https://github.com/akinsho/toggleterm.nvim"
     },
     "vague.nvim": {
       "rev": "30d2239ecf8adab9bc0d07d42e7a07283879dab6",
