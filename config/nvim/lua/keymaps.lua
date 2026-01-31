@@ -118,3 +118,18 @@ map("n", "<S-C-u>", function() require("opencode").command("session.half.page.up
   { desc = "Scroll opencode up" })
 map("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end,
   { desc = "Scroll opencode down" })
+
+-- Tests (neotest)
+map("n", "<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, { desc = "Test file" })
+map("n", "<leader>tr", function() require("neotest").run.run() end, { desc = "Test nearest" })
+map("n", "<leader>tl", function() require("neotest").run.run_last() end, { desc = "Test last" })
+map("n", "<leader>ta",
+  function()
+    local neotest = require("neotest")
+    neotest.run.run({ suite = true })
+    neotest.summary.open()
+  end, { desc = "Test suite" })
+map("n", "<leader>to", function() require("neotest").output_panel.toggle() end, { desc = "Toggle output panel" })
+map("n", "<leader>tw", function() require("neotest").watch.toggle(vim.fn.expand("%")) end, { desc = "Watch file" })
+map("n", "<leader>tx", function() require("neotest").run.stop() end, { desc = "Stop" })
+map("n", "<leader>ts", function() require("neotest").summary.toggle() end, { desc = "Summary" })
