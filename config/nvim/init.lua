@@ -26,3 +26,6 @@ local function pack_clean()
 end
 
 vim.keymap.set("n", "<leader>pc", pack_clean)
+vim.keymap.set("n", "<leader>pu", function()
+  vim.pack.update()
+end)

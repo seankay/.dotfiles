@@ -16,7 +16,6 @@ vim.pack.add({
   { src = utils.gh("vague-theme/vague.nvim") },
 })
 
-vim.cmd("packadd nvim.undotree")
 vim.cmd("colorscheme vague")
 
 local hipatterns = require("mini.hipatterns")

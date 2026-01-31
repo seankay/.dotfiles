@@ -42,7 +42,9 @@ vim.cmd([[cabbrev Qall! qall!]])
 vim.cmd([[cabbrev Wq wq]])
 vim.cmd([[cabbrev WQ wq]])
 
-map("n", "<leader>u", ":Undotree<cr>")
+map("n", "<leader>u", function()
+  Snacks.picker.undo()
+end)
 -- Git
 map("n", "<leader>gs", function()
   Snacks.picker.git_status()
