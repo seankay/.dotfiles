@@ -4,7 +4,6 @@ from __future__ import annotations
 import atexit
 import logging
 import os
-import shlex
 import subprocess
 import sys
 from pathlib import Path
@@ -127,19 +126,6 @@ def ensure_session_file(
 
     log(f"Creating session file: {session_file}", debug)
     return session_file
-
-
-def launch_editor(session_file: Path) -> int:
-    default_editor = "nvim"
-    editor = os.environ.get("EDITOR", default_editor)
-    editor_parts = shlex.split(editor) if editor else [default_editor]
-    editor_parts.append(str(session_file))
-    try:
-        result = subprocess.run(editor_parts)
-        return result.returncode
-    except FileNotFoundError:
-        emit(f"sesh: editor '{editor_parts[0]}' not found", stderr=True)
-        return 1
 
 
 def goto_session(session_file: Path) -> int:
