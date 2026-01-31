@@ -1,0 +1,3 @@
+[submodule "config/kitty/kitty-zoxide-sessions"]
+	path = config/kitty/kitty-zoxide-sessions
+	url = https://github.com/seankay/kitty-zoxide-sessions.git
