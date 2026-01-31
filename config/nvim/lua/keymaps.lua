@@ -44,55 +44,55 @@ vim.cmd([[cabbrev WQ wq]])
 
 map("n", "<leader>u", ":Undotree<cr>")
 -- Git
-map("n", "<leader>gs", ":Git<cr>")
-map("n", "<leader>gb", ":Git blame<cr>")
-map("n", "<leader>gd", ":Gvdiffsplit<cr>")
-map("n", "<leader>gl", ":Git log<cr>")
-map("n", "<leader>go", ":GBrowse<cr>")
-map("x", "<leader>go", ":GBrowse<cr>")
-map("n", "<leader>gx", function()
-  require("gitsigns").setqflist("all")
+map("n", "<leader>gs", function()
+  Snacks.picker.git_status()
 end)
-map("n", "<leader>ghn", ":Gitsigns next_hunk next<cr>")
-map("n", "<leader>ghp", ":Gitsigns next_hunk prev<cr>")
-map("n", "<leader>gsh", ":Gitsigns stage_hunk<cr>")
+map("n", "<leader>gb", ":Gitsigns blame<cr>")
+map("n", "<leader>gd", function()
+  Snacks.picker.git_diff()
+end)
+map("n", "<leader>gl", function()
+  Snacks.picker.git_log()
+end)
+map({ "n", "x" }, "<leader>go", function()
+  Snacks.gitbrowse()
+end)
 
 --quickfix
 map("n", "<M-j>", "<cmd>cnext<cr>")
 map("n", "<M-k>", "<cmd>cprev<cr>")
 
 -- Pickers
-map("n", "<c-p>", ":Pick files<cr>")
-map("n", "<leader>/", ":Pick grep_live<cr>")
-map("n", "<leader>h", ":Pick help<cr>")
-map("n", "<leader>b", ":Pick buffers<cr>")
+map("n", "<c-p>", function()
+  Snacks.picker.smart()
+end)
+
+map("n", "<leader>/", function()
+  Snacks.picker.grep()
+end)
+map("n", "<leader>h", function()
+  Snacks.picker.help()
+end)
+map("n", "<leader>b", function()
+  Snacks.picker.buffers()
+end)
 map("n", "<leader>x", function()
-  MiniExtra.pickers.diagnostic()
+  Snacks.picker.diagnostics()
 end)
 map("n", "gd", function()
-  MiniExtra.pickers.lsp({
-    scope = "definition"
-  })
+  Snacks.picker.lsp_definitions()
 end)
 map("n", "gD", function()
-  MiniExtra.pickers.lsp({
-    scope = "declaration"
-  })
+  Snacks.picker.lsp_declarations()
 end)
 map("n", "gr", function()
-  MiniExtra.pickers.lsp({
-    scope = "references"
-  })
+  Snacks.picker.lsp_references()
 end)
 map("n", "gI", function()
-  MiniExtra.pickers.lsp({
-    scope = "implementation"
-  })
+  Snacks.picker.lsp_implementations()
 end)
 map("n", "gt", function()
-  MiniExtra.pickers.lsp({
-    scope = "type_definition"
-  })
+  Snacks.picker.lsp_type_definitions()
 end)
 
 -- obsidian
@@ -102,6 +102,26 @@ map("n", "<leader>og", "<cmd>:Obsidian search<cr>")
 map("n", "<leader>on", "<cmd>:Obsidian new<cr>")
 
 -- AI
-map("v", "<leader>aa", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
--- Expand 'cc' into 'CodeCompanion' in the command line
-vim.cmd([[cab cc CodeCompanion]])
+-- map({ "n", "v" }, "<leader>aa", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
+-- -- Expand 'cc' into 'CodeCompanion' in the command line
+-- vim.cmd([[cab cc CodeCompanion]])
+
+-- Recommended/example keymaps.
+map({ "n", "x" }, "<C-a>", function() require("opencode").ask("@this: ", { submit = true }) end,
+  { desc = "Ask opencode…" })
+map({ "n", "x" }, "<C-x>", function() require("opencode").select() end, { desc = "Execute opencode action…" })
+map({ "n", "t" }, "<C-.>", function() require("opencode").toggle() end, { desc = "Toggle opencode" })
+
+map({ "n", "x" }, "go", function() return require("opencode").operator("@this ") end,
+  { desc = "Add range to opencode", expr = true })
+map("n", "goo", function() return require("opencode").operator("@this ") .. "_" end,
+  { desc = "Add line to opencode", expr = true })
+
+map("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end,
+  { desc = "Scroll opencode up" })
+map("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end,
+  { desc = "Scroll opencode down" })
+
+-- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o…".
+map("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
+map("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })
