@@ -32,17 +32,28 @@ This stack keeps dotfiles portable across macOS and Linux while staying close to
 
 ### Fedora 43
 
+> [!NOTE]
+> Ensure the Kitty desktop entry (`~/.local/share/applications/kitty.desktop`) has the following set:
+
+```
+Exec=kitty -o allow_remote_control=yes --single-instance --listen-on unix:@mykitty
+Icon=/home/xep/.config/kitty/kitty.app.png
+```
+
 1. Install Git
 2. Clone the repository: `git clone ssh://git@codeberg.org/seankay/.dotfiles.git ~/.dotfiles && cd ~/.dotfiles`.
 3. Run the bootstrapper: `./bootstrap --update` (executes the app installers under `packages/fedora/apps`).
-5. `exec zsh`
+4. `exec zsh`
 
 ### macOS
+
+> [!NOTE]
+> Kitty options are launched with the options specified in ~/.config/kitty/macos-launch-services-cmdline.
 
 1. Install Xcode Command Line Tools if prompted: `xcode-select --install`.
 2. Clone the repository: `git clone git@github.com:seankay/dotfiles.git ~/.dotfiles && cd ~/.dotfiles`.
 3. Run the bootstrapper: `./bootstrap --update`.
-5. `exec zsh`
+4. `exec zsh`
 
 ## Machine Roles (Personal vs. Work)
 
