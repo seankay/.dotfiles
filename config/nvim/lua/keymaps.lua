@@ -100,3 +100,8 @@ map("n", "<leader>oo", ":split | Obsidian new TODO<cr>")
 map("n", "<leader>of", "<cmd>:Obsidian quick_switch<cr>")
 map("n", "<leader>og", "<cmd>:Obsidian search<cr>")
 map("n", "<leader>on", "<cmd>:Obsidian new<cr>")
+
+-- AI
+map("v", "<leader>aa", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
+-- Expand 'cc' into 'CodeCompanion' in the command line
+vim.cmd([[cab cc CodeCompanion]])

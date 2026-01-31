@@ -28,6 +28,8 @@ end
 
 require("obsidian").setup({
   legacy_commands = false,
+  -- disable and let render-markdown render content
+  ui = { enable = false },
   templates = {
     folder = "Templates",
   },

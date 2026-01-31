@@ -1,22 +1,29 @@
 local utils = require("utils")
 -- plugins
 vim.pack.add({
-  { src = utils.gh("vague-theme/vague.nvim") },
+  { src = utils.gh("j-hui/fidget.nvim") },
+  { src = utils.gh("knubie/vim-kitty-navigator") },
+  { src = utils.gh("lewis6991/gitsigns.nvim") },
+  { src = utils.gh("mikesmithgh/kitty-scrollback.nvim") },
   { src = utils.gh("nvim-mini/mini.ai") },
-  { src = utils.gh("nvim-mini/mini.surround") },
-  { src = utils.gh("nvim-mini/mini.pick") },
-  { src = utils.gh("nvim-mini/mini.hipatterns") },
   { src = utils.gh("nvim-mini/mini.extra") },
+  { src = utils.gh("nvim-mini/mini.hipatterns") },
+  { src = utils.gh("nvim-mini/mini.icons") },
+  { src = utils.gh("nvim-mini/mini.pick") },
+  { src = utils.gh("nvim-mini/mini.surround") },
+  {
+    src = utils.gh("olimorris/codecompanion.nvim"),
+    version = vim.version.range("^18.0.0")
+  },
+  { src = utils.gh("stevearc/conform.nvim") },
+  { src = utils.gh("stevearc/oil.nvim") },
   { src = utils.gh("tpope/vim-fugitive") },
   { src = utils.gh("tpope/vim-rhubarb") },
-  { src = utils.gh("lewis6991/gitsigns.nvim") },
-  { src = utils.gh("knubie/vim-kitty-navigator") },
-  { src = utils.gh("mikesmithgh/kitty-scrollback.nvim") },
-  { src = utils.gh("stevearc/oil.nvim") },
-  { src = utils.gh("stevearc/conform.nvim") },
+  { src = utils.gh("nvim-lua/plenary.nvim") },
+  { src = utils.gh("MeanderingProgrammer/render-markdown.nvim") },
+  { src = utils.gh("vague-theme/vague.nvim") },
 })
 
-require('kitty-scrollback').setup()
 vim.cmd("packadd nvim.undotree")
 vim.cmd("colorscheme vague")
 
@@ -76,6 +83,15 @@ require("conform").setup({
   end,
 })
 
+require('fidget').setup()
+
+require('kitty-scrollback').setup()
+
+require('render-markdown').setup({
+  file_types = { 'markdown', 'codecompanion' },
+  completions = { lsp = { enabled = true } },
+})
+
 require("opts")
 require("keymaps")
 require("lsp")
@@ -84,3 +100,4 @@ require("completion")
 require("treesitter")
 require("undotree_setup")
 require("obsidian_setup")
+require("ai")
