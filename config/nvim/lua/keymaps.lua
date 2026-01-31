@@ -129,7 +129,14 @@ map("n", "<leader>ta",
     neotest.run.run({ suite = true })
     neotest.summary.open()
   end, { desc = "Test suite" })
-map("n", "<leader>to", function() require("neotest").output_panel.toggle() end, { desc = "Toggle output panel" })
+map("n", "<leader>tp", function() require("neotest").output_panel.toggle() end, { desc = "Toggle output panel" })
+map("n", "<leader>to", function()
+    require("neotest").output.open({
+      short = true,
+      auto_close = true,
+    })
+  end,
+  { desc = "Output window" })
 map("n", "<leader>tw", function() require("neotest").watch.toggle(vim.fn.expand("%")) end, { desc = "Watch file" })
 map("n", "<leader>tx", function() require("neotest").run.stop() end, { desc = "Stop" })
 map("n", "<leader>ts", function() require("neotest").summary.toggle() end, { desc = "Summary" })
