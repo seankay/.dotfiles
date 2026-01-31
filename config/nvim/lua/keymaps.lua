@@ -102,15 +102,10 @@ map("n", "<leader>og", "<cmd>:Obsidian search<cr>")
 map("n", "<leader>on", "<cmd>:Obsidian new<cr>")
 
 -- AI
--- map({ "n", "v" }, "<leader>aa", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
--- -- Expand 'cc' into 'CodeCompanion' in the command line
--- vim.cmd([[cab cc CodeCompanion]])
-
--- Recommended/example keymaps.
-map({ "n", "x" }, "<C-a>", function() require("opencode").ask("@this: ", { submit = true }) end,
+map({ "n", "x" }, "<leader>aa", function() require("opencode").ask("@this: ", { submit = true }) end,
   { desc = "Ask opencode…" })
-map({ "n", "x" }, "<C-x>", function() require("opencode").select() end, { desc = "Execute opencode action…" })
-map({ "n", "t" }, "<C-.>", function() require("opencode").toggle() end, { desc = "Toggle opencode" })
+map({ "n", "x" }, "<leader>as", function() require("opencode").select() end, { desc = "Execute opencode action…" })
+map({ "n", "t" }, "<leader>at", function() require("opencode").toggle() end, { desc = "Toggle opencode" })
 
 map({ "n", "x" }, "go", function() return require("opencode").operator("@this ") end,
   { desc = "Add range to opencode", expr = true })
@@ -121,7 +116,3 @@ map("n", "<S-C-u>", function() require("opencode").command("session.half.page.up
   { desc = "Scroll opencode up" })
 map("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end,
   { desc = "Scroll opencode down" })
-
--- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o…".
-map("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
-map("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })

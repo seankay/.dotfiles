@@ -10,7 +10,6 @@ require("snacks").setup({
   scope = { enabled = true },
   scroll = { enabled = true },
   image = { enabled = true },
-  words = { enabled = true },
   rename = { enabled = true },
   picker = {
     enabled = true,
@@ -32,14 +31,15 @@ require("snacks").setup({
       },
     },
   },
+  terminal = { enabled = false },
+  input = { enabled = true },
   dashboard = { enabled = false },
   notifier = { enabled = false },
   statuscolumn = { enabled = false },
-  terminal = { enabled = false },
   notify = { enabled = false },
-  input = { enabled = false },
   gh = { enable = false },
   explorer = { enabled = false },
+  words = { enabled = false },
 })
 
 vim.api.nvim_create_autocmd("User", {
