@@ -1,3 +1,4 @@
+#!/usr/bin/env python3   
 from __future__ import annotations
 
 import atexit
@@ -7,22 +8,6 @@ import shlex
 import subprocess
 import sys
 from pathlib import Path
-from textwrap import dedent
-
-
-def show_help() -> str:
-    return dedent(
-        """\
-        Usage: sesh [OPTIONS]
-        Options:
-          -n, --create-named-session   Create Session in XDG_DATA_HOME instead of tmp
-                                       Enter a name and a path, if path is left empty
-                                       The picker opens for you to choose a path
-          -d, --debug                  Enable debug logging
-        
-        For more information about kitty session visit: https://sw.kovidgoyal.net/kitty/sessions/
-        """
-    ).strip()
 
 
 def close_launcher_window(window_id: str | None) -> None:
@@ -69,22 +54,6 @@ def resolve_session_dir() -> Path:
     data_home = os.environ.get("XDG_DATA_HOME")
     base_dir = Path(data_home) if data_home else Path.home() / ".local" / "share"
     return base_dir / "kitty-sessions"
-
-
-def parse_args(argv: list[str]) -> tuple[bool, bool] | int:
-    editing = False
-    debug = False
-
-    for arg in argv[1:]:
-        if arg in ("-e", "--edit"):
-            editing = True
-        elif arg in ("-d", "--debug"):
-            debug = True
-        else:
-            emit(show_help())
-            return 1
-
-    return editing, debug
 
 
 def run_zoxide() -> str | None:
@@ -185,6 +154,17 @@ def goto_session(session_file: Path) -> int:
 
     return result.returncode
 
+def parse_args(argv: list[str]) -> bool | int:
+    debug = False
+
+    for arg in argv[1:]:
+        if arg in ("-d", "--debug"):
+            debug = True
+        else:
+            return 1
+
+    return debug
+
 
 def main(argv: list[str]) -> int:
     session_dir = resolve_session_dir()
@@ -194,7 +174,7 @@ def main(argv: list[str]) -> int:
     if isinstance(parsed, int):
         return parsed
 
-    editing, debug = parsed
+    debug = parsed
     launcher_window_id = os.environ.get("KITTY_WINDOW_ID")
 
     atexit.register(close_launcher_window, launcher_window_id)
@@ -209,7 +189,6 @@ def main(argv: list[str]) -> int:
 
     if not session_path:
         emit("No session selected", stderr=True)
-        emit(show_help(), stderr=True)
         return 1
 
     session_name = Path(session_path).name
@@ -228,10 +207,7 @@ def main(argv: list[str]) -> int:
 
     session_file = ensured
 
-    log(f"Opening:{session_file} editing={'yes' if editing else ''}", debug)
-
-    if editing:
-        return launch_editor(session_file)
+    log(f"Opening:{session_file}", debug)
 
     return goto_session(session_file)
 

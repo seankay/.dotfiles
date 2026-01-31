@@ -49,6 +49,7 @@ require("conform").setup({
     typescriptreact = { "prettierd" },
     json = { "prettierd" },
     markdown = { "prettierd" },
+    python = { "ruff" }
   },
   format_on_save = function()
     return { lsp_fallback = true, timeout_ms = 2000 }
