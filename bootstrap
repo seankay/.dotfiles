@@ -337,6 +337,12 @@ ensure_pre_commit() {
   run pre-commit install --hook-type pre-commit
 }
 
+ensure_git_submodule_update() {
+  git submodule update
+  log_info "Git submodules updated"
+}
+
 ensure_pre_commit
+ensure_git_submodule_update
 
 log_success "Bootstrap complete."

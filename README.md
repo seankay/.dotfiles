@@ -105,3 +105,4 @@ export GIT_GITHUB_HOST_ALIAS="github.com-work"
 1. Add or modify files in `config/` or `zshrc`.
 2. Run `./scripts/apply-dotfiles.sh --dry-run` to preview changes.
 3. Run `./bootstrap --update` to apply package updates on your machine.
+4. Occasionally run `git submodule update`
