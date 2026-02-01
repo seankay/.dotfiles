@@ -58,6 +58,10 @@
       "rev": "3f0cc2cff1ee05394081805c622dc2551b54d8c4",
       "src": "https://github.com/haydenmeade/neotest-jest"
     },
+    "neotest-python": {
+      "rev": "b0d3a861bd85689d8ed73f0590c47963a7eb1bf9",
+      "src": "https://github.com/nvim-neotest/neotest-python"
+    },
     "neotest-rspec": {
       "rev": "e7dc67c1167a9e593c804a6be6808ba9a5920d43",
       "src": "https://github.com/olimorris/neotest-rspec"

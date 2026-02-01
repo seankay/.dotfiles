@@ -42,6 +42,7 @@ redis = "latest"
 ripgrep = "latest"
 ruby = "latest"
 rust = "latest"
+uv = "latest"
 zoxide = "latest"
 
 [settings]

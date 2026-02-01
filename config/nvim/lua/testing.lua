@@ -6,6 +6,7 @@ vim.pack.add({
   { src = utils.gh("olimorris/neotest-rspec") },
   { src = utils.gh("haydenmeade/neotest-jest") },
   { src = utils.gh("marilari88/neotest-vitest") },
+  { src = utils.gh("nvim-neotest/neotest-python") },
   {
     src = utils.gh("fredrikaverpil/neotest-golang"),
     version = vim.version.range("*"),
@@ -28,6 +29,7 @@ require("neotest").setup({
     unknown = ""
   },
   adapters = {
+    require("neotest-python")({}),
     require("neotest-golang")({}),
     require("neotest-rspec")({ "bundle", "exec", "rspec" }),
     require("neotest-vitest")({
