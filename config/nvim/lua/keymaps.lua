@@ -17,14 +17,23 @@ require("which-key").setup({
     align = "left",
   },
   spec = {
+    { "<leader>a", group = "AI", icon = "󱚡" },
     { "<leader>g", group = "Git" },
-    { "<leader>t", group = "Tests", icon = "󰙨" },
-    { "<leader>x", group = "Diagnostics" },
-    { "<leader>a", group = "AI" },
-    { "<leader>p", group = "Pack" },
     { "<leader>l", group = "LSP", icon = "󰲽" },
     { "<leader>o", group = "Obsidian", icon = "" },
-    { "<leader>s", group = "Search" },
+    { "<leader>p", group = "Pack", icon = "" },
+    { "<leader>s", group = "Search", icon = "" },
+    { "<leader>t", group = "Tests", icon = "󰙨" },
+    { "<leader>x", group = "Diagnostics" },
+    { "<leader>e", group = "Explore", icon = "" },
+    { "<leader>/", group = "Grep", icon = "" },
+    { "<leader>\\", group = "Split Vertically", icon = "󰮾" },
+    { "<leader>-", group = "Split Horizontally", icon = "󰮸" },
+    { "<leader>w", group = "Write", icon = "" },
+    { "<leader>W", group = "Write All", icon = "" },
+    { "<leader>q", group = "Quit", icon = "󰈆" },
+    { "<leader>Q", group = "Quit All", icon = "󰈆" },
+    { "<leader>R", group = "Replace Word", icon = "" },
   }
 })
 
@@ -33,10 +42,10 @@ vim.g.mapleader = " " -- init before mappings
 local map = vim.keymap.set
 
 -- pack
-map("n", "<leader>pc", utils.pack_clean)
+map("n", "<leader>pc", utils.pack_clean, { desc = "Clean" })
 map("n", "<leader>pu", function()
   vim.pack.update()
-end)
+end, { desc = "Update" })
 
 map("i", "jj", "<Esc>", { desc = "Escape insert" })
 map("n", "<leader>w", ":w<CR>", { desc = "Write" })
