@@ -13,6 +13,9 @@ vim.pack.add({
   { src = utils.gh("nvim-lua/plenary.nvim") },
   { src = utils.gh("MeanderingProgrammer/render-markdown.nvim") },
   { src = utils.gh("vague-theme/vague.nvim") },
+  { src = utils.gh("sindrets/diffview.nvim") },
+  { src = utils.gh("nvim-tree/nvim-web-devicons") },
+
 })
 
 vim.cmd("colorscheme vague")

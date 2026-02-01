@@ -193,10 +193,6 @@ EOF
 [difftool]
   prompt = false
 
-[difftool "nvim"]
-  cmd = nvim --diff $LOCAL $REMOTE
-  prompt = false
-
 [help]
   autocorrect = 1
 
