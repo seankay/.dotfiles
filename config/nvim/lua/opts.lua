@@ -64,19 +64,6 @@ vim.diagnostic.config({
   },
 })
 
--- ignore fugitive buffers for lsp
-local old_start = vim.lsp.start
----@diagnostic disable-next-line: duplicate-set-field
-vim.lsp.start = function(...)
-  local _, opt = unpack({ ... })
-  if opt and opt.bufnr then
-    if vim.b[opt.bufnr].fugitive_type then
-      return
-    end
-  end
-  old_start(...)
-end
-
 -- highlight yank
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = vim.api.nvim_create_augroup("highlight_yank", { clear = true }),
