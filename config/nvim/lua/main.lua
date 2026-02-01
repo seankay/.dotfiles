@@ -7,7 +7,6 @@ vim.pack.add({
   { src = utils.gh("nvim-mini/mini.ai") },
   { src = utils.gh("nvim-mini/mini.extra") },
   { src = utils.gh("nvim-mini/mini.hipatterns") },
-  { src = utils.gh("nvim-mini/mini.icons") },
   { src = utils.gh("nvim-mini/mini.surround") },
   { src = utils.gh("stevearc/conform.nvim") },
   { src = utils.gh("stevearc/oil.nvim") },
