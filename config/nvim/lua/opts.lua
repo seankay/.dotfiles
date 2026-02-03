@@ -55,10 +55,10 @@ end
 
 --diagnostics
 vim.o.updatetime = 250 -- Adjust this value to control the delay
--- vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
+vim.cmd([[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]])
 vim.diagnostic.config({
   virtual_text = {
-    severity = { min = vim.diagnostic.severity.HINT },
+    severity = { min = vim.diagnostic.severity.INFO },
     spacing = 4,
     prefix = "●",
   },

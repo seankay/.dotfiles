@@ -129,28 +129,37 @@ end
 
 function M.statusline()
   return table.concat({
-    " " .. M.mode(),
+    string.format(" %%#StatusLineMode#%s%%*", M.mode()),
     " " .. M.git_branch(),
     " ",
-    " %f",  -- file
-    "%m%r", -- modified/readonly
+    " %#StatusLineFile#%f%*", -- file
+    "%m%r",                   -- modified/readonly
     " %= ",
-    " " .. M.lsp_status(),
+    string.format(" %%#StatusLineLsp#%s%%*", M.lsp_status()),
     " ",
     " " .. M.diag_counts(),
-    " %l:%c %p%% ",
+    " %#StatusLinePosition#%l:%c %p%%%* ",
   })
 end
 
 local function set_git_hl()
-  local clean = vim.api.nvim_get_hl(0, { name = "DiffAdd", link = false })
-  local dirty = vim.api.nvim_get_hl(0, { name = "DiffChange", link = false })
-  vim.api.nvim_set_hl(0, "StatusLineGitClean", { fg = clean.fg })
-  vim.api.nvim_set_hl(0, "StatusLineGitDirty", { fg = dirty.fg })
+  local palette = require("vague").get_palette()
+  vim.api.nvim_set_hl(0, "StatusLineGit", { fg = palette.plus })
+  vim.api.nvim_set_hl(0, "StatusLineGitDirty", { fg = palette.delta })
+end
+
+local function set_status_hl()
+  local palette = require("vague").get_palette()
+  vim.api.nvim_set_hl(0, "StatusLineMode", { fg = palette.keyword, bg = palette.inactiveBg, bold = true })
+  vim.api.nvim_set_hl(0, "StatusLineFile", { fg = palette.fg })
+  vim.api.nvim_set_hl(0, "StatusLineLsp", { fg = palette.keyword })
+  vim.api.nvim_set_hl(0, "StatusLinePosition", { fg = palette.comment })
 end
 
 set_git_hl()
+set_status_hl()
 vim.api.nvim_create_autocmd("ColorScheme", { callback = set_git_hl })
+vim.api.nvim_create_autocmd("ColorScheme", { callback = set_status_hl })
 
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "FocusGained", "DirChanged" }, {
   callback = function()
