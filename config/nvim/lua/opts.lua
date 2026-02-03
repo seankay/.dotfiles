@@ -77,3 +77,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.api.nvim_create_autocmd("VimResized", {
   command = "wincmd =",
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "qf",
+  desc = "enable wrapping in quickfix buffers",
+  callback = function()
+    vim.opt_local.wrap = true
+  end,
+})
