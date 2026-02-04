@@ -68,6 +68,7 @@ require('render-markdown').setup({
 require("opts")
 require("ai")
 require("completion")
+require("diagnostics")
 require("lsp")
 require("snacks_setup")
 require("obsidian_setup")

@@ -53,15 +53,6 @@ elseif vim.loop.os_uname().sysname == "Darwin" then
   }
 end
 
---diagnostics
-vim.diagnostic.config({
-  virtual_text = {
-    severity = { min = vim.diagnostic.severity.INFO },
-    spacing = 4,
-    prefix = "●",
-  },
-})
-
 -- highlight yank
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = vim.api.nvim_create_augroup("highlight_yank", { clear = true }),
