@@ -6,7 +6,7 @@ vim.g.opencode_opts = {
   -- Your configuration, if any — see `lua/opencode/config.lua`, or "goto definition" on the type or field.
   provider = {
     enabled = "kitty",
-    cmd = "--copy-env --bias=30 opencode --port",
+    cmd = "--copy-env --bias=30 opencode --port --continue",
     kitty = {
       location = "vsplit"
     }
@@ -14,5 +14,3 @@ vim.g.opencode_opts = {
 }
 -- Required for `opts.events.reload`.
 vim.o.autoread = true
--- auto resume sessions
-vim.g.opencode_opts.provider.cmd = 'opencode --continue'
