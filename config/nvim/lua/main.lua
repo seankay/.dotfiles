@@ -5,7 +5,6 @@ vim.pack.add({
   { src = utils.gh("lewis6991/gitsigns.nvim") },
   { src = utils.gh("mikesmithgh/kitty-scrollback.nvim") },
   { src = utils.gh("nvim-mini/mini.ai") },
-  { src = utils.gh("nvim-mini/mini.extra") },
   { src = utils.gh("nvim-mini/mini.hipatterns") },
   { src = utils.gh("nvim-mini/mini.surround") },
   { src = utils.gh("stevearc/conform.nvim") },

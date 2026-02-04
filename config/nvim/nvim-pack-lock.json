@@ -33,10 +33,6 @@
       "rev": "9eae720f2b20f6ad28cbfa0ddc524e10dc2c3201",
       "src": "https://github.com/nvim-mini/mini.ai"
     },
-    "mini.extra": {
-      "rev": "570d18489cf82d435566dc9e94530b67939e95f4",
-      "src": "https://github.com/nvim-mini/mini.extra"
-    },
     "mini.hipatterns": {
       "rev": "add8d8abad602787377ec5d81f6b248605828e0f",
       "src": "https://github.com/nvim-mini/mini.hipatterns"
