@@ -54,7 +54,6 @@ elseif vim.loop.os_uname().sysname == "Darwin" then
 end
 
 --diagnostics
-vim.o.updatetime = 250 -- Adjust this value to control the delay
 vim.diagnostic.config({
   virtual_text = {
     severity = { min = vim.diagnostic.severity.INFO },

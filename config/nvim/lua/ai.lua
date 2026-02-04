@@ -14,3 +14,5 @@ vim.g.opencode_opts = {
 }
 -- Required for `opts.events.reload`.
 vim.o.autoread = true
+-- auto resume sessions
+vim.g.opencode_opts.provider.cmd = 'opencode --continue'
