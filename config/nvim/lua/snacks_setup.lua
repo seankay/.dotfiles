@@ -16,7 +16,8 @@ require("snacks").setup({
     ignored = true,
     exclude = {
       "**/.git/*",
-      "node_modules",
+      "**/node_modules/*",
+      "**/coverage/*",
       ".next",
       ".turbo",
     },
