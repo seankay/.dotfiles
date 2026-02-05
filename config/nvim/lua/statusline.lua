@@ -127,33 +127,55 @@ function M.mode()
   return string.format("%s", modes[vim.api.nvim_get_mode().mode])
 end
 
+function M.file_icon()
+  local ok, devicons = pcall(require, "nvim-web-devicons")
+  if not ok then
+    return ""
+  end
+  local name = vim.api.nvim_buf_get_name(0)
+  if name == "" then
+    return ""
+  end
+  local icon, hl = devicons.get_icon(name, nil, { default = false })
+  if not icon then
+    return ""
+  end
+  if hl and hl ~= "" then
+    return string.format("%%#%s#%s%%* ", hl, icon)
+  end
+  return icon .. " "
+end
+
 function M.statusline()
   return table.concat({
-    string.format(" %%#StatusLineMode#%s%%*", M.mode()),
-    " " .. M.git_branch(),
+    "   ",
+    M.file_icon(),
     " ",
     " %#StatusLineFile#%f%*", -- file
     "%m%r",                   -- modified/readonly
     " %= ",
+    M.diag_counts(),
+    " ",
     string.format(" %%#StatusLineLsp#%s%%*", M.lsp_status()),
     " ",
-    " " .. M.diag_counts(),
-    " %#StatusLinePosition#%l:%c %p%%%* ",
+    " " .. M.git_branch(),
+    " ",
+    " "
   })
 end
 
 local function set_git_hl()
   local palette = require("vague").get_palette()
-  vim.api.nvim_set_hl(0, "StatusLineGit", { fg = palette.plus })
-  vim.api.nvim_set_hl(0, "StatusLineGitDirty", { fg = palette.delta })
+  vim.api.nvim_set_hl(0, "StatusLineGit", { fg = palette.plus, bg = palette.bg })
+  vim.api.nvim_set_hl(0, "StatusLineGitDirty", { fg = palette.delta, bg = palette.bg })
 end
 
 local function set_status_hl()
   local palette = require("vague").get_palette()
-  vim.api.nvim_set_hl(0, "StatusLineMode", { fg = palette.keyword, bg = palette.inactiveBg, bold = true })
-  vim.api.nvim_set_hl(0, "StatusLineFile", { fg = palette.fg })
-  vim.api.nvim_set_hl(0, "StatusLineLsp", { fg = palette.keyword })
-  vim.api.nvim_set_hl(0, "StatusLinePosition", { fg = palette.comment })
+  vim.api.nvim_set_hl(0, "StatusLine", { fg = palette.fg, bg = palette.bg })
+  vim.api.nvim_set_hl(0, "StatusLineNC", { fg = palette.comment, bg = palette.bg })
+  vim.api.nvim_set_hl(0, "StatusLineFile", { fg = palette.comment, bg = palette.bg })
+  vim.api.nvim_set_hl(0, "StatusLineLsp", { fg = palette.comment, bg = palette.bg })
 end
 
 set_git_hl()
