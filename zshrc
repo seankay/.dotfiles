@@ -25,7 +25,7 @@ path=(
   "$HOME/bin"
   "$HOME/.local/bin"
   "$HOME/.local/share/bob/nvim-bin"
-  "$path"
+  $path
 )
 
 case "$(uname -s)" in
