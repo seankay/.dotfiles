@@ -26,6 +26,7 @@ require("snacks").setup({
   scope = { enabled = true },
   image = { enabled = true },
   rename = { enabled = true },
+  input = { enabled = true },
   picker = {
     enabled = true,
     ignored = true,
