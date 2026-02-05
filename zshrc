@@ -25,7 +25,7 @@ path=(
   "$HOME/bin"
   "$HOME/.local/bin"
   "$HOME/.local/share/bob/nvim-bin"
-  $path
+  "$path"
 )
 
 case "$(uname -s)" in
@@ -104,7 +104,7 @@ e() {
 fh() {
   command -v fzf >/dev/null 2>&1 || return 0
   local selected
-  selected=$(( [ -n "$ZSH_NAME" ] && fc -l 1 || history ) | fzf +s --tac | sed 's/ *[0-9]* *//')
+  selected=$( ( [ -n "$ZSH_NAME" ] && fc -l 1 || history ) | fzf +s --tac | sed 's/ *[0-9]* *//')
   [[ -n "$selected" ]] && print -z -- "$selected"
 }
 zle -N fh
