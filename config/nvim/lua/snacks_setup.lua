@@ -22,10 +22,8 @@ end
 
 require("snacks").setup({
   bigfile = { enabled = true },
-  indent = { enabled = true },
   quickfile = { enabled = true },
   scope = { enabled = true },
-  scroll = { enabled = true },
   image = { enabled = true },
   rename = { enabled = true },
   picker = {
@@ -85,15 +83,6 @@ require("snacks").setup({
       },
     },
   },
-  terminal = { enabled = false },
-  input = { enabled = true },
-  dashboard = { enabled = false },
-  notifier = { enabled = false },
-  statuscolumn = { enabled = false },
-  notify = { enabled = false },
-  gh = { enable = false },
-  explorer = { enabled = false },
-  words = { enabled = false },
 })
 
 vim.api.nvim_create_autocmd("User", {
