@@ -3,6 +3,7 @@
 
 brew "bat"
 brew "btop"
+cask "chatgpt"
 brew "direnv"
 brew "gcc"
 brew "gh"
