@@ -107,8 +107,8 @@ map("n", "<M-k>", "<cmd>cprev<cr>", { desc = "Quickfix prev" })
 
 -- Pickers
 map("n", "<c-p>", function()
-  Snacks.picker.smart()
-end, { desc = "Smart picker" })
+  Snacks.picker.files()
+end, { desc = "File picker" })
 map("n", "<leader>/", function()
   Snacks.picker.grep()
 end, { desc = "Grep" })
