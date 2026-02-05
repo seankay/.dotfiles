@@ -149,86 +149,16 @@ replace() {
   find . -name "$1" -print0 | xargs -0 sed "${sed_in_place[@]}" "s/${2}/${3}/g"
 }
 
-git_current_branch() {
-  local ref ret
+gpush() {
+  local ref ret current_branch
   ref=$(command git symbolic-ref --quiet HEAD 2>/dev/null)
   ret=$?
   if [[ $ret != 0 ]]; then
     [[ $ret == 128 ]] && return
     ref=$(command git rev-parse --short HEAD 2>/dev/null) || return
   fi
-  echo "${ref#refs/heads/}"
-}
-
-gpush() {
-  git push origin "$(git_current_branch)" "$@"
-}
-
-gprune() {
-  if ! command git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-    echo "gprune: not inside a git repository" >&2
-    return 1
-  fi
-
-  local main_branch main_ref current_branch target_rev
-  local log_prefix="[gprune]"
-  local debug=${GPRUNE_DEBUG:-1}
-  local log
-  log() {
-    [[ $debug -eq 0 ]] && return
-    echo "${log_prefix} $*"
-  }
-
-  main_branch=$(command git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null)
-  main_branch=${main_branch#origin/}
-  log "origin/HEAD -> ${main_branch:-<unset>}"
-
-  if [[ -z $main_branch ]]; then
-    if command git show-ref --verify --quiet refs/heads/main; then main_branch=main; fi
-    if [[ -z $main_branch ]] && command git show-ref --verify --quiet refs/heads/master; then main_branch=master; fi
-  fi
-
-  if [[ -z $main_branch ]]; then
-    echo "gprune: unable to determine main branch" >&2
-    return 1
-  fi
-  main_ref="origin/${main_branch}"
-  current_branch=$(git_current_branch)
-  log "main branch: $main_branch"
-  log "current branch: $current_branch"
-  log "main ref: $main_ref"
-
-  log "fetching origin with prune (tags included)"
-  command git fetch --prune --tags origin >/dev/null 2>&1 || log "fetch failed (continuing with local refs)"
-
-  target_rev=$(command git rev-parse --verify "$main_ref" 2>/dev/null || command git rev-parse --verify "$main_branch" 2>/dev/null)
-  log "resolved target rev: ${target_rev:-<unset>}"
-  if [[ -z $target_rev ]]; then
-    echo "gprune: unable to resolve ${main_ref} or ${main_branch}" >&2
-    return 1
-  fi
-
-  log "scanning local branches for merge ancestor of ${target_rev}"
-  command git for-each-ref --format='%(refname:short) %(upstream:short)' "refs/heads" \
-    | while read -r branch upstream; do
-        [[ -z $branch ]] && continue
-        log "consider: $branch (upstream: ${upstream:-<none>})"
-        if [[ $branch == "$main_branch" ]]; then
-          log "skip: main branch"
-          continue
-        fi
-        if [[ $branch == "$current_branch" ]]; then
-          log "skip: current branch"
-          continue
-        fi
-
-        if command git merge-base --is-ancestor "$branch" "$target_rev" 2>/dev/null; then
-          log "merged into ${main_branch}; deleting $branch"
-          command git branch -d "$branch"
-        else
-          log "not merged; keep $branch"
-        fi
-      done
+  current_branch="${ref#refs/heads/}"
+  git push origin "$current_branch" "$@"
 }
 
 # --- Aliases -----------------------------------------------------------------
