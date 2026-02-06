@@ -27,6 +27,7 @@ require("snacks").setup({
   image = { enabled = true },
   rename = { enabled = true },
   input = { enabled = true },
+  notifier = { enabled = true },
   picker = {
     enabled = true,
     ignored = true,
