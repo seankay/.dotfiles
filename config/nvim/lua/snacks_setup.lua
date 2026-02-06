@@ -34,6 +34,7 @@ require("snacks").setup({
     exclude = {
       "**/.git/**",
       "**/node_modules/**",
+      "**/dist/**",
       "**/coverage/**",
       "**/.next/**",
       "**/.turbo/**",
