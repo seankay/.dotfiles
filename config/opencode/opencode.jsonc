@@ -5,14 +5,30 @@
   "autoupdate": true,
   "provider": {
     "openai": {
+      "options": {
+        "setCacheKey": true
+      },
       "models": {
-        "gpt-5-codex": {
+        "gpt-5.3-codex": {
           "options": {
             "store": false,
             "reasoningEffort": "medium",
             "textVerbosity": "medium",
             "reasoningSummary": "auto",
-            "include": ["reasoning.encrypted_content"]
+            "include": [
+              "reasoning.encrypted_content"
+            ]
+          }
+        },
+        "gpt-5.2-codex": {
+          "options": {
+            "store": false,
+            "reasoningEffort": "medium",
+            "textVerbosity": "medium",
+            "reasoningSummary": "auto",
+            "include": [
+              "reasoning.encrypted_content"
+            ]
           }
         }
       },
