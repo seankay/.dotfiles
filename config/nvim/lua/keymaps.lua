@@ -178,9 +178,9 @@ map({ "n", "x" }, "go", function() return require("opencode").operator("@this ")
 map("n", "goo", function() return require("opencode").operator("@this ") .. "_" end,
   { desc = "Add line to opencode", expr = true })
 
-map("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end,
+map("n", "<leader>au", function() require("opencode").command("session.half.page.up") end,
   { desc = "Scroll opencode up" })
-map("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end,
+map("n", "<leader>ad", function() require("opencode").command("session.half.page.down") end,
   { desc = "Scroll opencode down" })
 
 -- Tests (neotest)
