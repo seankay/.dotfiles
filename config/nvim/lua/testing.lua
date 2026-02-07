@@ -38,7 +38,7 @@ require("neotest").setup({
       end,
     }),
     require("neotest-jest")({
-      jestCommand = "npm test --",
+      jestCommand = "yarn test --",
       env = { CI = true },
       jest_test_discovery = true,
     }),
