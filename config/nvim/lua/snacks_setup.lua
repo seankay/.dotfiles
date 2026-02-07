@@ -28,6 +28,7 @@ require("snacks").setup({
   rename = { enabled = true },
   input = { enabled = true },
   notifier = { enabled = true },
+  scroll = { enabled = true },
   picker = {
     enabled = true,
     ignored = true,
