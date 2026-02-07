@@ -2,61 +2,15 @@ vim.o.laststatus = 3
 
 local M = {}
 
-M.git = {
-  branch = "",
-  dirty = false,
-  root = nil,
-}
-
-function M.update_git()
-  local buf = vim.api.nvim_get_current_buf()
-  local name = vim.api.nvim_buf_get_name(buf)
-  local dir = name ~= "" and vim.fn.fnamemodify(name, ":h") or vim.fn.getcwd()
-
-  vim.system({ "git", "-C", dir, "rev-parse", "--show-toplevel" }, { text = true }, function(root_result)
-    if root_result.code ~= 0 then
-      M.git.root = nil
-      M.git.branch = ""
-      M.git.dirty = false
-      vim.schedule(function()
-        vim.cmd("redrawstatus")
-      end)
-      return
-    end
-
-    local root = vim.trim(root_result.stdout or "")
-    M.git.root = root
-
-    vim.system({ "git", "-C", root, "rev-parse", "--abbrev-ref", "HEAD" }, { text = true }, function(head_result)
-      if head_result.code == 0 then
-        M.git.branch = vim.trim(head_result.stdout or "")
-      else
-        M.git.branch = ""
-      end
-
-      vim.system({ "git", "-C", root, "status", "--porcelain" }, { text = true }, function(status_result)
-        if status_result.code == 0 then
-          M.git.dirty = status_result.stdout ~= ""
-        else
-          M.git.dirty = false
-        end
-
-        vim.schedule(function()
-          vim.cmd("redrawstatus")
-        end)
-      end)
-    end)
-  end)
-end
-
 function M.git_branch()
-  if M.git.branch == "" then
+  local dict = vim.b.gitsigns_status_dict
+  if not dict or not dict.head or dict.head == "" then
     return ""
   end
-
-  local dirty_mark = M.git.dirty and " ●" or ""
-  local group = M.git.dirty and "StatusLineGitDirty" or "StatusLineGitClean"
-  return string.format("%%#%s# %s%s%%*", group, M.git.branch, dirty_mark)
+  local dirty = (dict.added or 0) + (dict.changed or 0) + (dict.removed or 0) > 0
+  local dirty_mark = dirty and " ●" or ""
+  local group = dirty and "StatusLineGitDirty" or "StatusLineGitClean"
+  return string.format("%%#%s# %s%s%%*", group, dict.head, dirty_mark)
 end
 
 function M.diag_counts()
@@ -182,12 +136,6 @@ set_git_hl()
 set_status_hl()
 vim.api.nvim_create_autocmd("ColorScheme", { callback = set_git_hl })
 vim.api.nvim_create_autocmd("ColorScheme", { callback = set_status_hl })
-
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "FocusGained", "DirChanged" }, {
-  callback = function()
-    M.update_git()
-  end,
-})
 
 vim.o.statusline = "%!v:lua.require'statusline'.statusline()"
 
