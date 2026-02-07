@@ -33,6 +33,18 @@ vim.o.belloff = "all"
 vim.o.winborder = "rounded"
 vim.o.cmdheight = 1
 vim.opt.shortmess:append("c", "I")
+vim.opt.fillchars = {
+  fold = ' ',
+  diff = '╱',
+  wbr = '─',
+  msgsep = '─',
+  horiz = ' ',
+  horizup = '│',
+  horizdown = '│',
+  vertright = '│',
+  vertleft = '│',
+  verthoriz = '│',
+}
 
 -- Colors / truecolor
 if vim.fn.has("termguicolors") == 1 then
