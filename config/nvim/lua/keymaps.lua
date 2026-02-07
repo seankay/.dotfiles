@@ -88,8 +88,7 @@ vim.cmd([[cabbrev WQ wq]])
 map("n", "<leader>G", "<cmd>Git<cr>", { desc = "Git status" })
 map("n", "<leader>gB", ":Gitsigns blame<cr>", { desc = "Git blame" })
 map("n", "<leader>gb", ":Gitsigns blame_line<cr>", { desc = "Git blame line" })
-map("n", "<leader>gd", function() Snacks.picker.git_diff() end, { desc = "Git diff" })
-map("n", "<leader>gD", function()
+map("n", "<leader>gd", function()
   local lib = require('diffview.lib')
   if lib.get_current_view() then
     vim.cmd("DiffviewClose")
@@ -98,8 +97,7 @@ map("n", "<leader>gD", function()
   end
 end
 , { desc = "Diff tool" })
-map("n", "<leader>gl", function() Snacks.picker.git_log() end, { desc = "Git log" })
-map("n", "<leader>gh", "<cmd>DiffviewFileHistory<cr>", { desc = "Diff File History " })
+map("n", "<leader>gl", "<cmd>DiffviewFileHistory<cr>", { desc = "Git log" })
 map({ "n", "x" }, "<leader>go", function() Snacks.gitbrowse() end, { desc = "Git browse" })
 
 -- Pickers
