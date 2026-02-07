@@ -91,7 +91,15 @@ end, { desc = "Git status" })
 map("n", "<leader>gB", ":Gitsigns blame<cr>", { desc = "Git blame" })
 map("n", "<leader>gb", ":Gitsigns blame_line<cr>", { desc = "Git blame line" })
 map("n", "<leader>gd", function() Snacks.picker.git_diff() end, { desc = "Git diff" })
-map("n", "<leader>gD", "<cmd>DiffviewOpen<cr>", { desc = "Diff tool" })
+map("n", "<leader>gD", function()
+  local lib = require('diffview.lib')
+  if lib.get_current_view() then
+    vim.cmd("DiffviewClose")
+  else
+    vim.cmd("DiffviewOpen")
+  end
+end
+, { desc = "Diff tool" })
 map("n", "<leader>gl", function() Snacks.picker.git_log() end, { desc = "Git log" })
 map("n", "<leader>gh", "<cmd>DiffviewFileHistory<cr>", { desc = "Diff File History " })
 map({ "n", "x" }, "<leader>go", function() Snacks.gitbrowse() end, { desc = "Git browse" })
