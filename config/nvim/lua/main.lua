@@ -2,6 +2,7 @@ local utils = require("utils")
 -- plugins
 vim.pack.add({
   { src = utils.gh("knubie/vim-kitty-navigator") },
+  { src = utils.gh("tpope/vim-fugitive") },
   { src = utils.gh("lewis6991/gitsigns.nvim") },
   { src = utils.gh("mikesmithgh/kitty-scrollback.nvim") },
   { src = utils.gh("nvim-mini/mini.ai") },

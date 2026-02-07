@@ -115,6 +115,10 @@
       "rev": "30d2239ecf8adab9bc0d07d42e7a07283879dab6",
       "src": "https://github.com/vague-theme/vague.nvim"
     },
+    "vim-fugitive": {
+      "rev": "61b51c09b7c9ce04e821f6cf76ea4f6f903e3cf4",
+      "src": "https://github.com/tpope/vim-fugitive"
+    },
     "vim-kitty-navigator": {
       "rev": "081c6f8f9eb17cddb4ff4cd1ad44db48aa76fe03",
       "src": "https://github.com/knubie/vim-kitty-navigator"

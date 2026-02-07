@@ -85,9 +85,7 @@ vim.cmd([[cabbrev Wq wq]])
 vim.cmd([[cabbrev WQ wq]])
 
 -- Git
-map("n", "<leader>gs", function()
-  Snacks.picker.git_status()
-end, { desc = "Git status" })
+map("n", "<leader>G", "<cmd>Git<cr>", { desc = "Git status" })
 map("n", "<leader>gB", ":Gitsigns blame<cr>", { desc = "Git blame" })
 map("n", "<leader>gb", ":Gitsigns blame_line<cr>", { desc = "Git blame line" })
 map("n", "<leader>gd", function() Snacks.picker.git_diff() end, { desc = "Git diff" })
