@@ -102,10 +102,6 @@ map("n", "<leader>gl", function() Snacks.picker.git_log() end, { desc = "Git log
 map("n", "<leader>gh", "<cmd>DiffviewFileHistory<cr>", { desc = "Diff File History " })
 map({ "n", "x" }, "<leader>go", function() Snacks.gitbrowse() end, { desc = "Git browse" })
 
---quickfix
-map("n", "<M-j>", "<cmd>cnext<cr>", { desc = "Quickfix next" })
-map("n", "<M-k>", "<cmd>cprev<cr>", { desc = "Quickfix prev" })
-
 -- Pickers
 map("n", "<c-p>", function()
   Snacks.picker.files()
