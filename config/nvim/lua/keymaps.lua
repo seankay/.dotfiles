@@ -97,7 +97,14 @@ map("n", "<leader>gd", function()
   end
 end
 , { desc = "Diff tool" })
-map("n", "<leader>gl", "<cmd>DiffviewFileHistory<cr>", { desc = "Git log" })
+map("n", "<leader>gl", function()
+  local lib = require("diffview.lib")
+  if lib.get_current_view() then
+    vim.cmd("DiffviewClose")
+  else
+    vim.cmd("DiffviewFileHistory")
+  end
+end, { desc = "Git log" })
 map({ "n", "x" }, "<leader>go", function() Snacks.gitbrowse() end, { desc = "Git browse" })
 
 -- Pickers
