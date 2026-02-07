@@ -65,6 +65,16 @@ require('render-markdown').setup({
   completions = { lsp = { enabled = true } },
 })
 
+require("diffview").setup({
+  file_panel = {
+    listing_style = "list",
+    win_config = {
+      position = "bottom",
+      height = 10,
+    },
+  }
+})
+
 require("opts")
 require("ai")
 require("completion")
