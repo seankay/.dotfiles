@@ -19,6 +19,7 @@ require("which-key").setup({
   spec = {
     { "<leader>a", group = "AI", icon = "󱚡" },
     { "<leader>g", group = "Git" },
+    { "<leader>gh", group = "Hunk" },
     { "<leader>l", group = "LSP", icon = "󰲽" },
     { "<leader>o", group = "Obsidian", icon = "" },
     { "<leader>p", group = "Pack", icon = "" },
@@ -85,9 +86,36 @@ vim.cmd([[cabbrev Wq wq]])
 vim.cmd([[cabbrev WQ wq]])
 
 -- Git
+local gitsigns = require("gitsigns")
 map("n", "<leader>G", "<cmd>Git<cr>", { desc = "Git status" })
 map("n", "<leader>gB", ":Gitsigns blame<cr>", { desc = "Git blame" })
 map("n", "<leader>gb", ":Gitsigns blame_line<cr>", { desc = "Git blame line" })
+map('n', '<leader>ghs', gitsigns.stage_hunk, { desc = "Stage hunk" })
+map('v', '<leader>ghs', function()
+  gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') })
+end, { desc = "Stage hunk" })
+map('n', '<leader>ghr', gitsigns.reset_hunk, { desc = "Reset hunk" })
+map('v', '<leader>ghr', function()
+  gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') })
+end, { desc = "Reset hunk" })
+map({ 'o', 'x' }, 'gih', gitsigns.select_hunk, { desc = "Select hunk" })
+map('n', '<leader>ghp', gitsigns.preview_hunk, { desc = "Preview hunk" })
+map('n', '<leader>ghi', gitsigns.preview_hunk_inline, { desc = "Preview hunk inline" })
+map('n', ']h', function()
+  if vim.wo.diff then
+    vim.cmd.normal({ ']c', bang = true })
+  else
+    gitsigns.nav_hunk('next')
+  end
+end, { desc = "Next hunk" })
+
+map('n', '[h', function()
+  if vim.wo.diff then
+    vim.cmd.normal({ '[c', bang = true })
+  else
+    gitsigns.nav_hunk('prev')
+  end
+end, { desc = "Prev hunk" })
 map("n", "<leader>gd", function()
   local lib = require('diffview.lib')
   if lib.get_current_view() then
