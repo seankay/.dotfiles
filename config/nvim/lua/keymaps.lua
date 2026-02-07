@@ -33,7 +33,7 @@ require("which-key").setup({
     { "<leader>W", group = "Write All", icon = "" },
     { "<leader>q", group = "Quit", icon = "󰈆" },
     { "<leader>Q", group = "Quit All", icon = "󰈆" },
-    { "<leader>R", group = "Replace Word", icon = "" },
+    { "<leader>r", group = "Replace Word", icon = "" },
   }
 })
 
@@ -90,16 +90,11 @@ map("n", "<leader>gs", function()
 end, { desc = "Git status" })
 map("n", "<leader>gB", ":Gitsigns blame<cr>", { desc = "Git blame" })
 map("n", "<leader>gb", ":Gitsigns blame_line<cr>", { desc = "Git blame line" })
-map("n", "<leader>gd", function()
-  Snacks.picker.git_diff()
-end, { desc = "Git diff" })
+map("n", "<leader>gd", function() Snacks.picker.git_diff() end, { desc = "Git diff" })
 map("n", "<leader>gD", "<cmd>DiffviewOpen<cr>", { desc = "Diff tool" })
-map("n", "<leader>gl", function()
-  Snacks.picker.git_log()
-end, { desc = "Git log" })
-map({ "n", "x" }, "<leader>go", function()
-  Snacks.gitbrowse()
-end, { desc = "Git browse" })
+map("n", "<leader>gl", function() Snacks.picker.git_log() end, { desc = "Git log" })
+map("n", "<leader>gh", "<cmd>DiffviewFileHistory<cr>", { desc = "Diff File History " })
+map({ "n", "x" }, "<leader>go", function() Snacks.gitbrowse() end, { desc = "Git browse" })
 
 --quickfix
 map("n", "<M-j>", "<cmd>cnext<cr>", { desc = "Quickfix next" })
