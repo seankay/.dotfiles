@@ -7,10 +7,37 @@ function M.git_branch()
   if not dict or not dict.head or dict.head == "" then
     return ""
   end
-  local dirty = (dict.added or 0) + (dict.changed or 0) + (dict.removed or 0) > 0
-  local dirty_mark = dirty and " ●" or ""
+  local added = dict.added or 0
+  local changed = dict.changed or 0
+  local removed = dict.removed or 0
+  local dirty = added + changed + removed > 0
   local group = dirty and "StatusLineGitDirty" or "StatusLineGitClean"
-  return string.format("%%#%s# %s%s%%*", group, dict.head, dirty_mark)
+
+  local function segment(count, hl, prefix)
+    if count == 0 then
+      return ""
+    end
+    return string.format("%%#%s#%s%d%%*", hl, prefix, count)
+  end
+
+  local segments = {}
+  for _, seg in ipairs({
+    segment(added, "StatusLineGitAdd", "+"),
+    segment(changed, "StatusLineGitChange", "~"),
+    segment(removed, "StatusLineGitRemove", "-"),
+  }) do
+    if seg ~= "" then
+      table.insert(segments, seg)
+    end
+  end
+
+  local counts = table.concat(segments, " ")
+
+  if counts ~= "" then
+    counts = " " .. counts
+  end
+
+  return string.format("%%#%s# %s%%*%s", group, dict.head, counts)
 end
 
 function M.diag_counts()
@@ -121,7 +148,11 @@ end
 local function set_git_hl()
   local palette = require("vague").get_palette()
   vim.api.nvim_set_hl(0, "StatusLineGit", { fg = palette.plus, bg = palette.bg })
+  vim.api.nvim_set_hl(0, "StatusLineGitClean", { fg = palette.plus, bg = palette.bg })
   vim.api.nvim_set_hl(0, "StatusLineGitDirty", { fg = palette.delta, bg = palette.bg })
+  vim.api.nvim_set_hl(0, "StatusLineGitAdd", { fg = palette.plus, bg = palette.bg })
+  vim.api.nvim_set_hl(0, "StatusLineGitChange", { fg = palette.delta, bg = palette.bg })
+  vim.api.nvim_set_hl(0, "StatusLineGitRemove", { fg = palette.error, bg = palette.bg })
 end
 
 local function set_status_hl()
