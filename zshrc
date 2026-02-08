@@ -7,7 +7,7 @@ export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 export EDITOR="nvim"
 export PAGER="${PAGER:-less}"
 export GIT_PAGER="${GIT_PAGER:-less}"
-export KEYTIMEOUT=20
+export KEYTIMEOUT=50
 export WORDCHARS="*?[]~&;!$%^<>"
 export EZA_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}"
 export RIPGREP_CONFIG_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/ripgrep/ripgrep.conf"
@@ -122,8 +122,7 @@ plugins=(
 # --- Key bindings ------------------------------------------------------------
 zmodload zsh/terminfo 2>/dev/null || true
 
-# Use Tab to accept autosuggestions
-bindkey '^y' autosuggest-accept
+bindkey '^Y' autosuggest-accept
 
 if [[ -n ${terminfo[kcuu1]} ]]; then
   bindkey "${terminfo[kcuu1]}" up-line-or-search
@@ -244,6 +243,20 @@ if test -n "$KITTY_INSTALLATION_DIR"; then
 fi
 
 source "${ZSH}/oh-my-zsh.sh"
+
+# fzf-git.sh
+fzf_git_dir="${XDG_DATA_HOME:-$HOME/.local/share}/fzf-git.sh"
+if [[ ! -d "$fzf_git_dir" ]]; then
+  git clone https://github.com/junegunn/fzf-git.sh.git "$fzf_git_dir"
+fi
+if [[ -f "$fzf_git_dir/fzf-git.sh" ]]; then
+  source "$fzf_git_dir/fzf-git.sh"
+fi
+
+bindkey -M emacs '^D' delete-char
+bindkey -M viins '^D' delete-char
+bindkey -M vicmd '^D' delete-char
+setopt ignoreeof
 
 # --- Aliases -----------------------------------------------------------------
 alias c='cd ~/c'
