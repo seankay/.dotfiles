@@ -122,8 +122,6 @@ plugins=(
 # --- Key bindings ------------------------------------------------------------
 zmodload zsh/terminfo 2>/dev/null || true
 
-bindkey '^Y' autosuggest-accept
-
 if [[ -n ${terminfo[kcuu1]} ]]; then
   bindkey "${terminfo[kcuu1]}" up-line-or-search
 elif [[ -n ${key[Up]} ]]; then
@@ -253,6 +251,7 @@ if [[ -f "$fzf_git_dir/fzf-git.sh" ]]; then
   source "$fzf_git_dir/fzf-git.sh"
 fi
 
+bindkey '^ ' autosuggest-accept
 bindkey -M emacs '^D' delete-char
 bindkey -M viins '^D' delete-char
 bindkey -M vicmd '^D' delete-char
