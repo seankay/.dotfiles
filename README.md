@@ -1,32 +1,9 @@
 # Cross-Platform Dotfiles with Bash + Symlinks
 
-This stack keeps dotfiles portable across macOS and Linux while staying close to native tooling.
+This stack keeps dotfiles portable across macOS and Linux.
 
 - **Dotfiles management:** Bash templates + symlinks drive a single source of truth.
 - **Packages:** Homebrew on macOS and `dnf` on Fedora.
-
-## Layout
-
-```
-.
-├── bootstrap               <-- Cross-platform entry point
-├── scripts/                <-- OS-specific helpers invoked by bootstrap
-│   ├── apply-dotfiles.sh       <-- Bash templates + symlink installer
-│   ├── bootstrap-prereqs.sh    <-- Bootstrap prerequisites
-│   ├── setup-macos.sh          <-- macOS package bootstrap
-│   ├── setup-linux.sh          <-- Linux package bootstrap
-│   └── fedora-installer-helpers.sh
-├── packages/               <-- Declarative package manifests
-│   ├── Brewfile
-│   ├── Brewfile.personal
-│   ├── Brewfile.work
-│   └── fedora/
-│       └── apps/          <-- One install.sh per Fedora application
-├── config/                 <-- XDG config files symlinked into ~/.config
-├── zshrc                   <-- Symlinked to ~/.zshrc
-└── assets/                 <-- Misc assets
-    ├── Agents.example.md
-```
 
 ## Quick Start
 
@@ -87,22 +64,4 @@ export GIT_GITHUB_HOST_ALIAS="github.com-work"
 
 - macOS: maintain shared CLI packages in `packages/Brewfile`. Role-specific extras belong in `packages/Brewfile.personal` or `packages/Brewfile.work`, which run only when the matching `MACHINE_ROLE` is set (the cleanup step uses the union so nothing gets pruned unintentionally).
 - Fedora: maintain one installer per application under `packages/fedora/apps/<app>/install.sh`. Each script sources `${FEDORA_INSTALL_HELPERS}` to gain helper functions such as `dnf_install`, `dnf_group_install`, `flatpak_install`, `rpm_install`, `github_install`, and `repo_setup`. This keeps repo setup, RPM/Flatpak installs, and any application-specific tweaks close to the software they configure.
-
-### What `bootstrap` Handles Automatically
-
-- Installs prerequisite tooling (Homebrew) before applying dotfiles.
-- Applies dotfiles via `scripts/apply-dotfiles.sh` (bash templates + symlinks).
-- Runs the appropriate package installer for macOS and Fedora (Homebrew or the Fedora app installers) when `--update` is set.
-- On macOS, prunes Homebrew packages that are not declared in the Brewfile.
-
-## Testing & CI Hooks
-
-- `./bootstrap --dry-run` surfaces package commands without executing them.
-- `pre-commit run --all-files` executes the gitleaks scan locally, mirroring the enforced commit hook.
-
-## Maintenance Workflow
-
-1. Add or modify files in `config/` or `zshrc`.
-2. Run `./scripts/apply-dotfiles.sh --dry-run` to preview changes.
-3. Run `./bootstrap --update` to apply package updates on your machine.
-4. Occasionally run `git submodule update`
+- Mise is leveraged for dev tooling where possible
