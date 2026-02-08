@@ -5,7 +5,7 @@
       "src": "https://github.com/antoinemadec/FixCursorHold.nvim"
     },
     "blink.cmp": {
-      "rev": "bc54f81b6d92f91dac06c77c3ffccec5291e98cd",
+      "rev": "4b18c32adef2898f95cdef6192cbd5796c1a332d",
       "src": "https://github.com/saghen/blink.cmp",
       "version": "1.8.0 - 2.0.0"
     },
@@ -71,7 +71,7 @@
       "src": "https://github.com/kevinhwang91/nvim-bqf"
     },
     "nvim-lspconfig": {
-      "rev": "59cd07d8df2fefde32556268b8d52606a32152a1",
+      "rev": "66fd02ad1c7ea31616d3ca678fa04e6d0b360824",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-nio": {
@@ -79,7 +79,7 @@
       "src": "https://github.com/nvim-neotest/nvim-nio"
     },
     "nvim-treesitter": {
-      "rev": "4967fa48b0fe7a7f92cee546c76bb4bb61bb14d5",
+      "rev": "45a07f869b0cffba342276f2c77ba7c116d35db8",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-web-devicons": {
@@ -96,7 +96,7 @@
       "src": "https://github.com/stevearc/oil.nvim"
     },
     "opencode.nvim": {
-      "rev": "632ec5879295a3103fa39742b2e3f0639496c96f",
+      "rev": "a13db1c0364319d3ebde65030005dea9f8a198cc",
       "src": "https://github.com/nickvandyke/opencode.nvim"
     },
     "plenary.nvim": {
@@ -112,7 +112,7 @@
       "src": "https://github.com/folke/snacks.nvim"
     },
     "vague.nvim": {
-      "rev": "30d2239ecf8adab9bc0d07d42e7a07283879dab6",
+      "rev": "c1ab4d4891ff3a27deba6a80222d895ac8ffb2e5",
       "src": "https://github.com/vague-theme/vague.nvim"
     },
     "vim-fugitive": {
