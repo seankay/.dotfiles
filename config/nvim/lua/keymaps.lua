@@ -137,11 +137,14 @@ map({ "n", "x" }, "<leader>go", function() Snacks.gitbrowse() end, { desc = "Git
 
 -- Pickers
 map("n", "<c-p>", function()
-  Snacks.picker.files()
-end, { desc = "File picker" })
+  Snacks.picker.smart()
+end, { desc = "Smart picker" })
 map("n", "<leader>/", function()
   Snacks.picker.grep()
 end, { desc = "Grep" })
+map("n", "<leader>sf", function()
+  Snacks.picker.files()
+end, { desc = "File picker" })
 map("n", "<leader>sw", function()
   Snacks.picker.grep({ search = vim.fn.expand("<cword>") })
 end, { desc = "Grep word under cursor" })
