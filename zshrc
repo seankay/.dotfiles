@@ -45,30 +45,85 @@ if command -v direnv >/dev/null 2>&1; then
   eval "$(direnv hook zsh)"
 fi
 
+# fzf
+MISE_FZF_INSTALL_DIR="$(mise where fzf)/install"
+export FZF_BASE=$MISE_FZF_INSTALL_DIR
+
 if command -v fzf >/dev/null 2>&1 && [[ -f "${HOME}/.fzf.zsh" ]]; then
   source "${HOME}/.fzf.zsh"
 fi
 
-# oh-my-zsh (optional)
-if [[ -d "${HOME}/.oh-my-zsh" ]]; then
-  export ZSH="${HOME}/.oh-my-zsh"
-  ZSH_THEME=""
-  plugins=(
-    aws
-    direnv
-    docker
-    gh
-    git
-    git-auto-fetch
-  )
-  source "${ZSH}/oh-my-zsh.sh"
+export ZSH="${HOME}/.oh-my-zsh"
+
+# zsh-autosuggestions
+autosuggestionsDir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+if [[ ! -d "$autosuggestionsDir" ]]; then
+  git clone https://github.com/zsh-users/zsh-autosuggestions "$autosuggestionsDir"
 fi
 
-# --- Key bindings ------------------------------------------------------------
-autoload -U edit-command-line
-zle -N edit-command-line
+# zsh-syntax-highlighting
+syntaxHighlightingDir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+if [[ ! -d "$syntaxHighlightingDir" ]]; then
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting "$syntaxHighlightingDir"
+fi
 
+
+ZSH_THEME=""
+# alias-finder
+zstyle ':omz:plugins:alias-finder' autoload yes
+
+typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[comment]='fg=#606079'
+ZSH_HIGHLIGHT_STYLES[command]='fg=#cdcdcd'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=#cdcdcd'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=#cdcdcd'
+ZSH_HIGHLIGHT_STYLES[function]='fg=#cdcdcd'
+ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=#aeaed1,bold'
+ZSH_HIGHLIGHT_STYLES[precommand]='fg=#aeaed1'
+ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=#606079'
+ZSH_HIGHLIGHT_STYLES[path]='fg=#7fa563'
+ZSH_HIGHLIGHT_STYLES[path_prefix]='fg=#7fa563'
+ZSH_HIGHLIGHT_STYLES[globbing]='fg=#f3be7c'
+ZSH_HIGHLIGHT_STYLES[redirection]='fg=#c48282'
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#c48282'
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#c48282'
+ZSH_HIGHLIGHT_STYLES[argument]='fg=#aeaed1'
+ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#d8647e,bold'
+ZSH_HIGHLIGHT_STYLES[bracket-error]='fg=#d8647e,bold'
+ZSH_HIGHLIGHT_STYLES[assign]='fg=#aeaed1'
+ZSH_HIGHLIGHT_STYLES[command-substitution]='fg=#f3be7c'
+ZSH_HIGHLIGHT_STYLES[process-substitution]='fg=#f3be7c'
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='fg=#f3be7c'
+ZSH_HIGHLIGHT_STYLES[arithmetic-expansion]='fg=#f3be7c'
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=#7fa563'
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=#7fa563'
+
+plugins=(
+  alias-finder
+  aws
+  direnv
+  docker
+  docker-compose
+  encode64
+  extract
+  httpie
+  jsontools
+  fzf
+  gh
+  git
+  git-auto-fetch
+  git-extras
+  mise
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  zoxide
+)
+
+# --- Key bindings ------------------------------------------------------------
 zmodload zsh/terminfo 2>/dev/null || true
+
+# Use Tab to accept autosuggestions
+bindkey '^y' autosuggest-accept
 
 if [[ -n ${terminfo[kcuu1]} ]]; then
   bindkey "${terminfo[kcuu1]}" up-line-or-search
@@ -105,7 +160,10 @@ fh() {
   command -v fzf >/dev/null 2>&1 || return 0
   local selected
   selected=$( ( [ -n "$ZSH_NAME" ] && fc -l 1 || history ) | fzf +s --tac | sed 's/ *[0-9]* *//')
-  [[ -n "$selected" ]] && print -z -- "$selected"
+  if [[ -n "$selected" ]]; then
+    BUFFER="$selected"
+    CURSOR=${#BUFFER}
+  fi
 }
 zle -N fh
 bindkey '^P' fh
@@ -161,6 +219,32 @@ gpush() {
   git push origin "$current_branch" "$@"
 }
 
+eval "$(mise activate zsh)"
+
+# ensure mise installed tools remain under this line
+if command -v oh-my-posh >/dev/null 2>&1; then
+  theme_path="${XDG_CONFIG_HOME:-${HOME}/.config}/oh-my-posh/themes/vague.json"
+  if [[ -r "${theme_path}" ]]; then
+    cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/oh-my-posh"
+    mkdir -p "${cache_dir}"
+    eval "$(oh-my-posh init zsh --config "${theme_path}")"
+  fi
+fi
+
+
+if [[ -z "$KITTY_INSTALLATION_DIR" ]]; then
+  echo "$KITTY_INSTALLATION_DIR MISSING. Set in ~/.config/dotfiles/local.env"
+fi
+
+if test -n "$KITTY_INSTALLATION_DIR"; then
+  export KITTY_SHELL_INTEGRATION="enabled no-cursor"
+  autoload -Uz -- "$KITTY_INSTALLATION_DIR"/shell-integration/zsh/kitty-integration
+  kitty-integration
+  unfunction kitty-integration
+fi
+
+source "${ZSH}/oh-my-zsh.sh"
+
 # --- Aliases -----------------------------------------------------------------
 alias c='cd ~/c'
 alias cat='bat'
@@ -177,7 +261,6 @@ alias gpull='git pull --rebase'
 alias grc='git rebase --continue'
 alias gri='git rebase -i'
 alias griup='git rebase -i @{u}'
-alias json='python -mjson.tool'
 alias k='kubectl'
 alias l='ls'
 alias ls='eza -la --icons --smart-group'
@@ -204,34 +287,8 @@ case "$(uname -s)" in
     ;;
 esac
 
-eval "$(mise activate zsh)"
-
-# ensure mise installed tools remain under this line
-if command -v oh-my-posh >/dev/null 2>&1; then
-  theme_path="${XDG_CONFIG_HOME:-${HOME}/.config}/oh-my-posh/themes/vague.json"
-  if [[ -r "${theme_path}" ]]; then
-    cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/oh-my-posh"
-    mkdir -p "${cache_dir}"
-    eval "$(oh-my-posh init zsh --config "${theme_path}")"
-  fi
-fi
-
-
-if [[ -z "$KITTY_INSTALLATION_DIR" ]]; then
-  echo "$KITTY_INSTALLATION_DIR MISSING. Set in ~/.config/dotfiles/local.env"
-fi
-
-if test -n "$KITTY_INSTALLATION_DIR"; then
-  export KITTY_SHELL_INTEGRATION="enabled no-cursor"
-  autoload -Uz -- "$KITTY_INSTALLATION_DIR"/shell-integration/zsh/kitty-integration
-  kitty-integration
-  unfunction kitty-integration
-fi
 
  # Generated by sdxcli
  if command -v sdxcli &>/dev/null; then
      eval "$(sdxcli output-shell-commands)"
- fi
- if command -v zoxide &>/dev/null; then
-   eval "$(zoxide init zsh --cmd cd)"
  fi
