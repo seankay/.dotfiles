@@ -53,6 +53,13 @@ if command -v fzf >/dev/null 2>&1 && [[ -f "${HOME}/.fzf.zsh" ]]; then
   source "${HOME}/.fzf.zsh"
 fi
 
+if command -v fzf >/dev/null 2>&1; then
+  fzf_preview_bindings="--bind ctrl-f:preview-page-down,ctrl-b:preview-page-up"
+  if [[ "${FZF_DEFAULT_OPTS}" != *"ctrl-f:preview-page-down"* ]]; then
+    export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:+${FZF_DEFAULT_OPTS} }${fzf_preview_bindings}"
+  fi
+fi
+
 export ZSH="${HOME}/.oh-my-zsh"
 
 # zsh-autosuggestions
