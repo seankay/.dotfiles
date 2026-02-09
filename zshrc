@@ -111,7 +111,6 @@ plugins=(
   fzf
   gh
   git
-  git-auto-fetch
   git-extras
   mise
   zsh-autosuggestions
