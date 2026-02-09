@@ -129,7 +129,6 @@ link_path() {
 write_gitconfig() {
   local target="${HOME}/.gitconfig"
   local git_name git_email git_signing_key git_ssh_key github_host_alias
-  local gpg_program credential_helper
 
   require_env_var GIT_NAME
   require_env_var GIT_EMAIL
@@ -140,17 +139,6 @@ write_gitconfig() {
   git_signing_key="${GIT_SIGNING_KEY}"
   git_ssh_key="${GIT_SSH_KEY:-}"
   github_host_alias="${GIT_GITHUB_HOST_ALIAS:-}"
-
-  case "$(uname -s)" in
-    Darwin)
-      gpg_program="/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
-      credential_helper="osxkeychain"
-      ;;
-    *)
-      gpg_program="/opt/1Password/op-ssh-sign"
-      credential_helper=""
-      ;;
-  esac
 
   if "${DRY_RUN}"; then
     log_info "Would write ${target}"
@@ -231,21 +219,6 @@ EOF
 
 [gpg]
   format = ssh
-
-[gpg "ssh"]
-  program = ${gpg_program}
-
-[commit]
-  gpgsign = true
-EOF
-    if [[ -n "${credential_helper}" ]]; then
-      cat <<EOF
-
-[credential]
-  helper = ${credential_helper}
-EOF
-    fi
-    cat <<'EOF'
 
 [alias]
   co = checkout
