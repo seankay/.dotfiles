@@ -2,6 +2,10 @@ vim.o.laststatus = 3
 
 local M = {}
 
+local function palette()
+  return require("nordic.colors")
+end
+
 function M.git_branch()
   local dict = vim.b.gitsigns_status_dict
   if not dict or not dict.head or dict.head == "" then
@@ -146,21 +150,21 @@ function M.statusline()
 end
 
 local function set_git_hl()
-  local palette = require("vague").get_palette()
-  vim.api.nvim_set_hl(0, "StatusLineGit", { fg = palette.plus, bg = palette.bg })
-  vim.api.nvim_set_hl(0, "StatusLineGitClean", { fg = palette.plus, bg = palette.bg })
-  vim.api.nvim_set_hl(0, "StatusLineGitDirty", { fg = palette.delta, bg = palette.bg })
-  vim.api.nvim_set_hl(0, "StatusLineGitAdd", { fg = palette.plus, bg = palette.bg })
-  vim.api.nvim_set_hl(0, "StatusLineGitChange", { fg = palette.delta, bg = palette.bg })
-  vim.api.nvim_set_hl(0, "StatusLineGitRemove", { fg = palette.error, bg = palette.bg })
+  local colors = palette()
+  vim.api.nvim_set_hl(0, "StatusLineGit", { fg = colors.git.add, bg = colors.bg })
+  vim.api.nvim_set_hl(0, "StatusLineGitClean", { fg = colors.git.add, bg = colors.bg })
+  vim.api.nvim_set_hl(0, "StatusLineGitDirty", { fg = colors.git.change, bg = colors.bg })
+  vim.api.nvim_set_hl(0, "StatusLineGitAdd", { fg = colors.git.add, bg = colors.bg })
+  vim.api.nvim_set_hl(0, "StatusLineGitChange", { fg = colors.git.change, bg = colors.bg })
+  vim.api.nvim_set_hl(0, "StatusLineGitRemove", { fg = colors.git.delete, bg = colors.bg })
 end
 
 local function set_status_hl()
-  local palette = require("vague").get_palette()
-  vim.api.nvim_set_hl(0, "StatusLine", { fg = palette.fg, bg = palette.bg })
-  vim.api.nvim_set_hl(0, "StatusLineNC", { fg = palette.comment, bg = palette.bg })
-  vim.api.nvim_set_hl(0, "StatusLineFile", { fg = palette.comment, bg = palette.bg })
-  vim.api.nvim_set_hl(0, "StatusLineLsp", { fg = palette.comment, bg = palette.bg })
+  local colors = palette()
+  vim.api.nvim_set_hl(0, "StatusLine", { fg = colors.fg, bg = colors.bg })
+  vim.api.nvim_set_hl(0, "StatusLineNC", { fg = colors.comment, bg = colors.bg })
+  vim.api.nvim_set_hl(0, "StatusLineFile", { fg = colors.comment, bg = colors.bg })
+  vim.api.nvim_set_hl(0, "StatusLineLsp", { fg = colors.comment, bg = colors.bg })
 end
 
 set_git_hl()

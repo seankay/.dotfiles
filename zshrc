@@ -73,30 +73,30 @@ ZSH_THEME=""
 zstyle ':omz:plugins:alias-finder' autoload yes
 
 typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[comment]='fg=#606079'
-ZSH_HIGHLIGHT_STYLES[command]='fg=#cdcdcd'
-ZSH_HIGHLIGHT_STYLES[alias]='fg=#cdcdcd'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=#cdcdcd'
-ZSH_HIGHLIGHT_STYLES[function]='fg=#cdcdcd'
-ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=#aeaed1,bold'
-ZSH_HIGHLIGHT_STYLES[precommand]='fg=#aeaed1'
-ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=#606079'
-ZSH_HIGHLIGHT_STYLES[path]='fg=#7fa563'
-ZSH_HIGHLIGHT_STYLES[path_prefix]='fg=#7fa563'
-ZSH_HIGHLIGHT_STYLES[globbing]='fg=#f3be7c'
-ZSH_HIGHLIGHT_STYLES[redirection]='fg=#c48282'
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#c48282'
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#c48282'
-ZSH_HIGHLIGHT_STYLES[argument]='fg=#aeaed1'
-ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#d8647e,bold'
-ZSH_HIGHLIGHT_STYLES[bracket-error]='fg=#d8647e,bold'
-ZSH_HIGHLIGHT_STYLES[assign]='fg=#aeaed1'
-ZSH_HIGHLIGHT_STYLES[command-substitution]='fg=#f3be7c'
-ZSH_HIGHLIGHT_STYLES[process-substitution]='fg=#f3be7c'
-ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='fg=#f3be7c'
-ZSH_HIGHLIGHT_STYLES[arithmetic-expansion]='fg=#f3be7c'
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=#7fa563'
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=#7fa563'
+ZSH_HIGHLIGHT_STYLES[comment]='fg=#4C566A'
+ZSH_HIGHLIGHT_STYLES[command]='fg=#C0C8D8'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=#C0C8D8'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=#C0C8D8'
+ZSH_HIGHLIGHT_STYLES[function]='fg=#C0C8D8'
+ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=#B48EAD,bold'
+ZSH_HIGHLIGHT_STYLES[precommand]='fg=#B48EAD'
+ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=#4C566A'
+ZSH_HIGHLIGHT_STYLES[path]='fg=#A3BE8C'
+ZSH_HIGHLIGHT_STYLES[path_prefix]='fg=#A3BE8C'
+ZSH_HIGHLIGHT_STYLES[globbing]='fg=#EBCB8B'
+ZSH_HIGHLIGHT_STYLES[redirection]='fg=#D08770'
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#D08770'
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#D08770'
+ZSH_HIGHLIGHT_STYLES[argument]='fg=#B48EAD'
+ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#BF616A,bold'
+ZSH_HIGHLIGHT_STYLES[bracket-error]='fg=#BF616A,bold'
+ZSH_HIGHLIGHT_STYLES[assign]='fg=#B48EAD'
+ZSH_HIGHLIGHT_STYLES[command-substitution]='fg=#EBCB8B'
+ZSH_HIGHLIGHT_STYLES[process-substitution]='fg=#EBCB8B'
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='fg=#EBCB8B'
+ZSH_HIGHLIGHT_STYLES[arithmetic-expansion]='fg=#EBCB8B'
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=#A3BE8C'
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=#A3BE8C'
 
 plugins=(
   alias-finder
@@ -220,7 +220,7 @@ eval "$(mise activate zsh)"
 
 # ensure mise installed tools remain under this line
 if command -v oh-my-posh >/dev/null 2>&1; then
-  theme_path="${XDG_CONFIG_HOME:-${HOME}/.config}/oh-my-posh/themes/vague.json"
+  theme_path="${XDG_CONFIG_HOME:-${HOME}/.config}/oh-my-posh/themes/nordic.json"
   if [[ -r "${theme_path}" ]]; then
     cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/oh-my-posh"
     mkdir -p "${cache_dir}"
