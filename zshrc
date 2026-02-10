@@ -105,6 +105,9 @@ ZSH_HIGHLIGHT_STYLES[arithmetic-expansion]='fg=#f3be7c'
 ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=#7fa563'
 ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=#7fa563'
 
+# use cd to zoxide
+ZOXIDE_CMD_OVERRIDE="cd"
+
 plugins=(
   alias-finder
   aws
