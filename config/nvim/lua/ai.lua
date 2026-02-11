@@ -6,6 +6,11 @@ vim.pack.add({
 require("sidekick").setup({
   nes = { enabled = false },
   cli = {
+    win = {
+      keys = {
+        prompt = { "<leader>ap", "prompt", mode = "t", desc = "insert prompt or context" },
+      }
+    },
     tools = {
       opencode_resume = {
         cmd = { "opencode", "--continue" }
