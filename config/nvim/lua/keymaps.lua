@@ -42,6 +42,9 @@ require("which-key").setup({
 vim.g.mapleader = " " -- init before mappings
 local map = vim.keymap.set
 
+-- esc,esc to enter normal mode in terminal
+map("t", "<Esc><Esc>", [[<C-\><C-n>]], { silent = true, noremap = true })
+
 -- pack
 map("n", "<leader>pc", utils.pack_clean, { desc = "Clean" })
 map("n", "<leader>pu", function()
