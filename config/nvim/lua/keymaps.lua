@@ -198,20 +198,14 @@ map("n", "<leader>og", "<cmd>:Obsidian search<cr>", { desc = "Search notes" })
 map("n", "<leader>on", "<cmd>:Obsidian new<cr>", { desc = "New note" })
 
 -- AI
-map({ "n", "x" }, "<leader>aa", function() require("opencode").ask("@this: ", { submit = true }) end,
-  { desc = "Ask opencode…" })
-map({ "n", "x" }, "<leader>as", function() require("opencode").select() end, { desc = "Execute opencode action…" })
-map({ "n", "t" }, "<leader>at", function() require("opencode").toggle() end, { desc = "Toggle opencode" })
-
-map({ "n", "x" }, "go", function() return require("opencode").operator("@this ") end,
-  { desc = "Add range to opencode", expr = true })
-map("n", "goo", function() return require("opencode").operator("@this ") .. "_" end,
-  { desc = "Add line to opencode", expr = true })
-
-map("n", "<leader>au", function() require("opencode").command("session.half.page.up") end,
-  { desc = "Scroll opencode up" })
-map("n", "<leader>ad", function() require("opencode").command("session.half.page.down") end,
-  { desc = "Scroll opencode down" })
+map({ "n", "x", "t" }, "<leader>aa", function() require("sidekick.cli").toggle({ name = "opencode_resume" }) end,
+  { desc = "Toggle Sidekick" })
+map({ "n", "x" }, "<leader>at", function() require("sidekick.cli").send({ msg = "{this}" }) end,
+  { desc = "Send Selected" })
+map({ "n", "x" }, "<leader>af", function() require("sidekick.cli").send({ msg = "{file}" }) end,
+  { desc = "Send file" })
+map({ "n", "x" }, "<leader>ap", function() require("sidekick.cli").prompt() end,
+  { desc = "Select prompt" })
 
 -- Tests (neotest)
 map("n", "<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, { desc = "Test file" })
