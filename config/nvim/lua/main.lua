@@ -13,7 +13,6 @@ vim.pack.add({
   { src = utils.gh("nvim-lua/plenary.nvim") },
   { src = utils.gh("MeanderingProgrammer/render-markdown.nvim") },
   { src = utils.gh("vague-theme/vague.nvim") },
-  { src = utils.gh("sindrets/diffview.nvim") },
   { src = utils.gh("nvim-tree/nvim-web-devicons") },
 
 })
@@ -67,35 +66,6 @@ require('kitty-scrollback').setup({})
 require('render-markdown').setup({
   file_types = { 'markdown', 'codecompanion' },
   completions = { lsp = { enabled = true } },
-})
-
-require("diffview").setup({
-  keymaps = {
-    file_panel = {
-      {
-        "n", "cc",
-        "<Cmd>Git commit <bar> wincmd J<CR>",
-        { desc = "Commit staged changes" },
-      },
-      {
-        "n", "ca",
-        "<Cmd>Git commit --amend <bar> wincmd J<CR>",
-        { desc = "Amend the last commit" },
-      },
-      {
-        "n", "c<space>",
-        ":Git commit ",
-        { desc = "Populate command line with \":Git commit \"" },
-      },
-    },
-  },
-  file_panel = {
-    listing_style = "list",
-    win_config = {
-      position = "bottom",
-      height = 10,
-    },
-  }
 })
 
 require("opts")

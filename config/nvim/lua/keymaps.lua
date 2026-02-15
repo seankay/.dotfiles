@@ -90,9 +90,10 @@ vim.cmd([[cabbrev WQ wq]])
 
 -- Git
 local gitsigns = require("gitsigns")
-map("n", "<leader>G", "<cmd>Git<cr>", { desc = "Git status" })
-map("n", "<leader>gB", ":Gitsigns blame<cr>", { desc = "Git blame" })
-map("n", "<leader>gb", ":Gitsigns blame_line<cr>", { desc = "Git blame line" })
+map("n", "<leader>G", ":vertical G<cr>", { desc = "Git status" })
+map("n", "<leader>gd", ":vertical Gdiff<cr>", { desc = "Git Diff" })
+map("n", "<leader>gl", ":vertical G log<cr>", { desc = "Git Log" })
+map("n", "<leader>gb", ":G blame<cr>", { desc = "Git blame" })
 map('n', '<leader>ghs', gitsigns.stage_hunk, { desc = "Stage hunk" })
 map('v', '<leader>ghs', function()
   gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') })
@@ -119,23 +120,6 @@ map('n', '[h', function()
     gitsigns.nav_hunk('prev')
   end
 end, { desc = "Prev hunk" })
-map("n", "<leader>gd", function()
-  local lib = require('diffview.lib')
-  if lib.get_current_view() then
-    vim.cmd("DiffviewClose")
-  else
-    vim.cmd("DiffviewOpen")
-  end
-end
-, { desc = "Diff tool" })
-map("n", "<leader>gl", function()
-  local lib = require("diffview.lib")
-  if lib.get_current_view() then
-    vim.cmd("DiffviewClose")
-  else
-    vim.cmd("DiffviewFileHistory")
-  end
-end, { desc = "Git log" })
 map({ "n", "x" }, "<leader>go", function() Snacks.gitbrowse() end, { desc = "Git browse" })
 
 -- Pickers
