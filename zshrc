@@ -172,7 +172,6 @@ fh() {
   fi
 }
 zle -N fh
-bindkey '^P' fh
 
 docker_purge() {
   removecontainers
@@ -250,6 +249,8 @@ if test -n "$KITTY_INSTALLATION_DIR"; then
 fi
 
 source "${ZSH}/oh-my-zsh.sh"
+
+bindkey '^P' fh
 
 # fzf-git.sh
 fzf_git_dir="${XDG_DATA_HOME:-$HOME/.local/share}/fzf-git.sh"
