@@ -1,0 +1,66 @@
+{:profiles {:Default {:default true
+                      :sim 50
+                      :delay 250
+                      :alone 250
+                      :held 250}}
+
+ :layers {:l-layer {:key :l}
+          :s-layer {:key :s}}
+
+ :main [{:des "caps to escape"
+         :rules [[:caps_lock :escape]]}
+        {:des "symbol layer (hold l or s)"
+         :rules [[:q :grave_accent_and_tilde :l-layer]
+                 [:w :!Sgrave_accent_and_tilde :l-layer]
+                 [:r :!S7 :l-layer]
+                 [:t :!Sbackslash :l-layer]
+                 [:u :!Sopen_bracket :l-layer]
+                 [:i :!Sclose_bracket :l-layer]
+                 [:o :open_bracket :l-layer]
+                 [:p :close_bracket :l-layer]
+                 [:a :!S1 :l-layer]
+                 [:s :!Shyphen :l-layer]
+                 [:d :!Ssemicolon :l-layer]
+                 [:f :equal_sign :l-layer]
+                 [:g :!S4 :l-layer]
+                 [:z :!S5 :l-layer]
+                 [:x :!Sslash :l-layer]
+                 [:c :!S8 :l-layer]
+                 [:v :!Sequal_sign :l-layer]
+                 [:b :backslash :l-layer]
+                 [:h :!S2 :l-layer]
+                 [:j :!S9 :l-layer]
+                 [:k :!S0 :l-layer]
+                 [:l :!Sequal_sign :l-layer]
+                 [:n :slash :l-layer]
+                 [:m :hyphen :l-layer]
+                 [:comma :!Scomma :l-layer]
+                 [:period :!Speriod :l-layer]
+                 [:slash :!Squote :l-layer]
+                 [:q :grave_accent_and_tilde :s-layer]
+                 [:w :!Sgrave_accent_and_tilde :s-layer]
+                 [:r :!S7 :s-layer]
+                 [:t :!Sbackslash :s-layer]
+                 [:u :!Sopen_bracket :s-layer]
+                 [:i :!Sclose_bracket :s-layer]
+                 [:o :open_bracket :s-layer]
+                 [:p :close_bracket :s-layer]
+                 [:a :!S1 :s-layer]
+                 [:s :!Shyphen :s-layer]
+                 [:d :!Ssemicolon :s-layer]
+                 [:f :equal_sign :s-layer]
+                 [:g :!S4 :s-layer]
+                 [:z :!S5 :s-layer]
+                 [:x :!Sslash :s-layer]
+                 [:c :!S8 :s-layer]
+                 [:v :!Sequal_sign :s-layer]
+                 [:b :backslash :s-layer]
+                 [:h :!S2 :s-layer]
+                 [:j :!S9 :s-layer]
+                 [:k :!S0 :s-layer]
+                 [:l :!Sequal_sign :s-layer]
+                 [:n :slash :s-layer]
+                 [:m :hyphen :s-layer]
+                 [:comma :!Scomma :s-layer]
+                 [:period :!Speriod :s-layer]
+                 [:slash :!Squote :s-layer]]}]}
