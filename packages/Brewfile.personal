@@ -2,11 +2,6 @@
 # Populate this with casks/formulas you only want on a personal Mac.
 # Example:
 # cask "google-chrome"
-tap "yqrashawn/goku"
-brew "goku"
-brew "watchexec" # required by goku
-brew "joker" # required by goku
-cask "karabiner-elements"
 
 cask "balenaetcher"
 cask "cryptomator"
