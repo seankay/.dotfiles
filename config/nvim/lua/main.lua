@@ -242,6 +242,7 @@ vim.lsp.enable({
 })
 
 require("opts")
+require("ai")
 require("obsidian_setup")
 require("statusline")
 require("treesitter")

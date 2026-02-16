@@ -125,3 +125,17 @@ map("n", "<leader>oo", ":split | Obsidian new TODO<cr>", { desc = "New TODO note
 map("n", "<leader>of", "<cmd>:Obsidian quick_switch<cr>", { desc = "Quick switch note" })
 map("n", "<leader>og", "<cmd>:Obsidian search<cr>", { desc = "Search notes" })
 map("n", "<leader>on", "<cmd>:Obsidian new<cr>", { desc = "New note" })
+
+-- AI
+map({ "n", "x" }, "<leader>aa", function() require("opencode").ask("@this: ", { submit = true }) end,
+  { desc = "Ask opencode…" })
+map({ "n", "x" }, "<leader>as", function() require("opencode").select() end, { desc = "Execute opencode action…" })
+map({ "n", "t" }, "<leader>at", function() require("opencode").toggle() end, { desc = "Toggle opencode" })
+map({ "n", "x" }, "go", function() return require("opencode").operator("@this ") end,
+  { desc = "Add range to opencode", expr = true })
+map("n", "goo", function() return require("opencode").operator("@this ") .. "_" end,
+  { desc = "Add line to opencode", expr = true })
+map("n", "<leader>au", function() require("opencode").command("session.half.page.up") end,
+  { desc = "Scroll opencode up" })
+map("n", "<leader>ad", function() require("opencode").command("session.half.page.down") end,
+  { desc = "Scroll opencode down" })
