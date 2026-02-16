@@ -12,6 +12,7 @@ vim.pack.add({
   { src = utils.gh("nvim-mini/mini.completion"), },
   { src = utils.gh("nvim-mini/mini.icons"), },
   { src = utils.gh("nvim-mini/mini.snippets"), },
+  { src = utils.gh("rafamadriz/friendly-snippets") },
   { src = utils.gh("nvim-mini/mini.notify"), },
   { src = utils.gh("stevearc/conform.nvim") },
   { src = utils.gh("nvim-tree/nvim-web-devicons") },
@@ -111,7 +112,30 @@ require('render-markdown').setup({
 })
 
 -- mini
-require("mini.completion").setup()
+require("mini.completion").setup({
+  lsp_completion = {
+    source_func = 'omnifunc',
+    auto_setup = false
+  }
+})
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("minicompletion", { clear = true }),
+  pattern = "*",
+  desc = "load mini.completion on lsp attach",
+  callback = function(args)
+    vim.bo[args.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+  end,
+})
+
+local gen_loader = require("mini.snippets").gen_loader
+require("mini.snippets").setup({
+  snippets = {
+    gen_loader.from_file('~/.config/nvim/snippets/global.json'),
+    gen_loader.from_lang()
+  }
+})
+MiniSnippets.start_lsp_server({ match = false })
+
 require("mini.notify").setup()
 require("mini.ai").setup({ n_lines = 200 })
 require("mini.surround").setup()
