@@ -119,6 +119,7 @@ map("n", "<leader>sk", function() fzflua.keymaps() end, { desc = "Keymaps" })
 map("n", "<leader>su", ":FzfLua undotree fzf_opts.--keep-right=true<cr>", { desc = "Undo History" })
 map("n", "<leader>st", function() fzflua.tabs() end, { desc = "Tabs" })
 map("n", "<leader>sq", function() fzflua.quickfix() end, { desc = "Quickfix List" })
+map("n", "<leader>sM", function() fzflua.manpages() end, { desc = "Man Pages" })
 
 -- obsidian
 map("n", "<leader>oo", ":split | Obsidian new TODO<cr>", { desc = "New TODO note" })
