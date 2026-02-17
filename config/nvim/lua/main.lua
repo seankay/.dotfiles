@@ -198,7 +198,7 @@ require("fzf-lua").setup({
     files = {
       true,
       ["ctrl-q"] = FzfLua.actions.file_sel_to_qf,
-      ["ctrl-i"] = FzfLua.actions.toggle_ignore,
+      ["ctrl-g"] = FzfLua.actions.toggle_ignore,
       ["ctrl-h"] = FzfLua.actions.toggle_hidden,
     }
   }
