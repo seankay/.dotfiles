@@ -215,7 +215,6 @@ vim.lsp.enable({
 })
 
 -- AI
-local utils = require("utils")
 vim.pack.add({
   { src = utils.gh("nickvandyke/opencode.nvim") },
 })
