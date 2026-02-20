@@ -120,6 +120,20 @@ map("n", "<leader>su", ":FzfLua undotree fzf_opts.--keep-right=true<cr>", { desc
 map("n", "<leader>st", function() fzflua.tabs() end, { desc = "Tabs" })
 map("n", "<leader>sq", function() fzflua.quickfix() end, { desc = "Quickfix List" })
 map("n", "<leader>sM", function() fzflua.manpages() end, { desc = "Man Pages" })
+map("n", "<leader>sn", function()
+    local mini = require("mini.notify")
+    local history = mini.get_all()
+    table.sort(history, function(a, b) return a.ts_update > b.ts_update end)
+    local lines = {}
+    for _, notif in ipairs(history) do
+      lines[#lines + 1] = mini.default_format(notif):gsub("\n", " | ")
+    end
+    fzflua.fzf_exec(lines, {
+      prompt = "Notifications> ",
+      previewer = false,
+    })
+  end,
+  { desc = "Notification History" })
 -- lsp
 map("n", "gd", function() fzflua.lsp_definitions() end, { desc = "LSP definitions" })
 map("n", "gr", function() fzflua.lsp_references() end, { desc = "LSP references" })
