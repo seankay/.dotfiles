@@ -278,6 +278,8 @@ alias ga='git add --all'
 alias gc='git commit -v'
 alias gca='git commit -a -v'
 alias gd='git diff'
+alias gdd='git difftool -d'
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias gm='git merge --no-ff'
 alias gpull='git pull --rebase'
 alias grc='git rebase --continue'
@@ -286,11 +288,9 @@ alias griup='git rebase -i @{u}'
 alias k='kubectl'
 alias l='ls'
 alias ls='eza -la --icons --smart-group'
-alias rm='tp'
 alias tf='terraform'
 alias tg='terragrunt'
 alias top='btop'
-alias vimdiff='${EDITOR} -d'
 alias s="kitty +kitten ssh"
 alias icat="kitten icat"
 

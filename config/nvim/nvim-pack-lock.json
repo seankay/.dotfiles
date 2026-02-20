@@ -29,10 +29,6 @@
       "rev": "add8d8abad602787377ec5d81f6b248605828e0f",
       "src": "https://github.com/nvim-mini/mini.hipatterns"
     },
-    "mini.icons": {
-      "rev": "68c178e0958d95b3977a771f3445429b1bded985",
-      "src": "https://github.com/nvim-mini/mini.icons"
-    },
     "mini.notify": {
       "rev": "29ec27f60bf4b63e447c851d9061c434d80795a6",
       "src": "https://github.com/nvim-mini/mini.notify"

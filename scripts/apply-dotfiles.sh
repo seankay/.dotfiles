@@ -176,10 +176,10 @@ EOF
   whitespace = nowarn
 
 [diff]
-  tool = nvim
+  tool = nvim_difftool
 
-[difftool]
-  prompt = false
+[difftool "nvim_difftool"]
+ cmd = nvim -c \"DiffTool $LOCAL $REMOTE\"
 
 [help]
   autocorrect = 1
@@ -219,14 +219,6 @@ EOF
 
 [gpg]
   format = ssh
-
-[alias]
-  co = checkout
-  count = !git shortlog -sn
-  head = !git r -1
-  h = !git head
-  l = !git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-  gpr = !git pull --rebase
 
 [init]
   defaultBranch = main

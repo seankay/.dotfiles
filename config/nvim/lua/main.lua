@@ -1,34 +1,31 @@
 local utils = require("utils")
 -- plugins
 vim.pack.add({
+  { src = utils.gh("MeanderingProgrammer/render-markdown.nvim") },
+  { src = utils.gh("ibhagwan/fzf-lua") },
+  { src = utils.gh("kevinhwang91/nvim-bqf") },
   { src = utils.gh("knubie/vim-kitty-navigator") },
   { src = utils.gh("mikesmithgh/kitty-scrollback.nvim") },
-  { src = utils.gh("tpope/vim-fugitive") },
-  { src = utils.gh("stevearc/oil.nvim") },
-  { src = utils.gh("MeanderingProgrammer/render-markdown.nvim") },
+  { src = utils.gh("neovim/nvim-lspconfig") },
+  { src = utils.gh("nickvandyke/opencode.nvim") },
   { src = utils.gh("nvim-mini/mini.ai") },
   { src = utils.gh("nvim-mini/mini.hipatterns") },
-  { src = utils.gh("nvim-mini/mini.surround") },
-  { src = utils.gh("nvim-mini/mini.icons"), },
   { src = utils.gh("nvim-mini/mini.notify"), },
-  { src = utils.gh("stevearc/conform.nvim") },
+  { src = utils.gh("nvim-mini/mini.surround") },
   { src = utils.gh("nvim-tree/nvim-web-devicons") },
-  { src = utils.gh("ibhagwan/fzf-lua") },
-  { src = utils.gh("neovim/nvim-lspconfig") },
+  { src = utils.gh("stevearc/conform.nvim") },
+  { src = utils.gh("stevearc/oil.nvim") },
+  { src = utils.gh("tpope/vim-fugitive") },
   { src = utils.gh("vague-theme/vague.nvim") },
-  { src = utils.gh("kevinhwang91/nvim-bqf") }
 })
+-- pack add builtins
+vim.cmd.packadd("nvim.difftool")
 
 -- Colorscheme
 vim.cmd("colorscheme vague")
 vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#252530", bg = "NONE" })
 vim.api.nvim_set_hl(0, "VertSplit", { fg = "#252530", bg = "NONE" })
 vim.api.nvim_set_hl(0, "WinSeparatorNC", { fg = "#252530", bg = "NONE" })
-local palette = require("vague").get_palette()
-vim.api.nvim_set_hl(0, "Pmenu", { fg = palette.fg })
-vim.api.nvim_set_hl(0, "PmenuSel", { fg = palette.constant, bg = palette.line })
-vim.api.nvim_set_hl(0, "PmenuSbar", { bg = palette.line })
-vim.api.nvim_set_hl(0, "PmenuThumb", { bg = palette.comment })
 
 --Diagnostics
 vim.diagnostic.config({
@@ -215,9 +212,6 @@ vim.lsp.enable({
 })
 
 -- AI
-vim.pack.add({
-  { src = utils.gh("nickvandyke/opencode.nvim") },
-})
 vim.g.opencode_opts = {
   provider = {
     enabled = "kitty",
