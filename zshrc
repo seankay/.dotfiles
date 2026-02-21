@@ -293,6 +293,7 @@ alias tg='terragrunt'
 alias top='btop'
 alias s="kitty +kitten ssh"
 alias icat="kitten icat"
+alias rm='tp'
 
 case "$(uname -s)" in
   Darwin)
