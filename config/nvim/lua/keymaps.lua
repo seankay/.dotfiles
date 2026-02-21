@@ -86,7 +86,7 @@ vim.cmd([[cabbrev Wq wq]])
 vim.cmd([[cabbrev WQ wq]])
 
 -- Git
-map("n", "<leader>G", ":vertical G<cr>", { desc = "Git status" })
+map("n", "<leader>gs", ":vertical G<cr>", { desc = "Git status" })
 map("n", "<leader>gd", ":vertical Gdiff<cr>", { desc = "Git Diff" })
 map("n", "<leader>gl", ":vertical G log<cr>", { desc = "Git Log" })
 map("n", "<leader>gb", ":G blame<cr>", { desc = "Git blame" })
