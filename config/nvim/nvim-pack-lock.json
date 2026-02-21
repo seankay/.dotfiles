@@ -71,7 +71,7 @@
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "vague.nvim": {
-      "rev": "24cd29d277bf5259ab347c49d223d8cfb9057565",
+      "rev": "4abd79d6fbaca57bf437763d0b5bed364e4512bd",
       "src": "https://github.com/vague-theme/vague.nvim"
     },
     "vim-fugitive": {
