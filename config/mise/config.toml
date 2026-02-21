@@ -23,6 +23,7 @@
 "pipx:httpie" = "latest"
 "pipx:pre-commit" = "latest"
 "pipx:trash-cli" = "latest"
+ansible = "latest"
 awscli = "latest"
 bat = "latest"
 btop = { version = "latest", os = ["linux"] }
