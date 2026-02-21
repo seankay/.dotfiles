@@ -46,7 +46,7 @@
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-treesitter": {
-      "rev": "ecdae44baefeffceade8b0c752d80ececad28e76",
+      "rev": "fcd51bbe9245aa9b79a3930ed9ac42e16e1cf33f",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-web-devicons": {
@@ -63,7 +63,7 @@
       "src": "https://github.com/stevearc/oil.nvim"
     },
     "opencode.nvim": {
-      "rev": "a841138e056f337c6ee7ad0aad0cc18b36806deb",
+      "rev": "ba0a4f8bc91a37de5da08b9ee3f9fdb41cd52510",
       "src": "https://github.com/nickvandyke/opencode.nvim"
     },
     "render-markdown.nvim": {
